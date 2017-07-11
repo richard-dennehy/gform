@@ -18,26 +18,41 @@ package uk.gov.hmrc.gform.services
 
 import java.util.UUID
 
+import cats.data.EitherT
 import cats.instances.future._
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.core._
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.{ InvalidState, UnexpectedState }
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.typeclasses.{ Find, FindOne, Insert, Update }
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object FormService {
 
-  def insertEmpty(formTypeId: FormTypeId, version: Version)(implicit Insert: Insert[Form]): ServiceResponse[Form] = {
+  def insertEmpty(formTypeId: FormTypeId, version: Version, envelopeId: EnvelopeId)(implicit Insert: Insert[Form]): ServiceResponse[Form] = {
     val formId = FormId(UUID.randomUUID().toString)
     val selector = Json.obj("_id" -> formId.value)
     val formData = FormData(formTypeId, version, characterSet = "UTF-8", fields = Nil)
-    val form = Form(formId, formData)
+    val form = Form(formId, formData, envelopeId)
     fromFutureOptA(
       Insert(selector, form).map(_.right.map(_ => form))
     )
   }
+
+  def updateFormData(formId: FormId, formData: FormData)(
+    implicit
+    FindOneForm: FindOne[Form],
+    InsertForm: Insert[Form],
+    UpdateForm: Update[Form]
+  ): ServiceResponse[DbOperationResult] = EitherT(
+
+    FindOneForm(formSelector(formId))
+      .map(_.get)
+      .map(_.copy(formData = formData))
+      .flatMap(f => UpdateForm(formSelector(formId), f))
+  )
 
   def saveOrUpdate(
     form: Form,
@@ -58,13 +73,11 @@ object FormService {
       "version" -> version.value
     )
 
-    val formSelector = Json.obj("_id" -> form._id.value)
-
     // format: OFF
     for {
       _            <- operation match {
         case IsSave()   => success(())
-        case IsUpdate() => fromFutureOptionA(FindOneForm(formSelector))(InvalidState(s"Form $formSelector not found")).map(_ => ())
+        case IsUpdate() => fromFutureOptionA(FindOneForm(formSelector(form._id)))(InvalidState(s"Form ${form._id} not found")).map(_ => ())
       }
       formTemplate <- fromFutureOptionA(FindOneFormTemplate(templateSelector))(InvalidState(s"FormTemplate $templateSelector not found"))
       section      <- operation match {
@@ -76,8 +89,8 @@ object FormService {
         case IsStrict()   => fromOptA(FormValidator.validate(formData.fields.toList, section))
       }
       dbResult     <- operation match {
-        case IsSave()   => fromFutureOptA(InsertForm(formSelector, form))
-        case IsUpdate() => fromFutureOptA(UpdateForm(formSelector, form))
+        case IsSave()   => fromFutureOptA(InsertForm(formSelector(form._id), form))
+        case IsUpdate() => fromFutureOptA(UpdateForm(formSelector(form._id), form))
       }
     } yield dbResult
     // format: ON
@@ -122,4 +135,7 @@ object FormService {
 
     fromFutureOptionA(FindOneForm(selector))(InvalidState(s"Form _id ${formId.value}, version: ${version.value}, formTypeId: ${formTypeId.value} not found"))
   }
+
+  private def formSelector(id: FormId) = Json.obj("_id" -> id.value)
+
 }

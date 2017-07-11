@@ -46,11 +46,11 @@ class FormController()(
   def newForm(formTypeId: FormTypeId, version: Version) = Action.async { implicit request =>
 
     val template = FormTemplateService.get(formTypeId, version)
-    val envelope = FileUploadService.createEnvelope(formTypeId)
-    val form = FormService.insertEmpty(formTypeId, version)
+    val envelopeId = FileUploadService.createEnvelope(formTypeId)
+    val form = envelopeId.flatMap(envelopeId => FormService.insertEmpty(formTypeId, version, envelopeId))
     val response = for {
       t <- template
-      e <- envelope
+      e <- envelopeId
       f <- form
     } yield NewFormResponse(f, e, t)
     response.fold(
@@ -61,15 +61,6 @@ class FormController()(
 
   def all() = Action.async { implicit request =>
     Future.successful(NotImplemented)
-  }
-
-  def save(tolerant: Option[Boolean]) = Action.async(parse.json[FormData]) { implicit request =>
-    val _id = FormId(UUID.randomUUID().toString())
-    val operation = tolerant match {
-      case Some(true) => SaveTolerantOperation
-      case _ => SaveOperation
-    }
-    saveOrUpdate(_id, operation)
   }
 
   def allById(formTypeId: FormTypeId) = Action.async { implicit request =>
@@ -104,7 +95,7 @@ class FormController()(
       case Some(true) => UpdateTolerantOperation
       case _ => UpdateOperation
     }
-    saveOrUpdate(formId, operation)
+    FormService.updateFormData(formId, request.body).fold(er => BadRequest(er.jsonResponse), _ => Ok(""))
   }
 
   def delete(formTypeId: FormTypeId, version: Version, formId: FormId) = Action.async { implicit request =>
@@ -122,21 +113,8 @@ class FormController()(
     Future.successful(NotImplemented)
   }
 
-  private def saveOrUpdate(formId: FormId, mongoOperation: MongoOperation)(implicit request: Request[FormData]) = {
-    val formData = request.body
-    val form = Form(formId, formData)
-
-    FormService.saveOrUpdate(form, mongoOperation).fold(
-      error => error.toResult,
-      response => {
-        val formRoute = formLink(form)
-        Ok(Json.obj("success" -> formRoute))
-      }
-    )
-  }
-
   private def formLink(form: Form)(implicit request: RequestHeader) = {
-    val Form(formId, formData) = form
+    val Form(formId, formData, envelopeId) = form
     routes.FormController.get(formData.formTypeId, formData.version, formId).absoluteURL()
   }
 }

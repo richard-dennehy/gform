@@ -7,7 +7,6 @@ POST       /saveForm/:rn                uk.gov.hmrc.gform.controllers.SaveAndRet
 POST       /new-form/:formTypeId/:version           uk.gov.hmrc.gform.controllers.FormController.newForm(formTypeId: FormTypeId, version: Version)
 
 GET        /forms                                   uk.gov.hmrc.gform.controllers.FormController.all
-POST       /forms                                   uk.gov.hmrc.gform.controllers.FormController.save(tolerant: Option[Boolean])
 PUT        /forms/:formId                           uk.gov.hmrc.gform.controllers.FormController.update(formId: FormId, tolerant: Option[Boolean])
 GET        /forms/:formTypeId                       uk.gov.hmrc.gform.controllers.FormController.allById(formTypeId: FormTypeId)
 GET        /forms/:formTypeId/:version              uk.gov.hmrc.gform.controllers.FormController.getByIdAndVersion(formTypeId: FormTypeId, version: Version)

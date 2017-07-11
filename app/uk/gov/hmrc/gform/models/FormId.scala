@@ -18,29 +18,18 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
 
-case class FormId(value: String) extends AnyVal {
-  override def toString = value
-}
+case class FormId(value: String)
 
 object FormId {
-  val writes = Writes[FormId](id => JsString(id.value))
-  val reads = Reads[FormId] {
-    case JsString(value) => JsSuccess(FormId(value))
-    case otherwise => JsError(s"Invalid formId, expected JsString, got: $otherwise")
-  }
 
-  implicit val format = Format[FormId](reads, writes)
-}
+  implicit val format: OFormat[FormId] = OFormat[FormId](reads, writes)
 
-object FormIdAsMongoId {
-  val writes = OWrites[FormId](id => Json.obj("_id" -> id.value))
-
-  val reads = Reads[FormId] { jsObj =>
+  private lazy val writes: OWrites[FormId] = OWrites[FormId](id => Json.obj("_id" -> id.value))
+  private lazy val reads: Reads[FormId] = Reads[FormId] { (jsObj: JsValue) =>
     (jsObj \ "_id") match {
       case JsDefined(JsString(id)) => JsSuccess(FormId(id))
       case _ => JsError(s"Invalid formId, expected fieldName '_id', got: $jsObj")
     }
   }
 
-  val format = OFormat[FormId](reads, writes)
 }
