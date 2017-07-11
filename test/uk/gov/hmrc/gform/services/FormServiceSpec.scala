@@ -98,7 +98,7 @@ class FormServiceSpec extends Spec with TypeclassFixtures {
 
     val res = FormService.saveOrUpdate(form, UpdateOperation)
 
-    futureResult(res.value).left.value should be(InvalidState("""Form {"_id":"form-id"} not found"""))
+    futureResult(res.value).left.value should be(InvalidState("""Form FormId(form-id) not found"""))
   }
 
   it should "return InvalidState when fields in the Form doesn't match the fields in FormTemplate" in {

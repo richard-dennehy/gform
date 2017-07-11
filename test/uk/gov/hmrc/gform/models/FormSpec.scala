@@ -24,7 +24,7 @@ class FormSpec extends Spec {
 
   val formData = FormData(FormTypeId("my-form-type-id"), Version("0.1.5"), "UTF-8", List(FormField(FieldId("firstName"), "Josef")))
 
-  val form = Form(formId, formData, EnvelopeId(""))
+  val form = Form(formId, formData, EnvelopeId("b74e0f5c-14c2-4444-9429-6a163f7f1f18"))
 
   val formFormat = implicitly[Format[Form]]
 
@@ -41,7 +41,8 @@ class FormSpec extends Spec {
           "id" -> "firstName",
           "value" -> "Josef"
         )
-      )
+      ),
+      "envelopeId" -> "b74e0f5c-14c2-4444-9429-6a163f7f1f18"
     )
 
     formAsJson should be(expectedJson)
