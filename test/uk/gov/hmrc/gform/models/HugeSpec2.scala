@@ -34,9 +34,9 @@ class HugeSpec2 extends FlatSpec with Matchers {
 
       implicit val hugeCaseClassReads: Reads[Huge] = (
         fields1to2 and fields3to4
-        ) {
-        f
-      }
+      ) {
+          f
+        }
 
       lazy val fields1to2: Reads[(Int, String)] = (
         (__ \ "a").read[Int] and
@@ -47,7 +47,6 @@ class HugeSpec2 extends FlatSpec with Matchers {
         (__ \ "c").read[Boolean] and
         (__ \ "d").read[List[Huge]]
       ).tupled
-
 
     }
 

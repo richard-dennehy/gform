@@ -28,7 +28,7 @@ object FieldValueRaw {
 
   //  implicit val format: Reads[FieldValueRaw] = (f1 and f2) { f }
   //
-  //  implicit lazy val f1: Reads[(FieldId, Option[ComponentTypeRaw], String, Option[ValueExpr], Option[FormatExpr], Option[String], Option[List[String]], Option[String], Option[List[String]], Option[List[FieldValueRaw]], Option[String])] = (
+  //  implicit lazy val f1 = (
   //    (__ \ 'id).read[FieldId] and
   //    (__ \ 'type).readNullable[ComponentTypeRaw] and
   //    (__ \ 'label).read[String] and
@@ -42,7 +42,7 @@ object FieldValueRaw {
   //    (__ \ 'mandatory).readNullable[String]
   //  ).tupled
   //
-  //  implicit lazy val f2: Reads[(Option[Offset], Option[String], Option[String], Option[String], Option[String], Option[String], Option[String], Option[Int], Option[Int], Option[String], Option[String])] = (
+  //  implicit lazy val f2 = (
   //    (__ \ 'offset).readNullable[Offset] and
   //    (__ \ 'multivalue).readNullable[String] and
   //    (__ \ 'total).readNullable[String] and
