@@ -26,6 +26,40 @@ import uk.gov.hmrc.gform.models.FieldValueRaw._
 
 object FieldValueRaw {
 
+  //  implicit val format: Reads[FieldValueRaw] = (f1 and f2) { f }
+  //
+  //  implicit lazy val f1: Reads[(FieldId, Option[ComponentTypeRaw], String, Option[ValueExpr], Option[FormatExpr], Option[String], Option[List[String]], Option[String], Option[List[String]], Option[List[FieldValueRaw]], Option[String])] = (
+  //    (__ \ 'id).read[FieldId] and
+  //    (__ \ 'type).readNullable[ComponentTypeRaw] and
+  //    (__ \ 'label).read[String] and
+  //    (__ \ 'value).readNullable[ValueExpr] and
+  //    (__ \ 'format).readNullable[FormatExpr] and
+  //    (__ \ 'helpText).readNullable[String] and
+  //    (__ \ 'optionHelpText).readNullable[List[String]] and
+  //    (__ \ 'submitMode).readNullable[String] and
+  //    (__ \ 'choices).readNullable[List[String]] and
+  //    (__ \ 'fields).lazyReadNullable(implicitly[Reads[List[FieldValueRaw]]]) and //Note: recursiveness here prevents macro use (see JsonParseTestGroup)
+  //    (__ \ 'mandatory).readNullable[String]
+  //  ).tupled
+  //
+  //  implicit lazy val f2: Reads[(Option[Offset], Option[String], Option[String], Option[String], Option[String], Option[String], Option[String], Option[Int], Option[Int], Option[String], Option[String])] = (
+  //    (__ \ 'offset).readNullable[Offset] and
+  //    (__ \ 'multivalue).readNullable[String] and
+  //    (__ \ 'total).readNullable[String] and
+  //    (__ \ 'international).readNullable[String] and
+  //    (__ \ 'infoText).readNullable[String] and
+  //    (__ \ 'infoType).readNullable[String] and
+  //    (__ \ 'shortName).readNullable[String] and
+  //    (__ \ 'repeatsMax).readNullable[Int] and
+  //    (__ \ 'repeatsMin).readNullable[Int] and
+  //    (__ \ 'repeatLabel).readNullable[String] and
+  //    (__ \ 'repeatAddAnotherText).readNullable[String]
+  //  ).tupled
+  //
+  //  lazy val f: ((FieldId, Option[ComponentTypeRaw], String, Option[ValueExpr], Option[FormatExpr], Option[String], Option[List[String]], Option[String], Option[List[String]], Option[List[FieldValueRaw]], Option[String]), (Option[Offset], Option[String], Option[String], Option[String], Option[String], Option[String], Option[String], Option[Int], Option[Int], Option[String], Option[String])) => FieldValueRaw = {
+  //    case ((a, b, c, d, e, f, g, h, i, j, k), (l, m, n, o, p, q, r, s, t, u, v)) => FieldValueRaw(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v)
+  //  }
+
   implicit val format: Reads[FieldValueRaw] = (
     (__ \ 'id).read[FieldId] and
     (__ \ 'type).readNullable[ComponentTypeRaw] and
