@@ -16,12 +16,37 @@
 
 package uk.gov.hmrc.gform.config
 
-import pureconfig._
-import uk.gov.hmrc.play.config.ServicesConfig
+import java.io.File
 
-class ConfigModule {
-  lazy val appConfig: AppConfig = AppConfig.loadOrThrow()
-  lazy val serviceConfig: ServicesConfig = new ServicesConfig {}
+import net.ceedubs.ficus.Ficus._
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import com.typesafe.config.{ ConfigFactory, Config => TypeSafeConfig }
+import play.api.Mode.Mode
+import play.api.http.{ HttpErrorHandler, HttpRequestHandler }
+import play.api.{ Application, Configuration }
+import pureconfig._
+import uk.gov.hmrc.gform.ApplicationModule
+import uk.gov.hmrc.play.auth.controllers.AuthParamsControllerConfig
+import uk.gov.hmrc.play.config.{ ControllerConfig, ServicesConfig }
+
+import scala.concurrent.Future
+
+class ConfigModule(applicationModule: ApplicationModule) {
+
+  val typesafeConfig = ConfigFactory.load()
+  val appConfig: AppConfig = AppConfig.loadOrThrow(typesafeConfig)
+  val serviceConfig: ServicesConfig = new ServicesConfig {}
+  val playConfiguration = applicationModule.configuration
+
+  val controllerConfig = new ControllerConfig {
+    lazy val controllerConfigs = typesafeConfig.as[TypeSafeConfig]("controllers")
+  }
+
+  val authParamsControllerConfig = new AuthParamsControllerConfig {
+    lazy val controllerConfigs = controllerConfig.controllerConfigs
+  }
+
 }
 
 case class AppConfig(
@@ -33,9 +58,9 @@ case class AppConfig(
 
 object AppConfig {
 
-  def loadOrThrow(): AppConfig = {
+  def loadOrThrow(config: TypeSafeConfig): AppConfig = {
     implicit def hint[T] = ProductHint[T](ConfigFieldMapping(CamelCase, CamelCase))
-    val appConfig = loadConfigOrThrow[AppConfig]
+    val appConfig = loadConfigOrThrow[AppConfig](config)
 
     appConfig.formExpiryDays.verifyThat(_ > 0, s"'formExpiryDays' must be positive, was ${appConfig.formExpiryDays}")
     appConfig.formMaxAttachments.verifyThat(_ > 0, s"'formMaxAttachments' must be positive, was ${appConfig.formMaxAttachments}")

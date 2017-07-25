@@ -27,7 +27,8 @@ class AppConfigSpec extends Spec {
   behavior of "AppConfig"
 
   it should "be loadable" in {
-    val appConfig = AppConfig.loadOrThrow()
+
+    val appConfig = AppConfig.loadOrThrow(ConfigFactory.load())
     appConfig.appName shouldBe "gform"
     appConfig.formExpiryDays shouldBe 30
     appConfig.formMaxAttachments shouldBe 10

@@ -27,13 +27,11 @@ case class Config(
 
 class SpoiltLocationHeader(val message: String) extends RuntimeException(message)
 
-case class EnvelopeId(value: String)
-case class FileId(value: String)
-
 //TODO move it into somewhere into common place. There is much more logic related to it in whole code
 case class ContentType(value: String)
 object ContentType {
   val `application/pdf` = ContentType("application/pdf")
+  val `application/xml; charset=UTF-8` = ContentType("application/xml; charset=UTF-8")
   val `image/jpeg` = ContentType("image/jpeg")
   val `text/plain` = ContentType("text/plain")
 }

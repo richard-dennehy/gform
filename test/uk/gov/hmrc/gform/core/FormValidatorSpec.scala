@@ -19,7 +19,7 @@ package uk.gov.hmrc.gform.core
 import cats.syntax.either._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 
 class FormValidatorSpec extends Spec {
@@ -104,7 +104,7 @@ class FormValidatorSpec extends Spec {
          |  ]
          |}""".stripMargin
 
-    val schemaRes = SchemaValidator.conform(Json.parse(formSchema).as[Schema])
+    val schemaRes = SchemaValidator.conform(Json.parse(formSchema).as[FormTemplateSchema])
 
     val finalRes =
       for {
@@ -255,7 +255,7 @@ class FormValidatorSpec extends Spec {
 
     val res = FormValidator.validate(formFields, section)
 
-    res.left.value should be(InvalidState("Field iptRegNum is not part of the template"))
+    res.left.value should be(UnexpectedState("Field iptRegNum is not part of the template"))
 
   }
 
@@ -268,7 +268,7 @@ class FormValidatorSpec extends Spec {
 
     val res = FormValidator.validate(formFields, section)
 
-    res.left.value should be(InvalidState("Required fields iptRegNum are missing in form submission."))
+    res.left.value should be(UnexpectedState("Required fields iptRegNum are missing in form submission."))
 
   }
 }

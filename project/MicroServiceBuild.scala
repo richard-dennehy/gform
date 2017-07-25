@@ -29,6 +29,7 @@ object MicroServiceBuild extends Build with MicroService {
   val spdfVersion = "1.4.0"
   val shapelessVersion = "2.3.2"
   val pureConfigVersion = "0.7.2"
+  val simulacrumVersion = "0.10.0"
 
   val compile = Seq(
     ws,
@@ -50,7 +51,8 @@ object MicroServiceBuild extends Build with MicroService {
     "org.apache.pdfbox" % "pdfbox" % pdfboxVersion,
     "io.github.cloudify" %% "spdf" % spdfVersion,
     "com.chuusai" %% "shapeless" % shapelessVersion,
-    "com.github.pureconfig" %% "pureconfig" % pureConfigVersion
+    "com.github.pureconfig" %% "pureconfig" % pureConfigVersion,
+    "com.github.mpilquist" %% "simulacrum" % simulacrumVersion
   )
 
 

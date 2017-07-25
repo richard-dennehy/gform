@@ -21,7 +21,7 @@ import cats.syntax.all._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.core.parsers.{ FormatParser, ValueParser }
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 
 case class MES(mandatory: Boolean, editable: Boolean, submissible: Boolean)
 
@@ -86,7 +86,7 @@ class FieldValueMaker(json: JsValue) {
     case (Some(IsInfo()),            Some(IsTrueish()) | None)  => MES(mandatory = true, editable = false, submissible = false).asRight
     case (Some(IsStandard()) | None, Some(IsFalseish()))        => MES(mandatory = false, editable = true, submissible = true).asRight
     case (Some(IsInfo()),            Some(IsFalseish()))        => MES(mandatory = false, editable = false, submissible = false).asRight
-    case otherwise                                              => InvalidState(s"Expected 'standard', 'readonly' or 'info' string or nothing for submitMode and expected 'true' or 'false' string or nothing for mandatory field value, got: $otherwise").asLeft
+    case otherwise                                              => UnexpectedState(s"Expected 'standard', 'readonly' or 'info' string or nothing for submitMode and expected 'true' or 'false' string or nothing for mandatory field value, got: $otherwise").asLeft
     //format: ON
   }
 
@@ -115,7 +115,7 @@ class FieldValueMaker(json: JsValue) {
         case (None,                Some(TextExpression(expr)), IsTotal(TotalNo))   => Text(AnyText, expr, total = false).asRight
         case (None,                None,                       IsTotal(TotalYes))  => Text(AnyText, Constant(""), total = true).asRight
         case (None,                None,                       IsTotal(TotalNo))   => Text(AnyText, Constant(""), total = false).asRight
-        case (Some(invalidFormat), Some(invalidValue),         invalidTotal)       => InvalidState(
+        case (Some(invalidFormat), Some(invalidValue),         invalidTotal)       => UnexpectedState(
           s"""|Unsupported type of format and value for text field
               |Id: $id
               |Format: $invalidFormat
@@ -131,7 +131,7 @@ class FieldValueMaker(json: JsValue) {
     //format: OFF
     case IsInternational(InternationalYes) => Address(international = true).asRight
     case IsInternational(InternationalNo)  => Address(international = false).asRight
-    case invalidInternational       => InvalidState(
+    case invalidInternational       => UnexpectedState(
       s"""|Unsupported type of value for address field
           |Id: $id
           |Total: $invalidInternational""".stripMargin).asLeft
@@ -147,7 +147,7 @@ class FieldValueMaker(json: JsValue) {
           case Some(DateFormat(e)) => e.asRight
           case None => AnyDate.asRight
           case Some(invalidFormat) =>
-            InvalidState(
+            UnexpectedState(
               s"""|Unsupported type of format for date field
                   |Id: $id
                   |Format: $invalidFormat""".stripMargin
@@ -163,7 +163,7 @@ class FieldValueMaker(json: JsValue) {
         optMaybeDateValue = maybeValueExpr match {
           case Some(DateExpression(dateExpr)) => dateExpr.some.asRight
           case None => none.asRight
-          case Some(invalidValue) => InvalidState(
+          case Some(invalidValue) => UnexpectedState(
             s"""|Unsupported type of value for date field
                 |Id: $id
                 |Value: $invalidValue""".stripMargin
@@ -183,7 +183,7 @@ class FieldValueMaker(json: JsValue) {
 
   private lazy val groupOpt: Opt[Group] = fields.fold(noRawFields)(groupOpt(_))
 
-  private lazy val noRawFields: Opt[Group] = InvalidState(s"""Require 'fields' element in Group""").asLeft
+  private lazy val noRawFields: Opt[Group] = UnexpectedState(s"""Require 'fields' element in Group""").asLeft
 
   def groupOpt(fields: List[FieldValueMaker]): Opt[Group] = {
 
@@ -209,9 +209,9 @@ class FieldValueMaker(json: JsValue) {
   private def validateAndBuildGroupField(fields: List[FieldValue], orientation: Orientation): Opt[Group] = {
     (repeatsMax, repeatsMin) match {
       case (Some(repMax), Some(repMin)) if repMax < repMin =>
-        InvalidState(s"""repeatsMax should be higher than repeatsMin in Group field""").asLeft
+        UnexpectedState(s"""repeatsMax should be higher than repeatsMin in Group field""").asLeft
       case (Some(repMax), Some(repMin)) if repMin < 1 =>
-        InvalidState(s"""repeatsMin in Group field cannot be less than 1""").asLeft
+        UnexpectedState(s"""repeatsMin in Group field cannot be less than 1""").asLeft
       case _ =>
         Group(fields, orientation, repeatsMax, repeatsMin, repeatLabel, repeatAddAnotherText).asRight
     }
@@ -237,7 +237,7 @@ class FieldValueMaker(json: JsValue) {
         case (IsOrientation(InlineOrientation), Some(x :: xs), None, Selections(selections), oHelpText) =>
           Choice(Inline, NonEmptyList(x, xs), Horizontal, selections, oHelpText).asRight
         case (invalidFormat, invalidChoices, invalidMultivalue, invalidValue, invalidHelpText) =>
-          InvalidState(s"""|Unsupported combination of 'format, choices, multivalue and value':
+          UnexpectedState(s"""|Unsupported combination of 'format, choices, multivalue and value':
                            |Format     : $invalidFormat
                            |Choices    : $invalidChoices
                            |Multivalue : $invalidMultivalue
@@ -256,7 +256,7 @@ class FieldValueMaker(json: JsValue) {
     case (IsInfoType(LongInfo), Some(infText)) => InformationMessage(LongInfo, infText).asRight
     case (IsInfoType(ImportantInfo), Some(infText)) => InformationMessage(ImportantInfo, infText).asRight
     case (IsInfoType(BannerInfo), Some(infText)) => InformationMessage(BannerInfo, infText).asRight
-    case (infType, infText) => InvalidState(
+    case (infType, infText) => UnexpectedState(
       s"""
          | Invalid or missing arguments in 'info' field. The 'info' field should contain the infoType and
          | infoText arguments. infoType is one of: standard, long, important or banner.

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform.core.parsers
 
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 
 class FormatParserSpec extends Spec {
@@ -56,7 +56,7 @@ class FormatParserSpec extends Spec {
     val res = FormatParser.validate("before anyFieldId anotherWord 9")
 
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """Unable to parse expression before anyFieldId anotherWord 9.
           |Errors:
           |before anyFieldId anotherWord 9:1: unexpected characters; expected '(\+|-)?\d+'
@@ -69,7 +69,7 @@ class FormatParserSpec extends Spec {
     val res = FormatParser.validate("after 2016-6-9 9")
 
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """|Unable to parse expression after 2016-6-9 9.
            |Errors:
            |after 2016-6-9 9:1: unexpected characters; expected '\s+' or ','

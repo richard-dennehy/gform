@@ -21,18 +21,25 @@ import java.time.format.DateTimeFormatter
 
 import play.api.http.HeaderNames.LOCATION
 import play.api.libs.json.Json
-import uk.gov.hmrc.gform.models.FormTypeId
-import uk.gov.hmrc.play.http.ws.WSHttp
+import uk.gov.hmrc.gform.models.{ EnvelopeId, FormTemplateId, RouteEnvelopeRequest }
+import uk.gov.hmrc.gform.time.TimeProvider
+import uk.gov.hmrc.gform.wshttp.WSHttp
 import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-class FileUploadConnector(config: Config, wSHttp: WSHttp, now: => LocalDateTime)(implicit ec: ExecutionContext) {
+class FileUploadConnector(config: Config, wSHttp: WSHttp, timeProvider: TimeProvider)(implicit ec: ExecutionContext) {
 
-  def createEnvelope(formTypeId: FormTypeId)(implicit hc: HeaderCarrier): Future[EnvelopeId] =
+  def createEnvelope(formTypeId: FormTemplateId)(implicit hc: HeaderCarrier): Future[EnvelopeId] =
     wSHttp
       .POST(s"$baseUrl/file-upload/envelopes", createEnvelopeIn(formTypeId))
       .map(extractEnvelopId)
+
+  def routeEnvelope(input: RouteEnvelopeRequest)(implicit hc: HeaderCarrier): Future[Unit] = {
+    wSHttp
+      .POST[RouteEnvelopeRequest, HttpResponse](s"$baseUrl/file-routing/requests", input)
+      .map(_ => ())
+  }
 
   /**
    * There must be Location header. If not this is exceptional situation!
@@ -45,9 +52,9 @@ class FileUploadConnector(config: Config, wSHttp: WSHttp, now: => LocalDateTime)
 
   private lazy val EnvelopeIdExtractor = "envelopes/([\\w\\d-]+)$".r.unanchored
   private val formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm:ss'Z'")
-  private def envelopeExpiryDate = now.plusDays(config.expiryDays).format(formatter)
+  private def envelopeExpiryDate = timeProvider.localDateTime().plusDays(config.expiryDays).format(formatter)
 
-  private def createEnvelopeIn(formTypeId: FormTypeId) = Json.obj(
+  private def createEnvelopeIn(formTypeId: FormTemplateId) = Json.obj(
     "constraints" -> Json.obj(
       "contentTypes" -> Json.arr(
         "application/pdf",

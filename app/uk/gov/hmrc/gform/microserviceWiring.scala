@@ -41,55 +41,39 @@ import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
 import uk.gov.hmrc.play.http.hooks.HttpHook
 import uk.gov.hmrc.play.http.ws._
 import uk.gov.hmrc.play.audit.http.HttpAuditing
-
-object WSHttp extends WSGet with WSPut with WSPost with WSDelete with HttpAuditing with AppName {
-  val auditConnector: AuditConnector = MicroserviceAuditConnector
-  override val hooks: Seq[HttpHook] = Seq(AuditingHook)
-}
-
-object FusFeUploadWS extends WSPost with HttpAuditing with AppName {
-
-  def doFormPartPost(
-    url: String,
-    fileName: String,
-    contentType: String,
-    body: ByteString,
-    headers: Seq[(String, String)]
-  )(
-    implicit
-    hc: HeaderCarrier,
-    rds: HttpReads[HttpResponse]
-  ): Future[HttpResponse] = {
-    val source = Source(FilePart(fileName, fileName, Some(contentType), Source.single(body)) :: Nil)
-    withTracing(POST_VERB, url) {
-      val httpResponse = buildRequest(url).withHeaders(headers: _*).post(source).map(new WSHttpResponse(_))
-      //executeHooks(url, POST_VERB, Option(Json.stringify(wts.writes(body))), httpResponse)
-      mapErrors(POST_VERB, url, httpResponse).map(rds.read(POST_VERB, url, _))
-    }
-  }
-  val auditConnector: AuditConnector = MicroserviceAuditConnector
-  override val hooks: Seq[HttpHook] = Seq.empty[HttpHook]
-}
-
-object MicroserviceAuditConnector extends AuditConnector {
-  override lazy val auditingConfig = LoadAuditingConfig(s"auditing")
-}
-
-object MicroserviceAuthConnector extends AuthConnector with ServicesConfig {
-  override val authBaseUrl = baseUrl("auth")
-}
-
-object MicroserviceShortLivedHttpCaching extends ShortLivedHttpCaching with AppName with ServicesConfig {
-  override lazy val http = WSHttp
-  override lazy val defaultSource = appName
-  override lazy val baseUri = baseUrl("save4later")
-  override lazy val domain = getConfString(
-    "save4later.domain",
-    throw new Exception(s"Could not find config 'save4later.domain'")
-  )
-}
-
-object MicroserviceShortLivedCache extends ShortLivedCache {
-  override implicit lazy val crypto = ApplicationCrypto.JsonCrypto
-  override lazy val shortLiveCache = MicroserviceShortLivedHttpCaching
-}
+//
+//object FusFeUploadWS extends WSPost with HttpAuditing with AppName {
+//
+//  def doFormPartPost(
+//    url: String,
+//    fileName: String,
+//    contentType: String,
+//    body: ByteString,
+//    headers: Seq[(String, String)]
+//  )(
+//    implicit
+//    hc: HeaderCarrier,
+//    rds: HttpReads[HttpResponse]
+//  ): Future[HttpResponse] = {
+//    val source = Source(FilePart(fileName, fileName, Some(contentType), Source.single(body)) :: Nil)
+//    withTracing(POST_VERB, url) {
+//      val httpResponse = buildRequest(url).withHeaders(headers: _*).post(source).map(new WSHttpResponse(_))
+//      //executeHooks(url, POST_VERB, Option(Json.stringify(wts.writes(body))), httpResponse)
+//      mapErrors(POST_VERB, url, httpResponse).map(rds.read(POST_VERB, url, _))
+//    }
+//  }
+//
+//  val auditConnector: AuditConnector = MicroserviceAuditConnector
+//  override val hooks: Seq[HttpHook] = Seq.empty[HttpHook]
+//}
+//
+//object MicroserviceShortLivedHttpCaching extends ShortLivedHttpCaching with AppName with ServicesConfig {
+//  override lazy val http = WSHttp
+//  override lazy val defaultSource = appName
+//  override lazy val baseUri = baseUrl("save4later")
+//  override lazy val domain = getConfString(
+//    "save4later.domain",
+//    throw new Exception(s"Could not find config 'save4later.domain'")
+//  )
+//}
+//

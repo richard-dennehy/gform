@@ -16,25 +16,24 @@
 
 package uk.gov.hmrc.gform.exceptions
 
-import play.api.mvc.Results.Ok
-import play.api.libs.json.{ Json, JsPath, JsValue }
-
-sealed trait UnexpectedState extends Product with Serializable {
-
-  private def toMessage(msg: String) = Json.obj("error" -> msg)
-
-  def jsonResponse: JsValue = this match {
-    case InvalidState(errorMsg) => toMessage(errorMsg)
-    case InvalidStateWithJson(errorMsg, json) => toMessage(errorMsg) + ("json" -> json)
-  }
-
-  def toResult = Ok(jsonResponse)
-
-  override def toString = this match {
-    case InvalidState(errorMsg) => errorMsg
-    case InvalidStateWithJson(errorMsg, json) => errorMsg + " " + Json.stringify(json)
-  }
-}
-
-case class InvalidState(errorMsg: String) extends UnexpectedState
-case class InvalidStateWithJson(errorMsg: String, json: JsValue) extends UnexpectedState
+case class UnexpectedState(error: String)
+//
+//sealed trait UnexpectedState {
+//
+//  private def toMessage(msg: String) = Json.obj("error" -> msg)
+//
+//  def asJson: JsObject = this match {
+//    case UnexpectedState(errorMsg) => toMessage(errorMsg)
+//    case UnexpectedStateWithJson(errorMsg, json) => toMessage(errorMsg) + ("json" -> json)
+//  }
+//
+//  def toResult = Ok(asJson)
+//
+//  override def toString = this match {
+//    case UnexpectedState(errorMsg) => errorMsg
+//    case UnexpectedStateWithJson(errorMsg, json) => errorMsg + " " + Json.stringify(json)
+//  }
+//}
+//
+//case class UnexpectedState(errorMsg: String) extends UnexpectedState
+//case class UnexpectedStateWithJson(errorMsg: String, json: JsValue) extends UnexpectedState

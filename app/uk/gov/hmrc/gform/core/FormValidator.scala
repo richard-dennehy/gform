@@ -21,7 +21,7 @@ import cats.instances.list._
 import cats.syntax.either._
 import cats.syntax.traverse._
 import play.api.libs.json._
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.services.RepeatingComponentService
 
@@ -35,13 +35,15 @@ object FormValidator {
 
     res match {
       case JsSuccess(success, _) => Right(success)
-      case JsError(error) => Left(InvalidState(s"""|Error when reading 'FormField' class:
+      case JsError(error) => Left(UnexpectedState(s"""|Error when reading 'FormField' class:
                                                    |Error: $error
                                                    |Input json: """.stripMargin + Json.prettyPrint(json)))
     }
   }
 
-  def validate(formFields: List[FormField], section: Section): Opt[Unit] = {
+  //TODO: aggregate for error messages, something which can
+  //say which field, section etc was wrong. No UnexpectedState!
+  def validate(formFields: List[FormField], section: Section): Either[UnexpectedState, Unit] = {
 
     val ffSet = formFields.filterNot(_.value.isEmpty()).map(_.id).toSet
 
@@ -85,14 +87,14 @@ object FormValidator {
     val requirementCheck: Opt[Unit] = if (missingRequiredFields.isEmpty) {
       Right(())
     } else {
-      Left(InvalidState(s"Required fields ${missingRequiredFields.mkString(",")} are missing in form submission."))
+      Left(UnexpectedState(s"Required fields ${missingRequiredFields.mkString(",")} are missing in form submission."))
     }
 
     val formFieldWithFieldValues: List[Opt[(FormField, FieldValue)]] =
       formFields.map { formField =>
         RepeatingComponentService.findTemplateFieldId(templateFieldsMap, formField.id) match {
           case Some(templateField) => Right((formField, templateField))
-          case None => Left(InvalidState(s"Field ${formField.id} is not part of the template"))
+          case None => Left(UnexpectedState(s"Field ${formField.id} is not part of the template"))
         }
       }
 

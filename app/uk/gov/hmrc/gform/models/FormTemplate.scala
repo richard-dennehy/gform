@@ -16,21 +16,47 @@
 
 package uk.gov.hmrc.gform.models
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.json.{ JsObject, JsValue, Json, OFormat }
+import uk.gov.hmrc.gform.core.{ JsonSchema, Opt, SchemaValidator }
+import cats.data._
+import cats.implicits._
+import play.api.http.Writeable
+
+import scala.util.Try
 
 case class FormTemplate(
-  schemaId: Option[String],
-  formTypeId: FormTypeId,
-  formName: String,
-  version: Version,
-  description: String,
-  characterSet: String,
-  dmsSubmission: DmsSubmission,
-  submitSuccessUrl: String,
-  submitErrorUrl: String,
-  sections: List[Section]
-)
+    _id: FormTemplateId,
+    formName: String,
+    description: String,
+    characterSet: String,
+    dmsSubmission: DmsSubmission,
+    submitSuccessUrl: String,
+    submitErrorUrl: String,
+    sections: List[Section]
+) {
+
+  def section(sectionNumber: SectionNumber): Option[Section] = Try(sections(sectionNumber.value)).map(Some(_)).getOrElse(None)
+}
 
 object FormTemplate {
   implicit val format: OFormat[FormTemplate] = Json.format[FormTemplate]
+}
+
+case class FormTemplateSchema(value: JsObject)
+
+object FormTemplateSchema {
+
+  val schema: FormTemplateSchema = {
+    val json: JsObject = Json.parse(
+      getClass.getResourceAsStream("formTemplateSchema.json")
+    ).as[JsObject]
+    FormTemplateSchema(json)
+  }
+
+  val jsonSchema: JsonSchema = SchemaValidator.conform(schema).fold(
+    _ => throw new UnsupportedOperationException("Looks like we have currupted schema file: formTemplateSchema.json"),
+    identity
+  )
+
+  implicit val format: OFormat[FormTemplateSchema] = Json.format[FormTemplateSchema]
 }

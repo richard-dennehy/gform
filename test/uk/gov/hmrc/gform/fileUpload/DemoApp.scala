@@ -16,11 +16,11 @@
 
 package uk.gov.hmrc.gform.fileUpload
 
-import java.nio.file.{ Files, Paths }
+import java.nio.file.{Files, Paths}
 
 import akka.util.ByteString
-import uk.gov.hmrc.gform.models.FormTypeId
-import uk.gov.hmrc.gform.time.TimeModule
+import uk.gov.hmrc.gform.models.{FileId, FormTemplateId}
+import uk.gov.hmrc.gform.time.TimeProvider
 import uk.gov.hmrc.gform.wshttp.TestWSHttp
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -41,8 +41,8 @@ object DemoApp extends App {
 
   val http = TestWSHttp
 
-  val time = new TimeModule {}
-  val fu = new FileUploadConnector(config, http, time.localDateTime())
+  val timeProvider = new TimeProvider {}
+  val fu = new FileUploadConnector(config, http, timeProvider)
   val fuf = new FileUploadFrontendConnector(config, http)
 
   val fileBytes = Files.readAllBytes(Paths.get("README.md"))
@@ -51,8 +51,8 @@ object DemoApp extends App {
 
   val result = for {
   // format: OFF
-    envelopeId <- fu.createEnvelope(FormTypeId("testFormTypeId"))
-    _          <- fuf.upload(envelopeId, FileId("README.md"), fileBody, ContentType.`text/plain`)
+    envelopeId <- fu.createEnvelope(FormTemplateId("testFormTypeId"))
+    _          <- fuf.upload(envelopeId, FileId("README.md"), "README.md", fileBody, ContentType.`text/plain`)
 
     x = println(s"envelope created: $envelopeId")
     _ = println(s"file uploaded: $envelopeId")

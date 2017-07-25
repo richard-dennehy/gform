@@ -18,13 +18,12 @@ package uk.gov.hmrc.gform.binders
 
 import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
-import uk.gov.hmrc.gform.models.{ FormId, FormTypeId, UserId, Version }
+import uk.gov.hmrc.gform.models.{ FormId, FormTemplateId, UserId }
 
 object ValueClassBinder {
 
-  implicit val formTypeIdBinder: PathBindable[FormTypeId] = valueClassBinder(_.value)
+  implicit val formTypeIdBinder: PathBindable[FormTemplateId] = valueClassBinder(_.value)
   implicit val formIdBinder: PathBindable[FormId] = valueClassBinder(_.value)
-  implicit val versionBinder: PathBindable[Version] = valueClassBinder(_.value)
   implicit val userIdBinder: PathBindable[UserId] = valueClassBinder(_.value)
 
   def valueClassBinder[A: Reads](fromAtoString: A => String)(implicit stringBinder: PathBindable[String]) = {

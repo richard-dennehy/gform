@@ -278,7 +278,7 @@ class TemplateValidatorSpec extends Spec {
 
     val res =
       for {
-        schemaRes <- SchemaValidator.conform(Json.parse(schema).as[Schema])
+        schemaRes <- SchemaValidator.conform(Json.parse(schema).as[FormTemplateSchema])
         tr <- schemaRes.conform(Json.parse(template)).toEither
       } yield tr
 
@@ -358,7 +358,7 @@ class TemplateValidatorSpec extends Spec {
 
     val res =
       for {
-        schemaRes <- SchemaValidator.conform(Json.parse(schema).as[Schema])
+        schemaRes <- SchemaValidator.conform(Json.parse(schema).as[FormTemplateSchema])
         tr <- schemaRes.conform(Json.parse(template)).toEither
       } yield tr
 

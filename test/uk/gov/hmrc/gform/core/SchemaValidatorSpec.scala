@@ -18,8 +18,8 @@ package uk.gov.hmrc.gform.core
 
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.exceptions.InvalidStateWithJson
-import uk.gov.hmrc.gform.models.Schema
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.models.FormTemplateSchema
 
 class SchemaValidatorSpec extends Spec {
 
@@ -38,18 +38,18 @@ class SchemaValidatorSpec extends Spec {
          |  ]
          |}""".stripMargin
 
-    val res = SchemaValidator.conform(Json.parse(input).as[Schema])
+    val res = SchemaValidator.conform(Json.parse(input).as[FormTemplateSchema])
     res.right.value should be(SObject(List(Item("formTypeId", SString)), List("formTypeId")))
   }
 
   it should "fail for json not containing 'type' fieldName" in {
-    val res = SchemaValidator.conform(Schema(Json.obj()))
-    res.left.value should be(InvalidStateWithJson("No 'type' fieldName found in json", Json.obj()))
+    val res = SchemaValidator.conform(FormTemplateSchema(Json.obj()))
+    res.left.value should be(UnexpectedState("No 'type' fieldName found in json"))
   }
 
   it should "fail when 'type' fieldName is not a String" in {
-    val res = SchemaValidator.conform(Schema(Json.obj("type" -> 1)))
-    res.left.value should be(InvalidStateWithJson("Expected 'type' to be one of 4 strings in json", Json.obj("type" -> 1)))
+    val res = SchemaValidator.conform(FormTemplateSchema(Json.obj("type" -> 1)))
+    res.left.value should be(UnexpectedState("Expected 'type' to be one of 4 strings in json"))
   }
 
   it should "read list of SSobject" in {
@@ -69,7 +69,7 @@ class SchemaValidatorSpec extends Spec {
          |  ]
          |}""".stripMargin
 
-    val res = SchemaValidator.conform(Json.parse(input).as[Schema])
+    val res = SchemaValidator.conform(Json.parse(input).as[FormTemplateSchema])
     res.right.value should be(SObject(List(Item("formTypeId", SString), Item("archived", SBoolean)), List("formTypeId")))
   }
 
@@ -162,7 +162,7 @@ class SchemaValidatorSpec extends Spec {
          |   ]
          |}""".stripMargin
 
-    val res = SchemaValidator.conform(Json.parse(input).as[Schema])
+    val res = SchemaValidator.conform(Json.parse(input).as[FormTemplateSchema])
 
     res.right.value should be(
       SObject(

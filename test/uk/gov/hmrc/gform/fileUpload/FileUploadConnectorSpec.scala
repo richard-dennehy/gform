@@ -17,10 +17,10 @@
 package uk.gov.hmrc.gform
 package fileUpload
 
-import uk.gov.hmrc.gform.models.FormTypeId
-import uk.gov.hmrc.gform.time.FrozenTime
+import uk.gov.hmrc.gform.models.{EnvelopeId, FormTemplateId}
+import uk.gov.hmrc.gform.time.FrozenTimeProvider
 import uk.gov.hmrc.gform.wshttp.StubbedWSHttp
-import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
+import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse}
 
 class FileUploadConnectorSpec extends Spec {
 
@@ -78,9 +78,10 @@ class FileUploadConnectorSpec extends Spec {
     )
     lazy val wSHttp = new StubbedWSHttp(r)
     lazy val config = Config("http://fileupload.whatever", "http://fileuploadfrontend.whatever", 30, "20MB", "5MB", 3)
-    lazy val fileUploadConnector = new FileUploadConnector(config, wSHttp, FrozenTime.frozenPoint)
+
+    lazy val fileUploadConnector = new FileUploadConnector(config, wSHttp, FrozenTimeProvider.exampleInstance)
     implicit lazy val hc: HeaderCarrier = HeaderCarrier()
-    lazy val formTypeId = FormTypeId("FormId-13-2-3-1233-3")
+    lazy val formTypeId = FormTemplateId("FormId-13-2-3-1233-3")
   }
 
 }
