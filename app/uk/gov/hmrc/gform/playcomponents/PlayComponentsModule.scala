@@ -28,6 +28,7 @@ import uk.gov.hmrc.gform.form.FormModule
 import uk.gov.hmrc.gform.formtemplate.FormTemplateModule
 import uk.gov.hmrc.gform.metrics.MetricsModule
 import uk.gov.hmrc.gform.testonly.TestOnlyModule
+import uk.gov.hmrc.gform.wshttp.WSHttpModule
 import uk.gov.hmrc.play.audit.filters.AuditFilter
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.auth.controllers.AuthParamsControllerConfig
@@ -71,11 +72,12 @@ class PlayComponentsModule(
     testOnlyModule.testOnlyController
   )
 
-  //must be lazy becouse other's depend on it
+  val adminController = new AdminController(configModule.playConfiguration)
+
   lazy val routerVal: Router = new prod.Routes(
     errorHandler,
     appRoutes,
-    //    health.Routes,
+    adminController,
     metricsModule.metricsController
   )
 

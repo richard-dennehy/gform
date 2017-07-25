@@ -16,12 +16,21 @@
 
 package uk.gov.hmrc.gform.playcomponents
 
-import play.api.{ ApplicationLoader, BuiltInComponents }
+import akka.stream.Materializer
+import play.api.inject.ApplicationLifecycle
+import play.api.libs.ws.ahc.AhcWSComponents
+import play.api.{ ApplicationLoader, BuiltInComponents, Configuration, Environment }
 
-/**
- * Wrapper for few items provided by play!.
- */
 class PlayComponents(
-  val context: ApplicationLoader.Context,
-  val builtInComponents: BuiltInComponents
-)
+    val context: ApplicationLoader.Context,
+    val builtInComponents: BuiltInComponents
+) {
+
+  val ahcWSComponents: AhcWSComponents = new AhcWSComponents {
+    override def environment: Environment = context.environment
+    override def configuration: Configuration = context.initialConfiguration
+    override def applicationLifecycle: ApplicationLifecycle = context.lifecycle
+    override def materializer: Materializer = builtInComponents.materializer
+  }
+
+}

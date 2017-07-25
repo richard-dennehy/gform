@@ -20,6 +20,8 @@ import play.api.ApplicationLoader.Context
 import play.api._
 import play.api.http._
 import play.api.i18n.I18nComponents
+import play.api.inject.{ Injector, SimpleInjector }
+import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import uk.gov.hmrc.gform.akka.AkkaModule
@@ -38,6 +40,7 @@ import uk.gov.hmrc.gform.submission.SubmissionModule
 import uk.gov.hmrc.gform.testonly.TestOnlyModule
 import uk.gov.hmrc.gform.time.{ TimeModule, TimeProvider }
 import uk.gov.hmrc.gform.wshttp.WSHttpModule
+import uk.gov.hmrc.play.health.AdminController
 
 class ApplicationLoader extends play.api.ApplicationLoader {
   def load(context: Context) = {
@@ -49,19 +52,17 @@ class ApplicationLoader extends play.api.ApplicationLoader {
 }
 
 class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(context)
-    //  with AhcWSComponents
     with I18nComponents { self =>
 
   Logger.info(s"Starting microservice GFORM}")
-  private val akkaModule = new AkkaModule(
-    materializer,
-    actorSystem
-  )
+
+  private val akkaModule = new AkkaModule(materializer, actorSystem)
   private val playComponents = new PlayComponents(context, self)
   private val metricsModule = new MetricsModule(playComponents, akkaModule)
   private val configModule = new ConfigModule(playComponents)
-  private val auditingModule = new AuditingModule(configModule, akkaModule)
-  val wSHttpModule = new WSHttpModule(auditingModule, configModule)
+  private val auditingModule = new AuditingModule(configModule, akkaModule, playComponents)
+  private val wSHttpModule = new WSHttpModule(auditingModule, configModule)
+
   private val timeModule = new TimeModule
   private val fileUploadModule = new FileUploadModule(configModule, wSHttpModule, timeModule)
   private val mongoModule = new MongoModule(playComponents)

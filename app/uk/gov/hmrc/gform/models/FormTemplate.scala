@@ -48,13 +48,13 @@ object FormTemplateSchema {
 
   val schema: FormTemplateSchema = {
     val json: JsObject = Json.parse(
-      getClass.getResourceAsStream("formTemplateSchema.json")
+      getClass.getResourceAsStream("/formTemplateSchema.json")
     ).as[JsObject]
     FormTemplateSchema(json)
   }
 
   val jsonSchema: JsonSchema = SchemaValidator.conform(schema).fold(
-    _ => throw new UnsupportedOperationException("Looks like we have currupted schema file: formTemplateSchema.json"),
+    _ => throw new UnsupportedOperationException("Looks like we have corrupted schema file: formTemplateSchema.json"),
     identity
   )
 
