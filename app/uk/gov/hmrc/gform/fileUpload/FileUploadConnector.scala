@@ -27,8 +27,9 @@ import uk.gov.hmrc.gform.wshttp.WSHttp
 import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext.Implicits.global
 
-class FileUploadConnector(config: Config, wSHttp: WSHttp, timeProvider: TimeProvider)(implicit ec: ExecutionContext) {
+class FileUploadConnector(config: Config, wSHttp: WSHttp, timeProvider: TimeProvider) {
 
   def createEnvelope(formTypeId: FormTemplateId)(implicit hc: HeaderCarrier): Future[EnvelopeId] =
     wSHttp

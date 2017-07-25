@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.gform.controllers
 
+import java.util.UUID
+
 import cats.data.EitherT
 import cats.implicits._
 import play.api.libs.json._
@@ -39,7 +41,7 @@ class BaseController extends uk.gov.hmrc.play.microservice.controller.BaseContro
 
 }
 
-case class ErrorResponse(errorMessage: String)
+case class ErrorResponse(errorMessage: String, occurrenceId: String = UUID.randomUUID().toString)
 
 object ErrorResponse {
   implicit val format: OFormat[ErrorResponse] = Json.format[ErrorResponse]

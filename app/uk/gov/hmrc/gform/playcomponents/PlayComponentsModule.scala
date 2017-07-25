@@ -19,78 +19,91 @@ package uk.gov.hmrc.gform.playcomponents
 import akka.stream.Materializer
 import com.kenshoo.play.metrics.{ MetricsController, MetricsFilter, MetricsFilterImpl, MetricsImpl }
 import play.api.mvc.EssentialFilter
+import play.api.routing.Router
 import uk.gov.hmrc.gform.ApplicationModule
+import uk.gov.hmrc.gform.akka.AkkaModule
 import uk.gov.hmrc.gform.auditing.AuditingModule
 import uk.gov.hmrc.gform.config.ConfigModule
+import uk.gov.hmrc.gform.form.FormModule
+import uk.gov.hmrc.gform.formtemplate.FormTemplateModule
+import uk.gov.hmrc.gform.metrics.MetricsModule
+import uk.gov.hmrc.gform.testonly.TestOnlyModule
 import uk.gov.hmrc.play.audit.filters.AuditFilter
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.auth.controllers.AuthParamsControllerConfig
 import uk.gov.hmrc.play.auth.microservice.connectors.AuthConnector
 import uk.gov.hmrc.play.auth.microservice.filters.AuthorisationFilter
 import uk.gov.hmrc.play.filters.{ NoCacheFilter, RecoveryFilter }
+import uk.gov.hmrc.play.health.AdminController
 import uk.gov.hmrc.play.http.logging.filters.LoggingFilter
 
 class PlayComponentsModule(
-    applicationModule: ApplicationModule,
+    playComponents: PlayComponents,
+    akkaModule: AkkaModule,
     configModule: ConfigModule,
-    auditingModule: AuditingModule
+    auditingModule: AuditingModule,
+    metricsModule: MetricsModule,
+    formModule: FormModule,
+    formTemplateModule: FormTemplateModule,
+    testOnlyModule: TestOnlyModule
 ) {
 
-  // Don't use uk.gov.hmrc.play.graphite.GraphiteMetricsImpl as it won't allow hot reload due to overridden onStop() method
-  val metrics = new MetricsImpl(
-    applicationModule.applicationLifecycle,
-    applicationModule.configuration
-  )
-
-  val metricsFilter: MetricsFilter = new MetricsFilterImpl(metrics)(applicationModule.materializer)
-
-  val metricsController = new MetricsController(metrics)
-
-  val microserviceAuditFilter = new AuditFilter {
-    override val appName: String = configModule.appConfig.appName
-    override def mat: Materializer = applicationModule.materializer
-    override val auditConnector: AuditConnector = auditingModule.auditConnector
-    override def controllerNeedsAuditing(controllerName: String): Boolean = configModule.controllerConfig.paramsForController(controllerName).needsAuditing
-  }
-
-  val loggingFilter = new LoggingFilter {
-    override def mat: Materializer = applicationModule.materializer
+  lazy val loggingFilter = new LoggingFilter {
+    override def mat: Materializer = akkaModule.materializer
     override def controllerNeedsLogging(controllerName: String): Boolean = configModule.controllerConfig.paramsForController(controllerName).needsLogging
   }
 
-  val microserviceAuthConnector = new AuthConnector {
+  lazy val microserviceAuthConnector = new AuthConnector {
     override def authBaseUrl: String = configModule.serviceConfig.baseUrl("auth")
   }
 
-  val authFilter = new AuthorisationFilter {
-    override def mat: Materializer = applicationModule.materializer
+  lazy val authFilter = new AuthorisationFilter {
+    override def mat: Materializer = akkaModule.materializer
     override lazy val authParamsConfig: AuthParamsControllerConfig = configModule.authParamsControllerConfig
     override lazy val authConnector: AuthConnector = microserviceAuthConnector
     override def controllerNeedsAuth(controllerName: String): Boolean = configModule.controllerConfig.paramsForController(controllerName).needsAuth
   }
 
-  lazy val errorHandling = new CustomErrorHandling(
-    auditingModule.auditConnector,
-    configModule.appConfig.appName,
-    applicationModule.environment,
-    applicationModule.configuration,
-    applicationModule.sourceMapper,
-    Some(applicationModule.router)
+  lazy val appRoutes = new app.Routes(
+    errorHandler,
+    formModule.formController,
+    formTemplateModule.formTemplatesController,
+    testOnlyModule.testOnlyController
   )
 
-  val httpFilters: Seq[EssentialFilter] = Seq(
-    metricsFilter,
-    microserviceAuditFilter,
+  //must be lazy becouse other's depend on it
+  lazy val routerVal: Router = new prod.Routes(
+    errorHandler,
+    appRoutes,
+    //    health.Routes,
+    metricsModule.metricsController
+  )
+
+  def router: Router = routerVal
+
+  private lazy val someRouter = Some(router)
+
+  lazy val errorHandler = new ErrorHandler(
+    playComponents.context.environment,
+    playComponents.context.initialConfiguration,
+    playComponents.context.sourceMapper,
+    router
+  )
+
+  lazy val httpFilters: Seq[EssentialFilter] = Seq(
+    metricsModule.metricsFilter,
+    auditingModule.microserviceAuditFilter,
     loggingFilter,
-    authFilter,
+    //    authFilter, it thorws exception instead of working ...
     NoCacheFilter,
     RecoveryFilter
   )
 
-  val httpRequestHandler = new CustomHttpRequestHandler(
-    applicationModule.router,
-    errorHandling,
-    applicationModule.httpConfiguration,
-    applicationModule.httpFilters
+  lazy val httpRequestHandler = new CustomHttpRequestHandler(
+    router,
+    errorHandler,
+    playComponents.builtInComponents.httpConfiguration,
+    httpFilters
   )
+
 }

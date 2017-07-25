@@ -24,7 +24,7 @@ object MicroServiceBuild extends Build with MicroService {
   val playJsonLoggerVersion = "3.1.0"
 
   val catsVersion = "0.9.0"
-  val playAuditing = "2.9.0"
+  val playAuditing = "2.1.0"
   val pdfboxVersion = "2.0.6"
   val spdfVersion = "1.4.0"
   val shapelessVersion = "2.3.2"

@@ -90,7 +90,8 @@ class FormController(
     //      error => NotFound,
     //      response => Ok(Json.toJson(response))
     //    )
-    ???
+    //    ???
+    Future.successful(Ok("jajaj"))
   }
 
   def testEndPoint(formId: FormId) = Action.async { implicit request =>

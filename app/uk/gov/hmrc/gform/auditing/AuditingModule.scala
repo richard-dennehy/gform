@@ -16,15 +16,19 @@
 
 package uk.gov.hmrc.gform.auditing
 
+import akka.stream.Materializer
+import uk.gov.hmrc.gform.akka.AkkaModule
 import uk.gov.hmrc.gform.config.ConfigModule
+import uk.gov.hmrc.play.audit.filters.AuditFilter
 import uk.gov.hmrc.play.audit.http.HttpAuditing
 import uk.gov.hmrc.play.audit.http.config.{ AuditingConfig, LoadAuditingConfig }
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 import uk.gov.hmrc.play.http.hooks.HttpHook
 
-class AuditingModule(configModule: ConfigModule) { self =>
+class AuditingModule(configModule: ConfigModule, akkaModule: AkkaModule) { self =>
 
   lazy val auditConnector: AuditConnector = new AuditConnector {
+
     //WARN: LoadAuditingConfig uses play deprecations.
     //Thus you can not instantiate this class if play application is not running
     override def auditingConfig: AuditingConfig = LoadAuditingConfig(s"auditing")
@@ -36,4 +40,11 @@ class AuditingModule(configModule: ConfigModule) { self =>
   }
 
   lazy val httpAuditingHook: HttpHook = httpAuditing.AuditingHook
+
+  lazy val microserviceAuditFilter = new AuditFilter {
+    override val appName: String = configModule.appConfig.appName
+    override def mat: Materializer = akkaModule.materializer
+    override val auditConnector: AuditConnector = self.auditConnector
+    override def controllerNeedsAuditing(controllerName: String): Boolean = configModule.controllerConfig.paramsForController(controllerName).needsAuditing
+  }
 }

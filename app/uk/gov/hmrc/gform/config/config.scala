@@ -16,30 +16,33 @@
 
 package uk.gov.hmrc.gform.config
 
-import java.io.File
-
-import net.ceedubs.ficus.Ficus._
-import akka.actor.ActorSystem
-import akka.stream.Materializer
 import com.typesafe.config.{ ConfigFactory, Config => TypeSafeConfig }
+import net.ceedubs.ficus.Ficus._
 import play.api.Mode.Mode
-import play.api.http.{ HttpErrorHandler, HttpRequestHandler }
-import play.api.{ Application, Configuration }
+import play.api.{ ApplicationLoader, Configuration }
 import pureconfig._
-import uk.gov.hmrc.gform.ApplicationModule
+import uk.gov.hmrc.gform.playcomponents.PlayComponents
+import uk.gov.hmrc.gform.{ ApplicationLoader, ApplicationModule }
 import uk.gov.hmrc.play.auth.controllers.AuthParamsControllerConfig
 import uk.gov.hmrc.play.config.{ ControllerConfig, ServicesConfig }
 
-import scala.concurrent.Future
+class ConfigModule(playComponents: PlayComponents) {
 
-class ConfigModule(applicationModule: ApplicationModule) {
+  val typesafeConfig: TypeSafeConfig = ConfigFactory.load()
 
-  val typesafeConfig = ConfigFactory.load()
   val appConfig: AppConfig = AppConfig.loadOrThrow(typesafeConfig)
-  val serviceConfig: ServicesConfig = new ServicesConfig {}
-  val playConfiguration = applicationModule.configuration
 
-  val controllerConfig = new ControllerConfig {
+  val playConfiguration: Configuration = playComponents.context.initialConfiguration
+
+  val serviceConfig: ServicesConfig = new ServicesConfig {
+    //watch out!
+    // ServicesConfig requires running play application so if we don't override these
+    // we will experience 'Caused by: java.lang.RuntimeException: There is no started application'
+    override protected def runModeConfiguration: Configuration = playConfiguration
+    override protected def mode: Mode = playComponents.context.environment.mode
+  }
+
+  val controllerConfig: ControllerConfig = new ControllerConfig {
     lazy val controllerConfigs = typesafeConfig.as[TypeSafeConfig]("controllers")
   }
 
