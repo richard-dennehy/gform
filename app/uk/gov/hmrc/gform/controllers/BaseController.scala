@@ -41,8 +41,8 @@ class BaseController extends uk.gov.hmrc.play.microservice.controller.BaseContro
 
 }
 
-case class ErrorResponse(errorMessage: String, occurrenceId: String = UUID.randomUUID().toString)
+case class ErrResponse(error: String, details: Option[JsValue] = None, occurrenceId: String = UUID.randomUUID().toString)
 
-object ErrorResponse {
-  implicit val format: OFormat[ErrorResponse] = Json.format[ErrorResponse]
+object ErrResponse {
+  implicit val format: OFormat[ErrResponse] = Json.format[ErrResponse]
 }
