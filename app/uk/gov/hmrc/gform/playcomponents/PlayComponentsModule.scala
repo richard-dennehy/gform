@@ -74,22 +74,17 @@ class PlayComponentsModule(
 
   val adminController = new AdminController(configModule.playConfiguration)
 
-  lazy val routerVal: Router = new prod.Routes(
+  def router: Router = new prod.Routes(
     errorHandler,
     appRoutes,
     adminController,
     metricsModule.metricsController
   )
 
-  def router: Router = routerVal
-
-  private lazy val someRouter = Some(router)
-
   lazy val errorHandler = new ErrorHandler(
     playComponents.context.environment,
     playComponents.context.initialConfiguration,
-    playComponents.context.sourceMapper,
-    router
+    playComponents.context.sourceMapper
   )
 
   lazy val httpFilters: Seq[EssentialFilter] = Seq(

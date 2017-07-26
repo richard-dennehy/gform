@@ -16,19 +16,24 @@
 
 package uk.gov.hmrc.gform.wshttp
 
+import java.net.URL
+
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
+import play.api.Play
 import play.api.http.HttpVerbs.{ POST => POST_VERB }
+import play.api.libs.ws.{ WS, WSAPI, WSRequest }
 import play.api.mvc.MultipartFormData.FilePart
+import uk.gov.hmrc.play.config.AppName
 import uk.gov.hmrc.play.http.hooks.HttpHook
 import uk.gov.hmrc.play.http.ws.WSHttpResponse
 import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpReads }
 
 import scala.concurrent.Future
 
-class WSHttp extends uk.gov.hmrc.play.http.ws.WSHttp {
+class WSHttp(httpHooks: Seq[HttpHook] = Nil) extends uk.gov.hmrc.play.http.ws.WSHttp {
 
-  override val hooks: Seq[HttpHook] = Nil
+  override val hooks: Seq[HttpHook] = httpHooks
 
   //TODO: body should be type of Stream not ByteString (do we want to blow up if few people will submit forms at the same time?)
   def POSTFile[O](

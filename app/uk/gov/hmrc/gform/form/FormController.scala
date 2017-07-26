@@ -16,16 +16,15 @@
 
 package uk.gov.hmrc.gform.form
 
-import cats.implicits._
-import play.api.libs.json.Json
+import play.api.libs.json.{ JsValue, Json }
 import play.api.mvc.{ Action, AnyContent, RequestHeader }
+import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.fileUpload.FileUploadConnector
 import uk.gov.hmrc.gform.formtemplate.{ FormTemplateRepo, FormTemplateService }
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.save4later.Save4Later
 import uk.gov.hmrc.gform.submission.SubmissionRepo
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
-import uk.gov.hmrc.play.microservice.controller.BaseController
 
 import scala.concurrent.Future
 
@@ -86,12 +85,12 @@ class FormController(
   }
 
   def get(formId: FormId) = Action.async { implicit request =>
-    //    FormService.get(formId).fold(
-    //      error => NotFound,
-    //      response => Ok(Json.toJson(response))
-    //    )
-    //    ???
-    Future.successful(Ok("jajaj"))
+    //TODO authorisation
+    //TODO authentication
+
+    formService
+      .get(formId)
+      .asOkJson
   }
 
   def testEndPoint(formId: FormId) = Action.async { implicit request =>

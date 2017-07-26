@@ -61,7 +61,7 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
   private val metricsModule = new MetricsModule(playComponents, akkaModule)
   private val configModule = new ConfigModule(playComponents)
   private val auditingModule = new AuditingModule(configModule, akkaModule, playComponents)
-  private val wSHttpModule = new WSHttpModule(auditingModule, configModule)
+  private val wSHttpModule = new WSHttpModule(auditingModule, configModule, playComponents)
 
   private val timeModule = new TimeModule
   private val fileUploadModule = new FileUploadModule(configModule, wSHttpModule, timeModule)
@@ -79,7 +79,19 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
   override lazy val httpErrorHandler: HttpErrorHandler = playComponentsModule.errorHandler
   override lazy val httpRequestHandler: HttpRequestHandler = playComponentsModule.httpRequestHandler
   override lazy val httpFilters: Seq[EssentialFilter] = playComponentsModule.httpFilters
+
   override def router: Router = playComponentsModule.router
 
+  override lazy val injector: Injector = new SimpleInjector(super.injector) + playComponents.ahcWSComponents.wsApi
+
   Logger.info(s"Microservice GFORM started in mode ${environment.mode} at port ${application.configuration.getString("http.port")}")
+}
+
+object ApplicationModuleHelper {
+
+  def tweak(applicationModule: ApplicationModule): Unit = {
+
+    // Since core libraries are using deprecated play.api.libs.ws.WS we need to add wsApi into injector
+
+  }
 }

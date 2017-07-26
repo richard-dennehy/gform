@@ -36,7 +36,7 @@ class Save4Later(cache: ShortLivedCache, ex: ExecutionContext) {
   def get(formId: FormId)(implicit hc: HeaderCarrier): Future[Form] =
     find(formId) map {
       //use the same API as using WSHTTP
-      case None => throw new NotFoundException(s"not fond form for id: $formId")
+      case None => throw new NotFoundException(s"Could not find form for given id: $formId")
       case Some(form) => form
     }
 

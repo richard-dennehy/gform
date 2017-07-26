@@ -28,6 +28,15 @@ import scala.concurrent.Future
 
 class BaseController extends uk.gov.hmrc.play.microservice.controller.BaseController {
 
+  object O {
+    def asOkJson[T: Writes](t: T): Result = {
+      Ok(Json.toJson(t))
+    }
+  }
+  implicit class FutureOps[T: Writes](f: Future[T]) {
+    def asOkJson = f.map(t => O.asOkJson(t))
+  }
+
   type LeftResult[T] = EitherT[Future, Result, T]
 
   def asRes[T](fa: Future[T]): LeftResult[T] = EitherT[Future, Result, T](

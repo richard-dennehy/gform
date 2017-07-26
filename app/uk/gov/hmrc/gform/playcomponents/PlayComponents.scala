@@ -19,11 +19,11 @@ package uk.gov.hmrc.gform.playcomponents
 import akka.stream.Materializer
 import play.api.inject.ApplicationLifecycle
 import play.api.libs.ws.ahc.AhcWSComponents
-import play.api.{ ApplicationLoader, BuiltInComponents, Configuration, Environment }
+import play.api._
+import play.api.routing.Router
 
 class PlayComponents(
-    val context: ApplicationLoader.Context,
-    val builtInComponents: BuiltInComponents
+    val context: ApplicationLoader.Context
 ) {
 
   val ahcWSComponents: AhcWSComponents = new AhcWSComponents {
@@ -31,6 +31,10 @@ class PlayComponents(
     override def configuration: Configuration = context.initialConfiguration
     override def applicationLifecycle: ApplicationLifecycle = context.lifecycle
     override def materializer: Materializer = builtInComponents.materializer
+  }
+
+  val builtInComponents: BuiltInComponents = new BuiltInComponentsFromContext(context) {
+    override def router: Router = ???
   }
 
 }

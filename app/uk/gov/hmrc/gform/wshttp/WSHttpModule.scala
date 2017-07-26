@@ -16,29 +16,15 @@
 
 package uk.gov.hmrc.gform.wshttp
 
-import akka.stream.Materializer
-import akka.stream.scaladsl.Source
-import akka.util.ByteString
 import play.api.http.HttpVerbs.{ POST => POST_VERB }
-import play.api.libs.ws.WSRequest
-import play.api.mvc.MultipartFormData.FilePart
-import uk.gov.hmrc.gform.akka.AkkaModule
 import uk.gov.hmrc.gform.auditing.AuditingModule
 import uk.gov.hmrc.gform.config.ConfigModule
-import uk.gov.hmrc.play.audit.filters.AuditFilter
-import uk.gov.hmrc.play.audit.http.HttpAuditing
-import uk.gov.hmrc.play.audit.http.config.{ AuditingConfig, LoadAuditingConfig }
-import uk.gov.hmrc.play.audit.http.connector.AuditConnector
-import uk.gov.hmrc.play.http.hooks.HttpHook
-import uk.gov.hmrc.play.http.ws.WSHttpResponse
-import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpReads }
+import uk.gov.hmrc.gform.playcomponents.PlayComponents
 
-import scala.concurrent.Future
+class WSHttpModule(auditingModule: AuditingModule, configModule: ConfigModule, playComponents: PlayComponents) {
 
-class WSHttpModule(auditingModule: AuditingModule, configModule: ConfigModule) {
-
-  val auditableWSHttp: WSHttp = new WSHttp {
-    override val hooks: Seq[HttpHook] = Seq(auditingModule.httpAuditingHook)
-  }
+  val auditableWSHttp: WSHttp = new WSHttp(
+    httpHooks = Seq(auditingModule.httpAuditingHook)
+  )
 }
 

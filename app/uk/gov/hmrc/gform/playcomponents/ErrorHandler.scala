@@ -33,9 +33,8 @@ class ErrorHandler(
     //  val auditConnector: AuditConnector,
     environment: Environment,
     configuration: Configuration,
-    sourceMapper: Option[SourceMapper],
-    router: => Router //used to display better error messages in dev-mode
-) extends DefaultHttpErrorHandler(environment, configuration, sourceMapper, Some(router)) //  with JsonErrorHandling
+    sourceMapper: Option[SourceMapper]
+) extends DefaultHttpErrorHandler(environment, configuration, sourceMapper, None) //  with JsonErrorHandling
 //  with ErrorAuditingSettings
 // TODO: auditConnector.sendEvent(dataEvent(code, unexpectedError, request)
 {
