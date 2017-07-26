@@ -51,18 +51,6 @@ class FormController(
     formIdF.asOkJson
   }
 
-  def getByIdAndVersion(formTypeId: FormTemplateId) = Action.async { implicit request =>
-
-    //    FormService.getByIdAndVersion(formTypeId, version).fold(
-    //      error => error.toResult,
-    //      response => {
-    //        val links = response.map(formLink)
-    //        Ok(Json.toJson(links))
-    //      }
-    //    )
-    ???
-  }
-
   def get(formId: FormId) = Action.async { implicit request =>
     //TODO authentication
     //TODO authorisation
@@ -72,16 +60,24 @@ class FormController(
       .asOkJson
   }
 
-  def update(formId: FormId, tolerant: Option[Boolean]) = Action.async(parse.json[FormData]) { implicit request =>
-    //    val operation = tolerant match {
-    //      case Some(true) => UpdateTolerantOperation
-    //      case _ => UpdateOperation
-    //    }
-    //    FormService.updateFormData(formId, request.body).fold(
-    //      er => BadRequest(er.jsonResponse),
-    //      success => success.toResult
-    //    )
-    ???
+  def updateFormData(formId: FormId) = Action.async(parse.json[FormData]) { implicit request =>
+    //TODO: check form status. If after submission don't call this function
+    //TODO authentication
+    //TODO authorisation
+    //TODO do we need to split form data into sections and update only part of the form data related to section? It will
+
+    for {
+      _ <- formService.updateFormData(formId, request.body)
+    } yield NoContent
+
+  }
+
+  def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action { implicit request =>
+    //TODO: check form status. If after submission don't call this function
+    //TODO authentication
+    //TODO authorisation
+
+    NotImplemented
   }
 
   def submission(formId: FormId) = Action.async { implicit request =>
