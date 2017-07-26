@@ -18,11 +18,10 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json.{ Format, JsError, JsString, JsSuccess, Reads, Writes }
 
-case class FormTemplateId(value: String) extends AnyVal {
-  override def toString = value
-}
+case class FormTemplateId(value: String)
 
 object FormTemplateId {
+
   val writes = Writes[FormTemplateId](id => JsString(id.value))
   val reads = Reads[FormTemplateId] {
     case JsString(value) => JsSuccess(FormTemplateId(value))

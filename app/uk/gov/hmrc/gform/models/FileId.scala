@@ -16,6 +16,4 @@
 
 package uk.gov.hmrc.gform.models
 
-case class FileId(value: String) extends AnyVal {
-  override def toString = value
-}
+case class FileId(value: String)

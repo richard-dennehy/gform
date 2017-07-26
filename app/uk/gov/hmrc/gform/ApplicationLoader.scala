@@ -64,7 +64,6 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
   private val auditingModule = new AuditingModule(configModule, akkaModule, playComponents)
   private val wSHttpModule = new WSHttpModule(auditingModule, configModule, playComponents)
 
-
   private val timeModule = new TimeModule
   private val fileUploadModule = new FileUploadModule(configModule, wSHttpModule, timeModule)
   private val mongoModule = new MongoModule(playComponents)

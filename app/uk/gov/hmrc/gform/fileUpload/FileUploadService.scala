@@ -16,23 +16,18 @@
 
 package uk.gov.hmrc.gform.fileUpload
 
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import akka.util.ByteString
-import uk.gov.hmrc.gform.core.{ FOpt, fromFutureA }
-import uk.gov.hmrc.gform.fileUpload.FileUploadService.FileIds
 import uk.gov.hmrc.gform.fileUpload.FileUploadService.FileIds._
-import uk.gov.hmrc.gform.models
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.time.TimeProvider
-import uk.gov.hmrc.gform.typeclasses.Now
-import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
+import uk.gov.hmrc.play.http.HeaderCarrier
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class FileUploadService(fileUploadConnector: FileUploadConnector, fileUploadFrontendConnector: FileUploadFrontendConnector, timeModule: TimeProvider) {
+class FileUploadService(fileUploadConnector: FileUploadConnector, fileUploadFrontendConnector: FileUploadFrontendConnector, timeModule: TimeProvider = new TimeProvider) {
 
   def createEnvelope(formTypeId: FormTemplateId)(implicit hc: HeaderCarrier): Future[EnvelopeId] = fileUploadConnector.createEnvelope(formTypeId)
 

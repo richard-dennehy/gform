@@ -33,8 +33,13 @@ class BaseController extends uk.gov.hmrc.play.microservice.controller.BaseContro
       Ok(Json.toJson(t))
     }
   }
+
   implicit class FutureOps[T: Writes](f: Future[T]) {
     def asOkJson = f.map(t => O.asOkJson(t))
+  }
+
+  implicit class FutureOps2(f: Future[_]) {
+    def asNoContent = f.map(_ => NoContent)
   }
 
   type LeftResult[T] = EitherT[Future, Result, T]

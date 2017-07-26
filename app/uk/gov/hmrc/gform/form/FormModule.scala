@@ -35,11 +35,8 @@ class FormModule(
   val formService = new FormService(save4later, formTemplateModule.formTemplateService)
 
   val formController: FormController = new FormController(
-    save4later,
-    formTemplateModule.formTemplateRepo,
     formTemplateModule.formTemplateService,
-    submissionModule.submissionRepo,
-    fileUploadModule.fileUploadConnector,
+    fileUploadModule.fileUploadService,
     formService
   )
 

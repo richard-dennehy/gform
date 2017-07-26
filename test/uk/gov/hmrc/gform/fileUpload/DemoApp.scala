@@ -35,7 +35,7 @@ object DemoApp extends App {
     fileUploadFrontendBaseUrl = "http://localhost:8899",
     expiryDays = 30,
     maxSize = "20MB",
-    maxSizePerItem = "5MB",
+    maxSizePerItem = "10MB",
     maxItems = 3
   )
 
@@ -44,6 +44,7 @@ object DemoApp extends App {
   val timeProvider = new TimeProvider {}
   val fu = new FileUploadConnector(config, http, timeProvider)
   val fuf = new FileUploadFrontendConnector(config, http)
+  val fileUploadService = new FileUploadService(fu, fuf)
 
   val fileBytes = Files.readAllBytes(Paths.get("README.md"))
   val fileBody = ByteString.fromArray(fileBytes)
@@ -51,7 +52,7 @@ object DemoApp extends App {
 
   val result = for {
   // format: OFF
-    envelopeId <- fu.createEnvelope(FormTemplateId("testFormTypeId"))
+    envelopeId <- fileUploadService.createEnvelope(FormTemplateId("testFormTypeId"))
     _          <- fuf.upload(envelopeId, FileId("README.md"), "README.md", fileBody, ContentType.`text/plain`)
 
     x = println(s"envelope created: $envelopeId")
