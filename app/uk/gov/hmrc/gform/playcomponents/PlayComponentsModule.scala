@@ -92,8 +92,7 @@ class PlayComponentsModule(
     auditingModule.microserviceAuditFilter,
     loggingFilter,
     //    authFilter, it thorws exception instead of working ...
-    NoCacheFilter,
-    RecoveryFilter
+    NoCacheFilter
   )
 
   lazy val httpRequestHandler = new CustomHttpRequestHandler(

@@ -16,13 +16,11 @@
 
 package uk.gov.hmrc.gform.playcomponents
 
-import play.api.data.validation.ValidationError
+import play.api._
 import play.api.http.DefaultHttpErrorHandler
-import play.api.libs.json.{ JsPath, JsValue, Json, Writes }
+import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.mvc.{ RequestHeader, Result }
-import play.api.routing.Router
-import play.api.{ Configuration, Environment, Logger, Mode }
 import play.core.SourceMapper
 import uk.gov.hmrc.gform.controllers.ErrResponse
 import uk.gov.hmrc.play.http._
@@ -34,9 +32,7 @@ class ErrorHandler(
     environment: Environment,
     configuration: Configuration,
     sourceMapper: Option[SourceMapper]
-) extends DefaultHttpErrorHandler(environment, configuration, sourceMapper, None) //  with JsonErrorHandling
-//  with ErrorAuditingSettings
-// TODO: auditConnector.sendEvent(dataEvent(code, unexpectedError, request)
+) extends DefaultHttpErrorHandler(environment, configuration, sourceMapper, None) //    with JsonErrorHandling //    with ErrorAuditingSettings // TODO: auditConnector.sendEvent(dataEvent(code, unexpectedError, request)
 {
 
   override protected def onBadRequest(request: RequestHeader, message: String): Future[Result] = {
@@ -57,7 +53,7 @@ class ErrorHandler(
 
   override protected def onNotFound(request: RequestHeader, message: String): Future[Result] = {
     //if (environment.mode == Mode.Dev) super.onNotFound(request, message) else { below code }
-    val m = if (message.isEmpty) "Resource not found" else message
+    val m = if (message.isEmpty) s"Resource not found: '${request.path}'" else message
     val response = ErrResponse(m)
     Logger.logger.info(response.toString)
     Future.successful(
@@ -80,7 +76,7 @@ class ErrorHandler(
      case e: NotFoundException      => onNotFoundException(e)
      case e: HttpException          => onHttpException(e)
      case e: JsValidationException  => onJsValidationException(e)
-     case e: Throwable              => onOtherException(e)
+     case e: Throwable                => onOtherException(e)
     // format: ON
   }
 

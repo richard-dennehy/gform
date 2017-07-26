@@ -23,7 +23,8 @@ import play.api._
 import play.api.routing.Router
 
 class PlayComponents(
-    val context: ApplicationLoader.Context
+    val context: ApplicationLoader.Context,
+    val builtInComponents: BuiltInComponents
 ) {
 
   val ahcWSComponents: AhcWSComponents = new AhcWSComponents {
@@ -31,10 +32,6 @@ class PlayComponents(
     override def configuration: Configuration = context.initialConfiguration
     override def applicationLifecycle: ApplicationLifecycle = context.lifecycle
     override def materializer: Materializer = builtInComponents.materializer
-  }
-
-  val builtInComponents: BuiltInComponents = new BuiltInComponentsFromContext(context) {
-    override def router: Router = ???
   }
 
 }

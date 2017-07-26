@@ -58,10 +58,12 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
 
   private val akkaModule = new AkkaModule(materializer, actorSystem)
   private val playComponents = new PlayComponents(context, self)
+
   private val metricsModule = new MetricsModule(playComponents, akkaModule)
   private val configModule = new ConfigModule(playComponents)
   private val auditingModule = new AuditingModule(configModule, akkaModule, playComponents)
   private val wSHttpModule = new WSHttpModule(auditingModule, configModule, playComponents)
+
 
   private val timeModule = new TimeModule
   private val fileUploadModule = new FileUploadModule(configModule, wSHttpModule, timeModule)
@@ -82,7 +84,8 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
 
   override def router: Router = playComponentsModule.router
 
-  override lazy val injector: Injector = new SimpleInjector(super.injector) + playComponents.ahcWSComponents.wsApi
+  lazy val customInjector: Injector = new SimpleInjector(injector) + playComponents.ahcWSComponents.wsApi
+  override lazy val application = new DefaultApplication(environment, applicationLifecycle, customInjector, configuration, httpRequestHandler, httpErrorHandler, actorSystem, materializer)
 
   Logger.info(s"Microservice GFORM started in mode ${environment.mode} at port ${application.configuration.getString("http.port")}")
 }

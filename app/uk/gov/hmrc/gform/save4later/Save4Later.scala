@@ -16,17 +16,12 @@
 
 package uk.gov.hmrc.gform.save4later
 
-import cats.data._
-import cats.implicits._
-import play.api.libs.json.{ JsError, JsSuccess, Json }
-import uk.gov.hmrc.gform.config.ConfigModule
-import uk.gov.hmrc.gform.core.Opt
-import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.http.cache.client.{ CacheMap, ShortLivedCache }
-import uk.gov.hmrc.play.http.{ HeaderCarrier, NotFoundException }
-import scala.concurrent.{ ExecutionContext, Future }
+import uk.gov.hmrc.http.cache.client.ShortLivedCache
+import uk.gov.hmrc.play.http.{HeaderCarrier, NotFoundException}
+
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 class Save4Later(cache: ShortLivedCache, ex: ExecutionContext) {
 
@@ -36,7 +31,7 @@ class Save4Later(cache: ShortLivedCache, ex: ExecutionContext) {
   def get(formId: FormId)(implicit hc: HeaderCarrier): Future[Form] =
     find(formId) map {
       //use the same API as using WSHTTP
-      case None => throw new NotFoundException(s"Could not find form for given id: $formId")
+      case None => throw new NotFoundException(s"Not found 'form' for the given id: '${formId.value}'")
       case Some(form) => form
     }
 
