@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.gform.models
 
-import play.api.libs.json.{ Format, JsError, JsString, JsSuccess, Reads, Writes }
+import play.api.libs.json._
 
 case class FormTemplateId(value: String)
 
@@ -29,4 +29,17 @@ object FormTemplateId {
   }
 
   implicit val format = Format[FormTemplateId](reads, writes)
+
+  //  private lazy val writes: OWrites[FormTemplateId] = OWrites[FormTemplateId](id => Json.obj("_id" -> id.value))
+  //
+  //  private lazy val reads: Reads[FormTemplateId] = Reads[FormTemplateId] { (jsObj: JsValue) =>
+  //    jsObj \ "_id" match {
+  //      case JsDefined(JsString(id)) => JsSuccess(FormTemplateId(id))
+  //      case _ => jsObj match {
+  //        case JsString(x) => JsSuccess(FormTemplateId(x))
+  //        case _ => JsError(s"Invalid formTemplateId, expected fieldName '_id', got: $jsObj")
+  //      }
+  //    }
+  //  }
+
 }

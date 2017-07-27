@@ -49,10 +49,10 @@ class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
 
     // format: OFF
     for {
+      _          <- fromOptA          (FormTemplateSchema.jsonSchema.conform(formTemplate).toEither)
       _          <- fromOptA          (Section.validateChoiceHelpText(sectionsList).toEither)
       _          <- fromOptA          (Section.validateUniqueFields(sectionsList).toEither)
       _          <- fromOptA          (ComponentType.validate(exprs, formTemplate).toEither)
-      _          <- fromOptA          (FormTemplateSchema.jsonSchema.conform(formTemplate).toEither)
       res        <- formTemplateRepo.upsert(formTemplate)
     } yield res
     // format: ON

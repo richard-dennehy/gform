@@ -1,8 +1,6 @@
 {
-  "schemaId": "http://hmrc.gov.uk/jsonschema/gf-formtemplate#",
-  "formTypeId": "AAA999",
+  "_id": "AAA999",
   "formName": "AAA999 dev test template",
-  "version": "0.3.0",
   "description": "Fill in your insurance premium tax return form online | Llenwch eich ffurflen dreth premiwm yswiriant ar-lein",
   "characterSet": "UTF-8",
   "dmsSubmission": {

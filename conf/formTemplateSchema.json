@@ -1,18 +1,14 @@
 {
-  "id": "http://hmrc.gov.uk/jsonschema/gf-formtemplate#",
   "description": "Schema for Gform Form Descriptions",
   "type": "object",
   "properties": {
     "schemaId": {
       "type": "string"
     },
-    "formTypeId": {
+    "_id": {
       "type": "string"
     },
     "formName": {
-      "type": "string"
-    },
-    "version": {
       "type": "string"
     },
     "description": {
@@ -82,10 +78,10 @@
       }
     }
   },
+
   "required": [
-    "formTypeId",
+    "_id",
     "formName",
-    "version",
     "sections"
   ]
 }

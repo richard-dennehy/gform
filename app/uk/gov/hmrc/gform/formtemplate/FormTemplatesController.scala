@@ -33,7 +33,7 @@ class FormTemplatesController(
     formTemplateService: FormTemplateService
 ) extends BaseController {
 
-  def save() = Action.async(parse.json[FormTemplate]) { request =>
+  def upsert() = Action.async(parse.json[FormTemplate]) { request =>
     //TODO authorisation (we don't want allow everyone to call this action
 
     val formTemplate: FormTemplate = request.body

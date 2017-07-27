@@ -31,9 +31,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileUploadConnector(config: Config, wSHttp: WSHttp, timeProvider: TimeProvider) {
 
-  def createEnvelope(formTypeId: FormTemplateId)(implicit hc: HeaderCarrier): Future[EnvelopeId] =
+  def createEnvelope(formTemplateId: FormTemplateId)(implicit hc: HeaderCarrier): Future[EnvelopeId] =
     wSHttp
-      .POST(s"$baseUrl/file-upload/envelopes", createEnvelopeIn(formTypeId))
+      .POST(s"$baseUrl/file-upload/envelopes", createEnvelopeIn(formTemplateId))
       .map(extractEnvelopId)
 
   def routeEnvelope(input: RouteEnvelopeRequest)(implicit hc: HeaderCarrier): Future[Unit] = {

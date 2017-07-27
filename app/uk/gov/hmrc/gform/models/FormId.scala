@@ -29,7 +29,7 @@ object FormId {
 
   private lazy val writes: OWrites[FormId] = OWrites[FormId](id => Json.obj("_id" -> id.value))
   private lazy val reads: Reads[FormId] = Reads[FormId] { (jsObj: JsValue) =>
-    (jsObj \ "_id") match {
+    jsObj \ "_id" match {
       case JsDefined(JsString(id)) => JsSuccess(FormId(id))
       case _ => jsObj match {
         case JsString(x) => JsSuccess(FormId(x))

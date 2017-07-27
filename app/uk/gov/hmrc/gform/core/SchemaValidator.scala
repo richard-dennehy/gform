@@ -71,6 +71,8 @@ case class Item(name: String, tpe: JsonSchema)
 object SchemaValidator {
 
   def conform(schemaRep: FormTemplateSchema): Opt[JsonSchema] = {
+    //TODO verify if it works as is should work.
+    //TODO maybe there exist ready to use solutions for json schema validation. Do research and use them instead of buggy this one
     loop(schemaRep.value)
   }
 
