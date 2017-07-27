@@ -16,9 +16,34 @@
 
 package uk.gov.hmrc.gform.submission
 
+import uk.gov.hmrc.gform.fileUpload.FileUploadModule
+import uk.gov.hmrc.gform.form.FormModule
+import uk.gov.hmrc.gform.formtemplate.FormTemplateModule
 import uk.gov.hmrc.gform.mongo.MongoModule
+import uk.gov.hmrc.gform.pdfgenerator.{ PdfGeneratorModule, PdfGeneratorService }
+import uk.gov.hmrc.gform.time.TimeModule
 
-class SubmissionModule(mongoModule: MongoModule) {
+class SubmissionModule(
+    mongoModule: MongoModule,
+    pdfGeneratorModule: PdfGeneratorModule,
+    formModule: FormModule,
+    formTemplateModule: FormTemplateModule,
+    fileUploadModule: FileUploadModule,
+    timeModule: TimeModule
+) {
+
+  //TODO: this should be replaced with save4later for submissions
 
   val submissionRepo = new SubmissionRepo(mongoModule.mongo)
+
+  val submissionService = new SubmissionService(
+    pdfGeneratorModule.pdfGeneratorService,
+    formModule.formService,
+    formTemplateModule.formTemplateService,
+    fileUploadModule.fileUploadService,
+    submissionRepo,
+    timeModule.timeProvider
+  )
+
+  val submissionController = new SubmissionController(submissionService)
 }

@@ -69,13 +69,14 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
   private val mongoModule = new MongoModule(playComponents)
   private val formTemplateModule = new FormTemplateModule(mongoModule)
   private val shortLivedCacheModule = new ShortLivedCacheModule(configModule, wSHttpModule)
-  private val submissionModule = new SubmissionModule(mongoModule)
-  private val formModule = new FormModule(mongoModule, shortLivedCacheModule, formTemplateModule, submissionModule, fileUploadModule)
   private val pdfGeneratorModule = new PdfGeneratorModule(configModule, wSHttpModule)
+
+  private val formModule = new FormModule(mongoModule, shortLivedCacheModule, formTemplateModule, fileUploadModule)
+  private val submissionModule = new SubmissionModule(mongoModule, pdfGeneratorModule, formModule, formTemplateModule, fileUploadModule, timeModule)
   private val testOnlyModule = new TestOnlyModule(mongoModule)
   private val graphiteModule = new GraphiteModule(self)
 
-  private val playComponentsModule = new PlayComponentsModule(playComponents, akkaModule, configModule, auditingModule, metricsModule, formModule, formTemplateModule, testOnlyModule)
+  private val playComponentsModule = new PlayComponentsModule(playComponents, akkaModule, configModule, auditingModule, metricsModule, formModule, formTemplateModule, testOnlyModule, submissionModule)
 
   override lazy val httpErrorHandler: HttpErrorHandler = playComponentsModule.errorHandler
   override lazy val httpRequestHandler: HttpRequestHandler = playComponentsModule.httpRequestHandler

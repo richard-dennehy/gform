@@ -26,7 +26,6 @@ class FormModule(
     mongoModule: MongoModule,
     shortLivedCacheModule: ShortLivedCacheModule,
     formTemplateModule: FormTemplateModule,
-    submissionModule: SubmissionModule,
     fileUploadModule: FileUploadModule
 ) {
 

@@ -16,7 +16,13 @@
 
 package uk.gov.hmrc.gform.exceptions
 
-case class UnexpectedState(error: String)
+import play.api.libs.json.Json
+import uk.gov.hmrc.gform.controllers.ErrResponse
+import play.api.mvc.Results._
+
+case class UnexpectedState(error: String) {
+  def asBadRequest = BadRequest(Json.toJson(ErrResponse(error)))
+}
 //
 //sealed trait UnexpectedState {
 //

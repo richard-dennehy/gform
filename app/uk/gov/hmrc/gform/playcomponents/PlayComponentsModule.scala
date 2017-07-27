@@ -27,6 +27,7 @@ import uk.gov.hmrc.gform.config.ConfigModule
 import uk.gov.hmrc.gform.form.FormModule
 import uk.gov.hmrc.gform.formtemplate.FormTemplateModule
 import uk.gov.hmrc.gform.metrics.MetricsModule
+import uk.gov.hmrc.gform.submission.SubmissionModule
 import uk.gov.hmrc.gform.testonly.TestOnlyModule
 import uk.gov.hmrc.gform.wshttp.WSHttpModule
 import uk.gov.hmrc.play.audit.filters.AuditFilter
@@ -46,7 +47,8 @@ class PlayComponentsModule(
     metricsModule: MetricsModule,
     formModule: FormModule,
     formTemplateModule: FormTemplateModule,
-    testOnlyModule: TestOnlyModule
+    testOnlyModule: TestOnlyModule,
+    submissionModule: SubmissionModule
 ) {
 
   lazy val loggingFilter = new LoggingFilter {
@@ -68,6 +70,7 @@ class PlayComponentsModule(
   lazy val appRoutes = new app.Routes(
     errorHandler,
     formModule.formController,
+    submissionModule.submissionController,
     formTemplateModule.formTemplatesController,
     testOnlyModule.testOnlyController
   )

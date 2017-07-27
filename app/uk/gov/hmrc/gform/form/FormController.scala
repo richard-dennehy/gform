@@ -19,14 +19,18 @@ package uk.gov.hmrc.gform.form
 import play.api.libs.json.{ JsValue, Json }
 import play.api.mvc.{ Action, AnyContent, RequestHeader }
 import uk.gov.hmrc.gform.controllers.BaseController
+import uk.gov.hmrc.gform.core.FormValidator
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.fileUpload.{ FileUploadConnector, FileUploadService }
 import uk.gov.hmrc.gform.formtemplate.{ FormTemplateRepo, FormTemplateService }
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.save4later.Save4Later
 import uk.gov.hmrc.gform.submission.SubmissionRepo
+import uk.gov.hmrc.play.http.BadRequestException
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 
 import scala.concurrent.Future
+import scala.util.Try
 
 class FormController(
     formTemplateService: FormTemplateService,
@@ -69,23 +73,25 @@ class FormController(
     for {
       _ <- formService.updateFormData(formId, request.body)
     } yield NoContent
-
   }
 
-  def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action { implicit request =>
+  def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action.async(parse.json[FormData]) { implicit request =>
     //TODO: check form status. If after submission don't call this function
     //TODO authentication
     //TODO authorisation
+    //TODO wrap result into ValidationResult case class containign status of validation and list of errors
 
-    NotImplemented
-  }
+    val formData: FormData = request.body
 
-  def submission(formId: FormId) = Action.async { implicit request =>
-    //    SubmissionService.submission(formId).fold(
-    //      error => error.toResult,
-    //      response => Ok(response)
-    //    )
-    ???
+    val result: Future[Either[UnexpectedState, Unit]] = for {
+      formTemplate <- formTemplateService.get(formData.formTemplateId)
+      section = getSection(formTemplate, sectionNumber)
+    } yield FormValidator.validate(formData.fields.toList, section)
+
+    result.map(_.fold(
+      e => e.error,
+      _ => "No errors"
+    )).asOkJson
   }
 
   def delete(formId: FormId): Action[AnyContent] = Action.async { implicit request =>
@@ -101,13 +107,13 @@ class FormController(
     ???
   }
 
-  def submissionStatus(formId: FormId) = Action.async { implicit request =>
-    Future.successful(NotImplemented)
-  }
-
   private def formLink(form: Form)(implicit request: RequestHeader) = {
     //    val Form(formId, formData, envelopeId) = form
     //    routes.FormController.get(formId).absoluteURL()
     ???
+  }
+
+  private def getSection(formTemplate: FormTemplate, sectionNumber: SectionNumber): Section = {
+    Try(formTemplate.sections(sectionNumber.value)).getOrElse(throw new BadRequestException(s"Wrong sectionNumber: $sectionNumber. There are ${formTemplate.sections.length} sections."))
   }
 }

@@ -35,7 +35,6 @@ case class FormTemplate(
     sections: List[Section]
 ) {
 
-  def section(sectionNumber: SectionNumber): Option[Section] = Try(sections(sectionNumber.value)).map(Some(_)).getOrElse(None)
 }
 
 object FormTemplate {

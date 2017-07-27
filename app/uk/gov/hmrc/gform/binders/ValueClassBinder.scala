@@ -17,9 +17,9 @@
 package uk.gov.hmrc.gform.binders
 
 import cats.implicits._
-import play.api.libs.json.{JsError, JsString, JsSuccess, Reads}
+import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
-import uk.gov.hmrc.gform.models.{FormId, FormTemplateId, SectionNumber, UserId}
+import uk.gov.hmrc.gform.models.{ FormId, FormTemplateId, SectionNumber, UserId }
 
 import scala.util.Try
 

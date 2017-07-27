@@ -38,7 +38,6 @@ import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.Random
 
 class SubmissionService(
     pdfGeneratorService: PdfGeneratorService,

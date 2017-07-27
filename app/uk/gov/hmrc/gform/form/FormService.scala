@@ -50,16 +50,4 @@ class FormService(save4Later: Save4Later, formTemplateService: FormTemplateServi
     } yield ()
   }
 
-  type Err = UnexpectedState
-  type TODO_Err = Map[FieldId, Set[String]]
-
-  //TODO: this must return set of validation errors per formFieldId
-  //Now it returns only one string
-  def validate(form: Form, sectionNumber: SectionNumber): Future[Either[Err, Unit]] = {
-    for {
-      formTemplate <- formTemplateService.get(form.formData.formTemplateId)
-      section = formTemplate.section(sectionNumber)
-    } yield FormValidator.validate(form.formData.fields.toList, section.get)
-  }
-
 }
