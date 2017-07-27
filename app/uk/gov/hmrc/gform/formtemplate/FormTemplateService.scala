@@ -23,6 +23,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import cats.data._
 import cats.implicits._
+import play.api.libs.json.Json
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 
 class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
@@ -30,6 +31,13 @@ class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
   def get(formTemplateId: FormTemplateId): Future[FormTemplate] = formTemplateRepo.get(formTemplateId.value)
 
   def delete(formTemplateId: FormTemplateId): FOpt[Unit] = formTemplateRepo.delete(formTemplateId.value)
+
+  def list(): Future[List[FormTemplate]] = {
+    //TODO make it stream
+    //TODO constraint it so it will result in no more than N records
+    //TODO provide querying functionality
+    formTemplateRepo.search(Json.obj())
+  }
 
   def verifyAndSave(
     formTemplate: FormTemplate

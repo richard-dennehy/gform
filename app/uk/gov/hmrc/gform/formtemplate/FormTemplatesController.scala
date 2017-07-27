@@ -25,6 +25,7 @@ import cats.implicits._
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.play.http.NotImplementedException
 
 import scala.concurrent.Future
 
@@ -57,8 +58,6 @@ class FormTemplatesController(
       _.asBadRequest,
       _ => NoContent
     )
-
-    ???
   }
 
   def formTemplateSchema() = Action {
@@ -67,7 +66,12 @@ class FormTemplatesController(
     )
   }
 
-  //all template ids
-  def all() = play.mvc.Results.TODO
+  def all() = Action.async { implicit request =>
+
+    formTemplateService
+      .list()
+      .map(_.map(_._id))
+      .asOkJson
+  }
 }
 
