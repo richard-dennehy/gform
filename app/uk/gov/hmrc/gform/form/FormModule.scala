@@ -31,7 +31,7 @@ class FormModule(
 
   val save4later = new Save4Later(shortLivedCacheModule.shortLivedCache, scala.concurrent.ExecutionContext.Implicits.global)
 
-  val formService = new FormService(save4later, formTemplateModule.formTemplateService)
+  val formService = new FormService(save4later)
 
   val formController: FormController = new FormController(
     formTemplateModule.formTemplateService,

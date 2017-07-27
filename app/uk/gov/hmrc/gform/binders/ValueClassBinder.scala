@@ -19,13 +19,15 @@ package uk.gov.hmrc.gform.binders
 import cats.implicits._
 import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
-import uk.gov.hmrc.gform.models.{ FormId, FormTemplateId, SectionNumber, UserId }
+import uk.gov.hmrc.gform.models._
 
 import scala.util.Try
 
 object ValueClassBinder {
 
-  implicit val formTypeIdBinder: PathBindable[FormTemplateId] = valueClassBinder(_.value)
+  implicit val formTemplateIdBinder: PathBindable[FormTemplateId] = valueClassBinder(_.value)
+  implicit val formTemplateRawIdBinder: PathBindable[FormTemplateRawId] = valueClassBinder(_.value)
+
   implicit val formIdBinder: PathBindable[FormId] = valueClassBinder(_.value)
   implicit val userIdBinder: PathBindable[UserId] = valueClassBinder(_.value)
   implicit val sectionNumberBinder: PathBindable[SectionNumber] = new PathBindable[SectionNumber] {

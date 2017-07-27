@@ -23,12 +23,18 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import cats.data._
 import cats.implicits._
-import play.api.libs.json.Json
-import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import play.api.libs.json.{ JsValue, Json }
 
-class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
+class FormTemplateService(
+    formTemplateRepo: FormTemplateRepo,
+    formTemplateRawRepo: FormTemplateRawRepo
+) {
 
-  def get(formTemplateId: FormTemplateId): Future[FormTemplate] = formTemplateRepo.get(formTemplateId.value)
+  def save(formTemplateRaw: FormTemplateRaw): FOpt[Unit] = formTemplateRawRepo.upsert(formTemplateRaw)
+
+  def get(id: FormTemplateId): Future[FormTemplate] = formTemplateRepo.get(id.value)
+
+  def get(id: FormTemplateRawId): Future[FormTemplateRaw] = formTemplateRawRepo.get(id.value)
 
   def delete(formTemplateId: FormTemplateId): FOpt[Unit] = formTemplateRepo.delete(formTemplateId.value)
 

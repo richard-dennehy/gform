@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.formtemplate
+package uk.gov.hmrc.gform.models
 
-import uk.gov.hmrc.gform.mongo.MongoModule
+import play.api.libs.json._
 
-class FormTemplateModule(mongoModule: MongoModule) {
+object FormTemplateRawId {
 
-  val formTemplateRepo: FormTemplateRepo = new FormTemplateRepo(mongoModule.mongo)
-  val formTemplateRawRepo: FormTemplateRawRepo = new FormTemplateRawRepo(mongoModule.mongo)
-  val formTemplateService: FormTemplateService = new FormTemplateService(formTemplateRepo, formTemplateRawRepo)
-  val formTemplatesController: FormTemplatesController = new FormTemplatesController(formTemplateService)
+  val writes: Writes[FormTemplateRawId] = Writes[FormTemplateRawId](id => JsString(id.value))
+  val reads: Reads[FormTemplateRawId] = Reads[FormTemplateRawId] {
+    case JsString(value) => JsSuccess(FormTemplateRawId(value))
+    case otherwise => JsError(s"Invalid formTemplateId, expected JsString, got: $otherwise")
+  }
+
+  implicit val format: Format[FormTemplateRawId] = Format[FormTemplateRawId](reads, writes)
 
 }
+
+case class FormTemplateRawId(value: String)

@@ -13,6 +13,7 @@ GET           /forms/:formId/submission                            uk.gov.hmrc.g
 GET           /formtemplates                                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.all
 POST          /formtemplates                                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.upsert
 GET           /formtemplates/:formTemplateId                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.get(formTemplateId: FormTemplateId)
+GET           /formtemplates/:formTemplateId/raw                   uk.gov.hmrc.gform.formtemplate.FormTemplatesController.getRaw(formTemplateId: FormTemplateRawId)
 DELETE        /formtemplates/:formTemplateId                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.remove(formTemplateId: FormTemplateId)
 
 

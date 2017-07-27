@@ -26,7 +26,7 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class FormService(save4Later: Save4Later, formTemplateService: FormTemplateService) {
+class FormService(save4Later: Save4Later) {
 
   def get(formId: FormId)(implicit hc: HeaderCarrier): Future[Form] = {
     save4Later.get(formId)
