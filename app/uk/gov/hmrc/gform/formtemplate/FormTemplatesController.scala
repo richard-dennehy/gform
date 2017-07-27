@@ -24,12 +24,17 @@ import cats.data._
 import cats.implicits._
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.controllers.BaseController
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
+
+import scala.concurrent.Future
 
 class FormTemplatesController(
     formTemplateService: FormTemplateService
 ) extends BaseController {
 
   def save() = Action.async(parse.json[FormTemplate]) { request =>
+    //TODO authorisation (we don't want allow everyone to call this action
+
     val formTemplate: FormTemplate = request.body
     val result = formTemplateService.verifyAndSave(formTemplate)
     result.fold(_.asBadRequest, _ => NoContent)
@@ -42,13 +47,16 @@ class FormTemplatesController(
   }
 
   def remove(formTemplateId: FormTemplateId) = Action.async { implicit request =>
-    //    formTemplateService
-    //      .get(formTypeId)
-    //
-    //      .map {
-    //        case Some(template) => Ok(Json.writes[FormTemplate].writes(template))
-    //        case None => NotFound
-    //      }
+    //TODO authorisation (we don't want allow everyone to call this action
+
+    val result = for {
+      r <- formTemplateService.delete(formTemplateId)
+    } yield r
+
+    result.fold(
+      _.asBadRequest,
+      _ => NoContent
+    )
 
     ???
   }

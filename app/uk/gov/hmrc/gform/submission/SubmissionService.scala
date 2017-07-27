@@ -97,7 +97,7 @@ class SubmissionService(
       envelopeId        = form.envelopeId
       sectionFormFields <- fromOptA           (SubmissionServiceHelper.getSectionFormFields(form, formTemplate))
       submissionAndPdf  <- fromFutureA        (getSubmissionAndPdf(envelopeId, form, sectionFormFields, formTemplate.formName))
-      _                 <- fromFutureA        (submissionRepo.upsert(submissionAndPdf.submission))
+      _                 <-                     submissionRepo.upsert(submissionAndPdf.submission)
       res               <- fromFutureA        (fileUploadService.submitEnvelope(submissionAndPdf, formTemplate.dmsSubmission))
     } yield res
     // format: ON

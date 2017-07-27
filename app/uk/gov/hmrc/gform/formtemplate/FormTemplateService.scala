@@ -23,12 +23,13 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import cats.data._
 import cats.implicits._
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 
 class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
 
-  //TODO authorisation, especially form modifying template
-
   def get(formTemplateId: FormTemplateId): Future[FormTemplate] = formTemplateRepo.get(formTemplateId.value)
+
+  def delete(formTemplateId: FormTemplateId): FOpt[Unit] = formTemplateRepo.delete(formTemplateId.value)
 
   def verifyAndSave(
     formTemplate: FormTemplate
@@ -44,7 +45,7 @@ class FormTemplateService(formTemplateRepo: FormTemplateRepo) {
       _          <- fromOptA          (Section.validateUniqueFields(sectionsList).toEither)
       _          <- fromOptA          (ComponentType.validate(exprs, formTemplate).toEither)
       _          <- fromOptA          (FormTemplateSchema.jsonSchema.conform(formTemplate).toEither)
-      res        <- fromFutureOptA    (formTemplateRepo.upsert(formTemplate))
+      res        <- formTemplateRepo.upsert(formTemplate)
     } yield res
     // format: ON
   }

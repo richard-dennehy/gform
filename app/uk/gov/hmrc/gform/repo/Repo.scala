@@ -16,11 +16,13 @@
 
 package uk.gov.hmrc.gform.repo
 
+import cats.data.EitherT
 import cats.implicits._
 import play.api.libs.json._
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.commands.{ WriteConcern, WriteResult }
 import reactivemongo.bson.BSONObjectID
+import uk.gov.hmrc.gform.core.FOpt
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.mongo.ReactiveRepository
 
@@ -43,14 +45,14 @@ class Repo[T: OWrites: Manifest](name: String, mongo: () => DefaultDB, idLens: T
     underlying.collection.find(selector = selector, npProjection).cursor[T]().collect[List]()
   }
 
-  def upsert(t: T): Future[Either[UnexpectedState, Unit]] = {
+  def upsert(t: T): FOpt[Unit] = EitherT {
     underlying
       .collection
       .update(idSelector(t), update = t, writeConcern = WriteConcern.Default, upsert = true, multi = false)
       .map(_.asEither)
   }
 
-  def delete(id: String): Future[Either[UnexpectedState, Unit]] = {
+  def delete(id: String): FOpt[Unit] = EitherT {
     underlying
       .collection
       .remove(idSelector(id))
