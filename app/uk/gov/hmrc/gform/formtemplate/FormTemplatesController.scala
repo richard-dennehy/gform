@@ -60,12 +60,6 @@ class FormTemplatesController(
     )
   }
 
-  def formTemplateSchema() = Action {
-    Ok(
-      Json.toJson(FormTemplateSchema.schema)
-    )
-  }
-
   def all() = Action.async { implicit request =>
 
     formTemplateService

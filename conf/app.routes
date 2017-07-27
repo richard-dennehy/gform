@@ -11,7 +11,6 @@ POST          /forms/:formId/submission                            uk.gov.hmrc.g
 GET           /forms/:formId/submission                            uk.gov.hmrc.gform.submission.SubmissionController.submissionStatus(formId: FormId)
 
 GET           /formtemplates                                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.all
-GET           /formtemplates/schema                                uk.gov.hmrc.gform.formtemplate.FormTemplatesController.formTemplateSchema
 POST          /formtemplates                                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.upsert
 GET           /formtemplates/:formTemplateId                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.get(formTemplateId: FormTemplateId)
 DELETE        /formtemplates/:formTemplateId                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.remove(formTemplateId: FormTemplateId)

@@ -16,16 +16,13 @@
 
 package uk.gov.hmrc.gform.form
 
-import play.api.libs.json.{ JsValue, Json }
-import play.api.mvc.{ Action, AnyContent, RequestHeader }
+import play.api.mvc.{ Action, AnyContent }
 import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.core.FormValidator
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.fileUpload.{ FileUploadConnector, FileUploadService }
-import uk.gov.hmrc.gform.formtemplate.{ FormTemplateRepo, FormTemplateService }
+import uk.gov.hmrc.gform.fileUpload.FileUploadService
+import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.save4later.Save4Later
-import uk.gov.hmrc.gform.submission.SubmissionRepo
 import uk.gov.hmrc.play.http.BadRequestException
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 
@@ -95,22 +92,7 @@ class FormController(
   }
 
   def delete(formId: FormId): Action[AnyContent] = Action.async { implicit request =>
-    //    FormService.delete(formId).fold(
-    //      errors => {
-    //        Logger.warn(s"${formId.value} failed to be deleted due to ${errors.toResult}")
-    //        errors.toResult
-    //      },
-    //      success => {
-    //        success.toResult
-    //      }
-    //    )
-    ???
-  }
-
-  private def formLink(form: Form)(implicit request: RequestHeader) = {
-    //    val Form(formId, formData, envelopeId) = form
-    //    routes.FormController.get(formId).absoluteURL()
-    ???
+    formService.delete(formId).asNoContent
   }
 
   private def getSection(formTemplate: FormTemplate, sectionNumber: SectionNumber): Section = {
