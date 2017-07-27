@@ -76,7 +76,7 @@ class FormController(
   }
 
   def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action.async(parse.json[FormData]) { implicit request =>
-    //TODO: check form status. If after submission don't call this function
+    //TODO check form status. If after submission don't call this function
     //TODO authentication
     //TODO authorisation
     //TODO wrap result into ValidationResult case class containign status of validation and list of errors

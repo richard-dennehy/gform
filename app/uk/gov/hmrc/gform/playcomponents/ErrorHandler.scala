@@ -71,12 +71,13 @@ class ErrorHandler(
 
   override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] = exception match {
      // format: OFF
-     case e: Upstream4xxResponse    => onUpstream4xxResponse(e)
-     case e: Upstream5xxResponse    => onUpstream5xxResponse(e)
-     case e: NotFoundException      => onNotFoundException(e)
-     case e: HttpException          => onHttpException(e)
-     case e: JsValidationException  => onJsValidationException(e)
-     case e: Throwable                => onOtherException(e)
+     case e: Upstream4xxResponse               => onUpstream4xxResponse(e)
+     case e: Upstream5xxResponse               => onUpstream5xxResponse(e)
+     case e: NotFoundException                 => onNotFoundException(e)
+     case e: java.util.NoSuchElementException  => onNotFoundException(e)
+     case e: HttpException                     => onHttpException(e)
+     case e: JsValidationException             => onJsValidationException(e)
+     case e: Throwable                         => onOtherException(e)
     // format: ON
   }
 
@@ -104,7 +105,7 @@ class ErrorHandler(
     )
   }
 
-  private def onNotFoundException(e: NotFoundException) = {
+  private def onNotFoundException(e: Exception) = {
     val response = ErrResponse(s"${e.getMessage}")
     Logger.logger.info(response.toString, e)
     Future.successful(

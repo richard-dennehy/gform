@@ -21,7 +21,6 @@ import play.api._
 import play.api.http._
 import play.api.i18n.I18nComponents
 import play.api.inject.{ Injector, SimpleInjector }
-import play.api.libs.ws.ahc.AhcWSComponents
 import play.api.mvc.EssentialFilter
 import play.api.routing.Router
 import uk.gov.hmrc.gform.akka.AkkaModule
@@ -38,9 +37,8 @@ import uk.gov.hmrc.gform.playcomponents.{ PlayComponents, PlayComponentsModule }
 import uk.gov.hmrc.gform.save4later.ShortLivedCacheModule
 import uk.gov.hmrc.gform.submission.SubmissionModule
 import uk.gov.hmrc.gform.testonly.TestOnlyModule
-import uk.gov.hmrc.gform.time.{ TimeModule, TimeProvider }
+import uk.gov.hmrc.gform.time.TimeModule
 import uk.gov.hmrc.gform.wshttp.WSHttpModule
-import uk.gov.hmrc.play.health.AdminController
 
 class ApplicationLoader extends play.api.ApplicationLoader {
   def load(context: Context) = {
