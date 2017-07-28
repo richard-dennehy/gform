@@ -16,16 +16,24 @@
 
 package uk.gov.hmrc.gform.binders
 
+import cats.implicits._
 import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
-import uk.gov.hmrc.gform.models.{ FormId, FormTypeId, UserId, Version }
+import uk.gov.hmrc.gform.models._
+
+import scala.util.Try
 
 object ValueClassBinder {
 
-  implicit val formTypeIdBinder: PathBindable[FormTypeId] = valueClassBinder(_.value)
+  implicit val formTemplateIdBinder: PathBindable[FormTemplateId] = valueClassBinder(_.value)
+  implicit val formTemplateRawIdBinder: PathBindable[FormTemplateRawId] = valueClassBinder(_.value)
+
   implicit val formIdBinder: PathBindable[FormId] = valueClassBinder(_.value)
-  implicit val versionBinder: PathBindable[Version] = valueClassBinder(_.value)
   implicit val userIdBinder: PathBindable[UserId] = valueClassBinder(_.value)
+  implicit val sectionNumberBinder: PathBindable[SectionNumber] = new PathBindable[SectionNumber] {
+    override def bind(key: String, value: String): Either[String, SectionNumber] = Try { SectionNumber(value.toInt) }.map(_.asRight).getOrElse(s"No valid value in path $key: $value".asLeft)
+    override def unbind(key: String, sectionNumber: SectionNumber): String = sectionNumber.value.toString
+  }
 
   def valueClassBinder[A: Reads](fromAtoString: A => String)(implicit stringBinder: PathBindable[String]) = {
 

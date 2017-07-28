@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.core.parsers
 
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.core._
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 
 class ValueParserSpec extends Spec {
@@ -84,7 +84,7 @@ class ValueParserSpec extends Spec {
   it should "throw exception on 1 digit month " in {
     val res = ValueParser.validate("2015-1-12")
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """Unable to parse expression 2015-1-12.
           |Errors:
           |2015-1-12:1: unexpected characters; expected '0[1-9]|1[012]' or '\s+'
@@ -96,7 +96,7 @@ class ValueParserSpec extends Spec {
   it should "throw exception on year digits" in {
     val res = ValueParser.validate("201568-01-12")
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """Unable to parse expression 201568-01-12.
           |Errors:
           |201568-01-12:1: unexpected characters; expected '\s+' or ','
@@ -108,7 +108,7 @@ class ValueParserSpec extends Spec {
   it should "throw exception on Date format" in {
     val res = ValueParser.validate("65841-351")
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """Unable to parse expression 65841-351.
           |Errors:
           |65841-351:1: unexpected characters; expected '\s+' or ','
@@ -168,7 +168,7 @@ class ValueParserSpec extends Spec {
   it should "fail parse unclosed parenthesis" in {
     val res = ValueParser.validate("${name")
     res.left.value should be(
-      InvalidState(
+      UnexpectedState(
         """|Unable to parse expression ${name.
            |Errors:
            |${name: unexpected end-of-file; expected '*' or '+' or '}'""".stripMargin
@@ -176,7 +176,7 @@ class ValueParserSpec extends Spec {
     )
   }
 
-  val plainFormTemplate = FormTemplate(Some("schemaId"), FormTypeId("IPT100"), "Insurance Premium Tax Return", Version("version"), "description", "characterSet", DmsSubmission("nino", "BT-NRU-Environmental", "FinanceOpsCorpT"), AuthConfig(AuthModule("TEST"), None, RegimeId("TEST")), "submitSuccessUrl", "submitErrorUrl", List.empty[Section])
+  val plainFormTemplate = FormTemplate(FormTemplateId("IPT100"), "Insurance Premium Tax Return", "description", "characterSet", DmsSubmission("nino", "BT-NRU-Environmental", "FinanceOpsCorpT"), AuthConfig(AuthModule("TEST"), None, RegimeId("TEST")), "submitSuccessUrl", "submitErrorUrl", List.empty[Section])
 
   val yourDetailsSection = Section(
     "Your details",

@@ -22,7 +22,7 @@ import uk.gov.hmrc.gform.Spec
 class FormSpec extends Spec {
   val formId = FormId("my-form-id")
 
-  val formData = FormData(UserId("TESTID"), FormTypeId("my-form-type-id"), Version("0.1.5"), "UTF-8", List(FormField(FieldId("firstName"), "Josef")))
+  val formData = FormData(UserId("TESTID"), FormTemplateId("my-form-type-id"), "UTF-8", List(FormField(FieldId("firstName"), "Josef")))
 
   val form = Form(formId, formData, EnvelopeId("enve-id-asd"))
 
@@ -34,8 +34,7 @@ class FormSpec extends Spec {
     val expectedJson = Json.obj(
       "_id" -> "my-form-id",
       "userId" -> "TESTID",
-      "formTypeId" -> "my-form-type-id",
-      "version" -> "0.1.5",
+      "formTemplateId" -> "my-form-type-id",
       "characterSet" -> "UTF-8",
       "fields" -> Json.arr(
         Json.obj(

@@ -18,9 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
 
-case class EnvelopeId(value: String) extends AnyVal {
-  override def toString = value
-}
+case class EnvelopeId(value: String)
 
 object EnvelopeId {
 

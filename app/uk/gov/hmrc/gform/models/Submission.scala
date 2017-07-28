@@ -17,10 +17,11 @@
 package uk.gov.hmrc.gform.models
 
 import java.time.LocalDateTime
+
 import play.api.libs.json.Json
 
 case class DmsMetaData(
-  formTypeId: FormTypeId
+  formTypeId: FormTemplateId
 )
 
 object DmsMetaData {
@@ -28,9 +29,9 @@ object DmsMetaData {
 }
 
 case class Submission(
+  _id: FormId,
   submittedDate: LocalDateTime,
   submissionRef: SubmissionRef,
-  formId: FormId,
   envelopeId: EnvelopeId,
   dmsMetaData: DmsMetaData
 )
@@ -41,6 +42,7 @@ object Submission {
 
 case class PdfSummary(
   numberOfPages: Long,
+  //TODO get rid of byte array and operate on streams or something similar
   pdfContent: Array[Byte]
 )
 

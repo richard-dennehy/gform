@@ -16,13 +16,17 @@
 
 package uk.gov.hmrc.gform.models
 
-import play.api.libs.json.{ Json, OFormat }
+import play.api.libs.json._
+import uk.gov.hmrc.gform.core.{ JsonSchema, Opt, SchemaValidator }
+import cats.data._
+import cats.implicits._
+import play.api.http.Writeable
+
+import scala.util.Try
 
 case class FormTemplate(
-  schemaId: Option[String],
-  formTypeId: FormTypeId,
+  _id: FormTemplateId,
   formName: String,
-  version: Version,
   description: String,
   characterSet: String,
   dmsSubmission: DmsSubmission,
@@ -33,5 +37,25 @@ case class FormTemplate(
 )
 
 object FormTemplate {
+
   implicit val format: OFormat[FormTemplate] = Json.format[FormTemplate]
+}
+
+case class FormTemplateSchema(value: JsObject)
+
+object FormTemplateSchema {
+
+  val schema: FormTemplateSchema = {
+    val json: JsObject = Json.parse(
+      getClass.getResourceAsStream("/formTemplateSchema.json")
+    ).as[JsObject]
+    FormTemplateSchema(json)
+  }
+
+  val jsonSchema: JsonSchema = SchemaValidator.conform(schema).fold(
+    _ => throw new UnsupportedOperationException("Looks like we have corrupted schema file: formTemplateSchema.json"),
+    identity
+  )
+
+  implicit val format: OFormat[FormTemplateSchema] = Json.format[FormTemplateSchema]
 }

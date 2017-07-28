@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.gform.core
 
-import uk.gov.hmrc.gform.exceptions.InvalidState
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.services.RepeatingComponentService
 
@@ -68,7 +68,7 @@ object TemplateValidator {
       case None =>
         val sectionsForPrint = sections.map(_.fields.map(_.id))
 
-        Left(InvalidState(s"""|Cannot find a section corresponding to the formFields
+        Left(UnexpectedState(s"""|Cannot find a section corresponding to the formFields
                               |FormFields: $formFieldIds
                               |Sections: $sectionsForPrint""".stripMargin))
     }

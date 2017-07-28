@@ -16,8 +16,9 @@
 
 package uk.gov.hmrc.gform.models
 
-import scala.xml.Elem
 import uk.gov.hmrc.gform.typeclasses.Attribute
+
+import scala.xml.Elem
 
 object MetadataXml {
 
