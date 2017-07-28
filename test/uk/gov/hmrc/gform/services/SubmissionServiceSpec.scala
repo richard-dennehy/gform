@@ -23,10 +23,10 @@ import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.collection.immutable.List
 
-class SubmissionServiceSpec extends Spec  {
+class SubmissionServiceSpec extends Spec {
 
   "SubmissionServiceHelper.getSectionFormFields" should "find repeating group fields" in {
-    
+
     val formFields = Seq[FormField](
       FormField(FieldId("UNO"), "UNO"),
       FormField(FieldId("1_UNO"), "1_UNO"),

@@ -131,7 +131,7 @@ object SubmissionServiceHelper {
           }
         }.partition(_.isLeft) match {
           case (Nil, list) => Right(for (Right(formField) <- list) yield formField)
-          case (invalidStates, _) => Left(UnexpectedState((for (Left(invalidState) <- invalidStates) yield invalidState).mkString(", ")))
+          case (invalidStates, _) => Left(UnexpectedState((for (Left(invalidState) <- invalidStates) yield invalidState.error).mkString(", ")))
         }
       }
 

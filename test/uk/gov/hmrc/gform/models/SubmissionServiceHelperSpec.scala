@@ -17,6 +17,7 @@
 package uk.gov.hmrc.gform.models
 
 import org.scalatest._
+import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.submission.SubmissionServiceHelper
 
@@ -61,10 +62,10 @@ class SubmissionServiceHelperSpec extends FlatSpec with Matchers with EitherValu
 
     val formDataWithoutRequiredField = Form(FormId("anId"), FormData(UserId("TESTID"), FormTemplateId("ftid"), "charset", (data - FieldId("startDate.month")).values.toSeq), EnvelopeId(""))
 
-    val sectionFormFieldsOpt = SubmissionServiceHelper.getSectionFormFields(formDataWithoutRequiredField, formTemplate)
+    val sectionFormFieldsOpt: Opt[List[SectionFormField]] = SubmissionServiceHelper.getSectionFormFields(formDataWithoutRequiredField, formTemplate)
 
     sectionFormFieldsOpt should be('left)
-    sectionFormFieldsOpt.left.get shouldBe (UnexpectedState("No formField for field.id: startDate found"))
+    sectionFormFieldsOpt.left.get shouldBe UnexpectedState("No formField for field.id: startDate found")
 
   }
 

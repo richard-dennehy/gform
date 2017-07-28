@@ -37,20 +37,6 @@ case class FormTemplate(
 
 object FormTemplate {
 
-  //  private val reads: Reads[Form] = (
-  //    (FormId.format: Reads[FormId]) and
-  //      FormData.format and
-  //      EnvelopeId.format
-  //    )(Form.apply _)
-  //
-  //  private val writes: OWrites[Form] = OWrites[Form](form =>
-  //    FormId.format.writes(form._id) ++
-  //      FormData.format.writes(form.formData) ++
-  //      Json.obj("envelopeId" -> EnvelopeId.format.writes(form.envelopeId)))
-  //
-  //  implicit val format: OFormat[Form] = OFormat[Form](reads, writes)
-  //
-
   implicit val format: OFormat[FormTemplate] = Json.format[FormTemplate]
 }
 

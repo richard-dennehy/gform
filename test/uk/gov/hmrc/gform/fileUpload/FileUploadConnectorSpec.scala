@@ -17,10 +17,10 @@
 package uk.gov.hmrc.gform
 package fileUpload
 
-import uk.gov.hmrc.gform.models.{EnvelopeId, FormTemplateId}
+import uk.gov.hmrc.gform.models.{ EnvelopeId, FormTemplateId }
 import uk.gov.hmrc.gform.time.FrozenTimeProvider
 import uk.gov.hmrc.gform.wshttp.StubbedWSHttp
-import uk.gov.hmrc.play.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }
 
 class FileUploadConnectorSpec extends Spec {
 

@@ -32,7 +32,7 @@ class AppConfigSpec extends Spec {
     appConfig.appName shouldBe "gform"
     appConfig.formExpiryDays shouldBe 30
     appConfig.formMaxAttachments shouldBe 10
-    appConfig.formMaxAttachmentSizeMB shouldBe 15
+    appConfig.formMaxAttachmentSizeMB shouldBe 10
   }
 
 }

@@ -16,10 +16,10 @@
 
 package uk.gov.hmrc.gform.fileUpload
 
-import java.nio.file.{Files, Paths}
+import java.nio.file.{ Files, Paths }
 
 import akka.util.ByteString
-import uk.gov.hmrc.gform.models.{FileId, FormTemplateId}
+import uk.gov.hmrc.gform.models.{ FileId, FormTemplateId }
 import uk.gov.hmrc.gform.time.TimeProvider
 import uk.gov.hmrc.gform.wshttp.TestWSHttp
 import uk.gov.hmrc.play.http.HeaderCarrier

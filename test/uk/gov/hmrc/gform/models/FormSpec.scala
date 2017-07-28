@@ -34,8 +34,7 @@ class FormSpec extends Spec {
     val expectedJson = Json.obj(
       "_id" -> "my-form-id",
       "userId" -> "TESTID",
-      "formTypeId" -> "my-form-type-id",
-      "version" -> "0.1.5",
+      "formTemplateId" -> "my-form-type-id",
       "characterSet" -> "UTF-8",
       "fields" -> Json.arr(
         Json.obj(
