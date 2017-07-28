@@ -9,7 +9,7 @@ Upload a form template:
 
     curl http://localhost:9196/gform/formtemplates -H "Content-Type: application/json" -d '@sample-data/template-aaa999.json'
 
-To upload eeitt test data: 
+Upload a eeitt test data: 
     
     curl http://localhost:9190/eeitt-auth/etmp-data/business-users/live -d '@sample-data/EEITTTestUsers.txt'
     
