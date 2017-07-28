@@ -40,6 +40,7 @@ class FormController(
     //TODO user should be obtained from secure action
     //TODO authorisation
     //TODO Prevent creating new form when there exist one. Ask user to explicitly delete it
+    //TODO: remove userId from argument list (it should be available after authenticating)
 
     val envelopeIdF = fileUploadService.createEnvelope(formTemplateId)
     val formId = FormId(userId, formTemplateId)
