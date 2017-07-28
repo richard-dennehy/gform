@@ -22,5 +22,3 @@ import uk.gov.hmrc.gform.repo.Repo
 
 class FormTemplateRepo(mongo: () => DefaultDB) extends Repo[FormTemplate]("formTemplate", mongo, _._id.value)
 
-
-
