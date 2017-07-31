@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.core
 
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.form.FormField
 import uk.gov.hmrc.gform.services.RepeatingComponentService
 
 object TemplateValidator {

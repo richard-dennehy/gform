@@ -17,11 +17,8 @@
 package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.models.FormField
 
-case class FormData(
-  fields: Seq[FormField]
-)
+case class FormData(fields: Seq[FormField])
 
 object FormData {
 

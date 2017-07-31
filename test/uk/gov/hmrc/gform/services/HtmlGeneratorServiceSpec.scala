@@ -20,6 +20,7 @@ import cats.data.NonEmptyList
 import uk.gov.hmrc.gform.Spec
 import org.jsoup.Jsoup
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.form.FormField
 
 import scala.collection.immutable.List
 

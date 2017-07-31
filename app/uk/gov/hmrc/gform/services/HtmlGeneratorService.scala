@@ -18,9 +18,11 @@ package uk.gov.hmrc.gform.services
 
 import play.twirl.api.Html
 import uk.gov.hmrc.gform.models._
+
 import scala.collection.immutable.List
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import uk.gov.hmrc.gform.models.api.form.FormField
 
 object HtmlGeneratorService extends HtmlGeneratorService {}
 

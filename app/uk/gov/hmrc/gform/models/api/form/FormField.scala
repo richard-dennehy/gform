@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.FieldId
 
 case class FormField(id: FieldId, value: String)
 

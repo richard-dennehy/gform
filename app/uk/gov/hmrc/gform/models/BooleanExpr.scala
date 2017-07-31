@@ -20,6 +20,7 @@ import cats.Monoid
 import julienrf.json.derived
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.{ Invalid, Valid, ValidationResult }
+import uk.gov.hmrc.gform.models.api.form.FormField
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplate
 
 sealed trait BooleanExpr {

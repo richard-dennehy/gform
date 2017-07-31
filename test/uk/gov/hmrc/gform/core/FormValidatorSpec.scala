@@ -21,6 +21,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.form.FormField
 
 class FormValidatorSpec extends Spec {
 

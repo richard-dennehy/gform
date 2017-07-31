@@ -31,7 +31,7 @@ import uk.gov.hmrc.gform.form.FormService
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplate
-import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, Form, FormId }
+import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, Form, FormField, FormId }
 import uk.gov.hmrc.gform.pdfgenerator.PdfGeneratorService
 import uk.gov.hmrc.gform.services.HtmlGeneratorService
 import uk.gov.hmrc.gform.time.TimeProvider
