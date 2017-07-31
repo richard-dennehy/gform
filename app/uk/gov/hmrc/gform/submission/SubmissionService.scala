@@ -28,7 +28,7 @@ import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.fileUpload.FileUploadService
 import uk.gov.hmrc.gform.form.FormService
-import uk.gov.hmrc.gform.formtemplate.FormTemplateService
+import uk.gov.hmrc.gform.formtemplate.{ FormTemplateService, SectionHelper }
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.formtemplate._
 import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, Form, FormField, FormId }
@@ -143,7 +143,7 @@ object SubmissionServiceHelper {
     }
 
     val toSectionFormField: Section => Opt[SectionFormField] = section =>
-      section.atomicFields(data).traverse(formFieldByFieldValue).map(ff => SectionFormField(section.shortName.getOrElse(section.title), ff))
+      SectionHelper.atomicFields(section, data).traverse(formFieldByFieldValue).map(ff => SectionFormField(section.shortName.getOrElse(section.title), ff))
 
     val allSections = formTemplate.sections
     val sectionsToSubmit = allSections.filter(section => BooleanExpr.isTrue(section.includeIf.getOrElse(IncludeIf(IsTrue)).expr, data))

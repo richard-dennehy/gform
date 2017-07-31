@@ -22,6 +22,7 @@ import cats.syntax.either._
 import cats.syntax.traverse._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.formtemplate.SectionHelper
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.FormField
 import uk.gov.hmrc.gform.models.api.formtemplate._
@@ -51,7 +52,7 @@ object FormValidator {
     val ffSet = formFields.filterNot(_.value.isEmpty()).map(_.id).toSet
 
     val (templateFieldsMap, requiredFields) =
-      section.atomicFields(Map.empty).foldLeft((Map.empty[FieldId, FieldValue], Set.empty[FieldId])) {
+      SectionHelper.atomicFields(section, Map.empty).foldLeft((Map.empty[FieldId, FieldValue], Set.empty[FieldId])) {
         case ((acc, reqAcc), fieldValue) =>
 
           fieldValue.`type` match {

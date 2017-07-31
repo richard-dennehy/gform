@@ -55,7 +55,7 @@ object FormTemplateValidator {
   }
 
   private def getMandatoryAndOptionalFields(section: Section): (Set[FieldId], Set[FieldId]) = {
-    section.atomicFields(Map.empty).foldLeft((Set.empty[FieldId], Set.empty[FieldId])) {
+    SectionHelper.atomicFields(section, Map.empty).foldLeft((Set.empty[FieldId], Set.empty[FieldId])) {
       case ((mandatoryAcc, optionalAcc), field) =>
         (field.`type`, field.mandatory) match {
           case (Address(_), _) => (mandatoryAcc ++ Address.mandatoryFields(field.id), optionalAcc ++ Address.optionalFields(field.id))

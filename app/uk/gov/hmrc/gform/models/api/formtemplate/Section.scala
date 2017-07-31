@@ -22,70 +22,12 @@ import uk.gov.hmrc.gform.models.api.form.FormField
 import scala.collection.immutable.List
 
 case class Section(
-    title: String,
-    description: Option[String],
-    shortName: Option[String],
-    includeIf: Option[IncludeIf],
-    fields: List[FieldValue]
-) {
-  private def atomicFields(fieldValues: List[FieldValue], data: Map[FieldId, FormField]): List[FieldValue] = {
-    fieldValues.flatMap { (fieldValue) =>
-      fieldValue.`type` match {
-        case Group(gfvs, _, repMax, _, _, _) => atomicFields(fixLabels(gfvs), data) ++ findIdsInRepeatingGroup(gfvs, repMax, data)
-        case fv @ _ => List(fieldValue)
-      }
-    }
-  }
-
-  def atomicFields(data: Map[FieldId, FormField]): List[FieldValue] = atomicFields(fields, data)
-
-  private def findIdsInRepeatingGroup(fields: List[FieldValue], repeatsMax: Option[Int], data: Map[FieldId, FormField]): List[FieldValue] = {
-
-    val result = if (data.isEmpty) {
-      Nil // no data, no way of knowing if we have repeating groups
-    } else {
-      repeatsMax.map(extractRepeatingGroupFieldIds(fields, _, data)).getOrElse(Nil)
-    }
-
-    atomicFields(result, data)
-  }
-
-  private def extractRepeatingGroupFieldIds(fields: List[FieldValue], repeatsMax: Int, data: Map[FieldId, FormField]): List[FieldValue] = {
-    (1 until repeatsMax).map { i =>
-      fields.flatMap { fieldInGroup =>
-        data.keys.flatMap { key =>
-          val fieldName = s"${i}_${fieldInGroup.id.value}"
-          key.value.startsWith(fieldName) match {
-            case true => List(fieldInGroup.copy(
-              id = FieldId(fieldName),
-              label = buildRepeatingText(Some(fieldInGroup.label), i + 1).getOrElse(""),
-              shortName = buildRepeatingText(fieldInGroup.shortName, i + 1)
-            ))
-            case false => Nil
-          }
-        }.toSet
-      }
-    }.toList.flatten
-  }
-
-  private def fixLabels(fieldValues: List[FieldValue]): List[FieldValue] = {
-    fieldValues.map { field =>
-      if (field.label.contains("$n") || (field.shortName.isDefined && field.shortName.get.contains("$n"))) {
-        field.copy(
-          label = buildRepeatingText(Some(field.label), 1).get,
-          shortName = buildRepeatingText(field.shortName, 1)
-        )
-      } else {
-        field
-      }
-    }
-  }
-
-  private def buildRepeatingText(text: Option[String], index: Int) = text match {
-    case Some(txt) if text.get.contains("$n") => Some(txt.replace("$n", index.toString))
-    case _ => text
-  }
-}
+  title: String,
+  description: Option[String],
+  shortName: Option[String],
+  includeIf: Option[IncludeIf],
+  fields: List[FieldValue]
+)
 
 object Section {
   implicit val format = Json.format[Section]
