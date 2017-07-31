@@ -21,31 +21,7 @@ import julienrf.json.derived
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.{ Invalid, Valid, ValidationResult }
 
-sealed trait Expr {
-  def validate(formTemplate: FormTemplate): ValidationResult = {
-    val fieldNamesIds: List[FieldId] = formTemplate.sections.flatMap(_.fields.map(_.id))
-
-    def checkFields(field1: Expr, field2: Expr): ValidationResult = {
-      val checkField1 = field1.validate(formTemplate)
-      val checkField2 = field2.validate(formTemplate)
-      Monoid[ValidationResult].combineAll(List(checkField1, checkField2))
-    }
-
-    this match {
-      case Add(field1, field2) => checkFields(field1, field2)
-      case Multiply(field1, field2) => checkFields(field1, field2)
-      case FormCtx(value) =>
-        if (fieldNamesIds.map(_.value).contains(value))
-          Valid
-        else
-          Invalid(s"Form field '$value' is not defined in form template.")
-      case AuthCtx(value) => Valid
-      case EeittCtx(value) => Valid
-      case Constant(_) => Valid
-    }
-  }
-}
-
+sealed trait Expr
 final case class Add(field1: Expr, field2: Expr) extends Expr
 final case class Multiply(field1: Expr, field2: Expr) extends Expr
 final case class FormCtx(value: String) extends Expr

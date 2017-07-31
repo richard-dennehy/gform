@@ -22,22 +22,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.gform.core.{ Valid, ValidationResult }
 import uk.gov.hmrc.gform.sharedmodel.form.FormField
 
-sealed trait BooleanExpr {
-  def validate(formTemplate: FormTemplate): ValidationResult = {
-    val fieldNamesIds: List[FieldId] = formTemplate.sections.flatMap(_.fields.map(_.id))
-
-    def checkFields(field1: Expr, field2: Expr): ValidationResult = {
-      val checkField1 = field1.validate(formTemplate)
-      val checkField2 = field2.validate(formTemplate)
-      Monoid[ValidationResult].combineAll(List(checkField1, checkField2))
-    }
-
-    this match {
-      case Equals(field1, field2) => checkFields(field1, field2)
-      case _ => Valid
-    }
-  }
-}
+sealed trait BooleanExpr
 
 final case class Equals(left: Expr, right: Expr) extends BooleanExpr
 final case class Or(left: BooleanExpr, right: BooleanExpr) extends BooleanExpr

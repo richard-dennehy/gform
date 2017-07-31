@@ -17,10 +17,10 @@
 package uk.gov.hmrc.gform.sharedmodel
 
 import cats.data.NonEmptyList
-import play.api.libs.json.{Reads, _}
+import play.api.libs.json.{ Reads, _ }
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.sharedmodel.api.ExampleData
-import uk.gov.hmrc.gform.sharedmodel.formtemplate.{AnyText, _}
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ AnyText, _ }
 
 class FieldValueSpec extends Spec {
 

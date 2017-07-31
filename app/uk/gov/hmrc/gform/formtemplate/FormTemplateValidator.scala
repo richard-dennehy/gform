@@ -111,13 +111,51 @@ object FormTemplateValidator {
   }
 
   def validate(componentType: ComponentType, formTemplate: FormTemplate): ValidationResult = componentType match {
-    case Text(_, expr, _) => expr.validate(formTemplate)
+    case Text(_, expr, _) => validate(expr, formTemplate)
     case Date(_, _, _) => Valid
     case Address(_) => Valid
     case Choice(_, _, _, _, _) => Valid
     case Group(fvs, _, _, _, _, _) => FormTemplateValidator.validate(fvs.map(_.`type`), formTemplate)
     case FileUpload() => Valid
     case InformationMessage(_, _) => Valid
+  }
+
+  def validate(booleanExpr: BooleanExpr, formTemplate: FormTemplate): ValidationResult = {
+    val fieldNamesIds: List[FieldId] = formTemplate.sections.flatMap(_.fields.map(_.id))
+
+    def checkFields(field1: Expr, field2: Expr): ValidationResult = {
+      val checkField1 = validate(field1, formTemplate)
+      val checkField2 = validate(field2, formTemplate)
+      Monoid[ValidationResult].combineAll(List(checkField1, checkField2))
+    }
+
+    booleanExpr match {
+      case Equals(field1, field2) => checkFields(field1, field2)
+      case _ => Valid
+    }
+  }
+
+  def validate(expr: Expr, formTemplate: FormTemplate): ValidationResult = {
+    val fieldNamesIds: List[FieldId] = formTemplate.sections.flatMap(_.fields.map(_.id))
+
+    def checkFields(field1: Expr, field2: Expr): ValidationResult = {
+      val checkField1 = validate(field1, formTemplate)
+      val checkField2 = validate(field2, formTemplate)
+      Monoid[ValidationResult].combineAll(List(checkField1, checkField2))
+    }
+
+    expr match {
+      case Add(field1, field2) => checkFields(field1, field2)
+      case Multiply(field1, field2) => checkFields(field1, field2)
+      case FormCtx(value) =>
+        if (fieldNamesIds.map(_.value).contains(value))
+          Valid
+        else
+          Invalid(s"Form field '$value' is not defined in form template.")
+      case AuthCtx(value) => Valid
+      case EeittCtx(value) => Valid
+      case Constant(_) => Valid
+    }
   }
 
 }
