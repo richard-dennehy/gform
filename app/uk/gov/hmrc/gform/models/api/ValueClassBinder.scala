@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.binders
+package uk.gov.hmrc.gform.models.api
 
 import cats.implicits._
 import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
 import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.form.FormId
+import uk.gov.hmrc.gform.models.api.form.{ FormId, UserId }
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 
 import scala.util.Try

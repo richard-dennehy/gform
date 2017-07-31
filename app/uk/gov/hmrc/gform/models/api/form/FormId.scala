@@ -17,7 +17,6 @@
 package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.models.UserId
 import uk.gov.hmrc.gform.models.api.ValueClassFormat
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 

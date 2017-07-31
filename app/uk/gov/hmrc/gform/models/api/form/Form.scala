@@ -19,7 +19,7 @@ package uk.gov.hmrc.gform.models.api.form
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
-import uk.gov.hmrc.gform.models.{ EnvelopeId, UserId }
+import uk.gov.hmrc.gform.models.EnvelopeId
 
 case class Form(
   _id: FormId,
