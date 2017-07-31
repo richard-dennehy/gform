@@ -19,7 +19,7 @@ package uk.gov.hmrc.gform.core
 import cats.data.NonEmptyList
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.formtemplate.{ AnyDate, AnyText, FormTemplateSchema, FormTemplateValidator }
+import uk.gov.hmrc.gform.formtemplate.{ FormTemplateSchema, FormTemplateValidator }
 import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 import uk.gov.hmrc.gform.sharedmodel.form._
 

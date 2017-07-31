@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.gform.sharedmodel.api
 
-import uk.gov.hmrc.gform.formtemplate.{ AnyDate, AnyText }
-import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.AnyText
 import uk.gov.hmrc.gform.sharedmodel.formtemplate._
-import uk.gov.hmrc.gform.sharedmodel.api.form._
 import uk.gov.hmrc.gform.sharedmodel.form._
 
 import scala.collection.immutable.List

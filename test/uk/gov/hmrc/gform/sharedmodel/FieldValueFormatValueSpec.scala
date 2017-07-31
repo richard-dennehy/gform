@@ -16,10 +16,9 @@
 
 package uk.gov.hmrc.gform.sharedmodel
 
-import play.api.libs.json.{ Reads, _ }
+import play.api.libs.json.{Reads, _}
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.formtemplate.AnyText
-import uk.gov.hmrc.gform.sharedmodel.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{AnyText, _}
 
 class FieldValueFormatValueSpec extends Spec {
 

@@ -18,8 +18,7 @@ package uk.gov.hmrc.gform.sharedmodel
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.formtemplate.AnyText
-import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FieldValue, Text }
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{AnyText, FieldValue, Text}
 
 class JsonParseTestValue extends Spec {
 

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.formtemplate
+package uk.gov.hmrc.gform.sharedmodel.formtemplate
 
 import julienrf.json.derived
 import play.api.libs.json._
-import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ DateValue, Expr }
 
 sealed trait FormatExpr
 final case class OrientationFormat(value: String) extends FormatExpr
