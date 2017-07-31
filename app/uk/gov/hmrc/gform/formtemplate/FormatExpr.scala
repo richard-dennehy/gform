@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.formtemplate
 
 import julienrf.json.derived
 import play.api.libs.json._
-import uk.gov.hmrc.gform.models.api.formtemplate.{ DateValue, Expr }
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ DateValue, Expr }
 
 sealed trait FormatExpr
 final case class OrientationFormat(value: String) extends FormatExpr

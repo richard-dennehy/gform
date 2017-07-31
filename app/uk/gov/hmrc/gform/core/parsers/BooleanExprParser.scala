@@ -19,9 +19,9 @@ package uk.gov.hmrc.gform.core.parsers
 import parseback._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.core.parsers.BasicParsers._
-import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.sharedmodel._
 import uk.gov.hmrc.gform.core.parsers.ValueParser._
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 
 object BooleanExprParser {
 

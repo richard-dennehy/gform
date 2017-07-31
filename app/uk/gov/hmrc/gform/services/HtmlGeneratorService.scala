@@ -17,13 +17,13 @@
 package uk.gov.hmrc.gform.services
 
 import play.twirl.api.Html
-import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.sharedmodel._
 
 import scala.collection.immutable.List
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate.{ Address, Choice, Date, FieldValue }
+import uk.gov.hmrc.gform.sharedmodel.form.FormField
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ Address, Choice, Date, FieldValue }
 import uk.gov.hmrc.gform.submission.SectionFormField
 
 object HtmlGeneratorService extends HtmlGeneratorService {}

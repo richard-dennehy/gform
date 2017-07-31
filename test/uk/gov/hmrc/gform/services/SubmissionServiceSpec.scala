@@ -18,9 +18,10 @@ package uk.gov.hmrc.gform.services
 
 import uk.gov.hmrc.gform._
 import uk.gov.hmrc.gform.formtemplate.AnyText
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.form._
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.api.form._
+import uk.gov.hmrc.gform.sharedmodel.form._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 import uk.gov.hmrc.gform.submission.{ SectionFormField, SubmissionServiceHelper }
 import uk.gov.hmrc.play.http.HeaderCarrier
 

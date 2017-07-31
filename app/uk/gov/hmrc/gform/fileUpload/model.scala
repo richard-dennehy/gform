@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.gform.models.api.form.EnvelopeId
+import uk.gov.hmrc.gform.sharedmodel.form.EnvelopeId
 import uk.gov.hmrc.gform.submission.SubmissionRef
 import uk.gov.hmrc.gform.typeclasses.Now
 

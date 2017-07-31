@@ -16,8 +16,8 @@
 
 package uk.gov.hmrc.gform.formtemplate
 
-import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FieldId, FieldValue, Group, Section }
+import uk.gov.hmrc.gform.sharedmodel.form.FormField
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FieldId, FieldValue, Group, Section }
 
 import scala.collection.immutable.List
 

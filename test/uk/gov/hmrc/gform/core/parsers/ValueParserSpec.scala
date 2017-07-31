@@ -20,9 +20,9 @@ import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.formtemplate._
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.ExampleData
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.api.ExampleData
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 
 class ValueParserSpec extends Spec {
 

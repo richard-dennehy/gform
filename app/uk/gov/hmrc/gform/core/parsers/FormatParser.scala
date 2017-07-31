@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.core.parsers
 
 import parseback._
 import uk.gov.hmrc.gform.core.Opt
-import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.sharedmodel._
 import BasicParsers._
 import uk.gov.hmrc.gform.formtemplate._
 

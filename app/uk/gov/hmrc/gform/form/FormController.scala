@@ -22,9 +22,10 @@ import uk.gov.hmrc.gform.core.FormValidator
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.fileUpload.FileUploadService
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.form.{ FormData, FormId, UserId }
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId, Section, SectionNumber }
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.api.form.{ FormId, UserId }
+import uk.gov.hmrc.gform.sharedmodel.form.{ FormData, FormId, UserId }
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FormTemplate, FormTemplateId, Section, SectionNumber }
 import uk.gov.hmrc.play.http.BadRequestException
 
 import scala.concurrent.ExecutionContext.Implicits.global

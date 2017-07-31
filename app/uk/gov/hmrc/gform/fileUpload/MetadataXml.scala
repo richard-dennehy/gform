@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.gform.fileUpload
 
-import uk.gov.hmrc.gform.models.api.formtemplate.DmsSubmission
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.DmsSubmission
 import uk.gov.hmrc.gform.submission.{ SubmissionAndPdf, SubmissionRef }
 import uk.gov.hmrc.gform.typeclasses.Attribute
 

@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform.formtemplate
 
 import reactivemongo.api.DefaultDB
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateRaw }
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FormTemplate, FormTemplateRaw }
 import uk.gov.hmrc.gform.repo.Repo
 
 class FormTemplateRepo(mongo: () => DefaultDB) extends Repo[FormTemplate]("formTemplate", mongo, _._id.value)

@@ -17,7 +17,8 @@
 package uk.gov.hmrc.gform.fileUpload
 
 import akka.util.ByteString
-import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, FileId }
+import uk.gov.hmrc.gform.sharedmodel.api.form.FileId
+import uk.gov.hmrc.gform.sharedmodel.form.{ EnvelopeId, FileId }
 import uk.gov.hmrc.gform.wshttp.WSHttp
 import uk.gov.hmrc.play.http.HeaderCarrier
 

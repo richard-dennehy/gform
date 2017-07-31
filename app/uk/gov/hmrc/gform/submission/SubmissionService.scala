@@ -29,11 +29,12 @@ import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.fileUpload.FileUploadService
 import uk.gov.hmrc.gform.form.FormService
 import uk.gov.hmrc.gform.formtemplate.{ FormTemplateService, SectionHelper }
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate._
-import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, Form, FormField, FormId }
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.api.form.{ Form, FormField, FormId }
 import uk.gov.hmrc.gform.pdfgenerator.PdfGeneratorService
 import uk.gov.hmrc.gform.services.HtmlGeneratorService
+import uk.gov.hmrc.gform.sharedmodel.form.{ EnvelopeId, Form, FormField, FormId }
 import uk.gov.hmrc.gform.time.TimeProvider
 import uk.gov.hmrc.gform.typeclasses._
 import uk.gov.hmrc.play.http.{ HeaderCarrier, HttpResponse }

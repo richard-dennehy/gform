@@ -21,10 +21,10 @@ import cats.instances.list._
 import cats.syntax.traverse._
 import parseback._
 import uk.gov.hmrc.gform.core.Opt
-import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.sharedmodel._
 import BasicParsers._
 import uk.gov.hmrc.gform.formtemplate.{ ChoiceExpression, DateExpression, TextExpression, ValueExpr }
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 
 object ValueParser {
 

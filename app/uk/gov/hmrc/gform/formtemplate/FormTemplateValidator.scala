@@ -19,10 +19,10 @@ package uk.gov.hmrc.gform.formtemplate
 import cats.Monoid
 import uk.gov.hmrc.gform.core.{ Invalid, Opt, Valid, ValidationResult }
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 import uk.gov.hmrc.gform.services.RepeatingComponentService
+import uk.gov.hmrc.gform.sharedmodel.form.FormField
 
 import scala.collection.immutable.List
 

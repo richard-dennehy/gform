@@ -18,8 +18,8 @@ package uk.gov.hmrc.gform.core.parsers
 
 import org.scalatest._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 
 class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues with OptionValues {
 
