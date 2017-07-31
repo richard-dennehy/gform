@@ -19,6 +19,7 @@ package uk.gov.hmrc.gform.sharedmodel.api.form
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.sharedmodel.api.ExampleData
+import uk.gov.hmrc.gform.sharedmodel.form.Form
 
 class FormSpec extends Spec {
 

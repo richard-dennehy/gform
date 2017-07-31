@@ -20,9 +20,8 @@ import cats.data.NonEmptyList
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.formtemplate.{ AnyDate, AnyText, FormTemplateSchema, FormTemplateValidator }
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
+import uk.gov.hmrc.gform.sharedmodel.form._
 
 class TemplateValidatorSpec extends Spec {
 

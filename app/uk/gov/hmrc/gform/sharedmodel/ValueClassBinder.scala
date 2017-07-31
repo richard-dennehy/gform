@@ -19,7 +19,6 @@ package uk.gov.hmrc.gform.sharedmodel
 import cats.implicits._
 import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
-import uk.gov.hmrc.gform.sharedmodel.api.form.UserId
 import uk.gov.hmrc.gform.sharedmodel.form.{ FormId, UserId }
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FormTemplateId, FormTemplateRawId, SectionNumber }
 

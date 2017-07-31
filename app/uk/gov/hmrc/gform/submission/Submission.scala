@@ -19,7 +19,6 @@ package uk.gov.hmrc.gform.submission
 import java.time.LocalDateTime
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.gform.sharedmodel.api.form.FormId
 import uk.gov.hmrc.gform.sharedmodel.form.{ EnvelopeId, FormId }
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormTemplateId
 

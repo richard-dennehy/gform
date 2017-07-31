@@ -16,9 +16,9 @@
 
 /*
 
-Put in this package common case classes which are exposed via REST API.
-Other clients/projects can than just copy this package.
+When changing, in first place please change classes in GFORM project, and then propagate them to dependent projects (gform-frontend, TODO)
 
-Please first classes in GFORM project, and then propagate them to dependent projects (gform-frontend, TODO)
+Put in this package common case classes which are shared among other projects.
+Than copy this package to other projects.
 
- */
+*/
