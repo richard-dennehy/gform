@@ -17,7 +17,6 @@
 package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.gform.models.api.form.FormField
 
 import scala.collection.immutable.List
 
@@ -31,5 +30,4 @@ case class Section(
 
 object Section {
   implicit val format = Json.format[Section]
-
 }
