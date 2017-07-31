@@ -20,7 +20,6 @@ import julienrf.json.derived
 import play.api.libs.json._
 
 sealed trait DateValue
-
 final case object TodayDateValue extends DateValue
 final case class ExactDateValue(year: Int, month: Int, day: Int) extends DateValue
 final case class NextDateValue(month: Int, day: Int) extends DateValue

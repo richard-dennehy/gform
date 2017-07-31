@@ -16,10 +16,8 @@
 
 package uk.gov.hmrc.gform.sharedmodel.formtemplate
 
-import cats.Monoid
 import julienrf.json.derived
 import play.api.libs.json._
-import uk.gov.hmrc.gform.core.{ Invalid, Valid, ValidationResult }
 
 sealed trait Expr
 final case class Add(field1: Expr, field2: Expr) extends Expr
