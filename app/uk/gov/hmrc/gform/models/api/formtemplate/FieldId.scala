@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import play.api.libs.json.{ Format, JsError, JsString, JsSuccess, Reads, Writes }
+import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 
 case class FieldId(value: String) extends AnyVal {
   override def toString = value
@@ -28,11 +29,5 @@ case class FieldId(value: String) extends AnyVal {
 
 object FieldId {
 
-  val writes = Writes[FieldId](id => JsString(id.value))
-  val reads = Reads[FieldId] {
-    case JsString(value) => JsSuccess(FieldId(value))
-    case otherwise => JsError(s"Invalid fieldId, expected JsString, got: $otherwise")
-  }
-
-  implicit val format = Format[FieldId](reads, writes)
+  implicit val format: OFormat[FieldId] = ValueClassFormat.format("id", FieldId.apply, _.value)
 }

@@ -14,14 +14,45 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.core
+package uk.gov.hmrc.gform.formtemplate
 
+import cats.Monoid
+import uk.gov.hmrc.gform.core.{ Invalid, Opt, Valid, ValidationResult }
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.FormField
+import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate._
 import uk.gov.hmrc.gform.services.RepeatingComponentService
 
-object TemplateValidator {
+import scala.collection.immutable.List
+
+object FormTemplateValidator {
+
+  def validateUniqueFields(sectionsList: List[Section]): ValidationResult = {
+    val fieldIds: List[FieldId] = sectionsList.flatMap(_.fields.map(_.id))
+    val duplicates: List[FieldId] = fieldIds.groupBy(identity).collect { case (fId, List(_, _, _*)) => fId }.toList
+
+    duplicates.isEmpty match {
+      case true => Valid
+      case false => Invalid(s"Some FieldIds are defined more than once: ${duplicates.map(_.value)}")
+    }
+  }
+
+  def validateChoiceHelpText(sectionsList: List[Section]): ValidationResult = {
+    val choiceFieldIdMap: Map[FieldId, Boolean] = sectionsList.flatMap(_.fields).map(fv => (fv.id, fv.`type`))
+      .collect {
+        case (fId, Choice(_, options, _, _, helpTextList @ Some(x :: xs))) =>
+          (fId, options.toList.size.equals(helpTextList.getOrElse(List.empty).size))
+      }
+      .toMap
+
+    val choiceFieldIdResult = choiceFieldIdMap.filter(value => value._2.equals(false))
+
+    choiceFieldIdResult.isEmpty match {
+      case true => Valid
+      case false => Invalid(s"Choice components doesn't have equal number of choices and help texts ${choiceFieldIdResult.keys.toList}")
+    }
+  }
 
   private def getMandatoryAndOptionalFields(section: Section): (Set[FieldId], Set[FieldId]) = {
     section.atomicFields(Map.empty).foldLeft((Set.empty[FieldId], Set.empty[FieldId])) {
@@ -70,8 +101,24 @@ object TemplateValidator {
         val sectionsForPrint = sections.map(_.fields.map(_.id))
 
         Left(UnexpectedState(s"""|Cannot find a section corresponding to the formFields
-                              |FormFields: $formFieldIds
-                              |Sections: $sectionsForPrint""".stripMargin))
+                                 |FormFields: $formFieldIds
+                                 |Sections: $sectionsForPrint""".stripMargin))
     }
   }
+
+  def validate(exprs: List[ComponentType], formTemplate: FormTemplate): ValidationResult = {
+    val results = exprs.map(validate(_, formTemplate))
+    Monoid[ValidationResult].combineAll(results)
+  }
+
+  def validate(componentType: ComponentType, formTemplate: FormTemplate): ValidationResult = componentType match {
+    case Text(_, expr, _) => expr.validate(formTemplate)
+    case Date(_, _, _) => Valid
+    case Address(_) => Valid
+    case Choice(_, _, _, _, _) => Valid
+    case Group(fvs, _, _, _, _, _) => FormTemplateValidator.validate(fvs.map(_.`type`), formTemplate)
+    case FileUpload() => Valid
+    case InformationMessage(_, _) => Valid
+  }
+
 }

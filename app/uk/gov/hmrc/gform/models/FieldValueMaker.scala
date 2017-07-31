@@ -22,6 +22,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.core.parsers.{ FormatParser, PresentationHintParser, ValueParser }
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 case class MES(mandatory: Boolean, editable: Boolean, submissible: Boolean)
 

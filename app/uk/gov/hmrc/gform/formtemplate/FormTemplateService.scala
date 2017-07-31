@@ -20,7 +20,8 @@ import cats.implicits._
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId, FormTemplateSchema }
+import uk.gov.hmrc.gform.models.api.formtemplate.{ ComponentType, FormTemplate, FormTemplateId, Section }
+import uk.gov.hmrc.gform.models.formtemplate.FormTemplateSchema
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -56,9 +57,9 @@ class FormTemplateService(
     // format: OFF
     for {
       _          <- fromOptA          (FormTemplateSchema.jsonSchema.conform(formTemplate).toEither)
-      _          <- fromOptA          (Section.validateChoiceHelpText(sectionsList).toEither)
-      _          <- fromOptA          (Section.validateUniqueFields(sectionsList).toEither)
-      _          <- fromOptA          (ComponentType.validate(exprs, formTemplate).toEither)
+      _          <- fromOptA          (FormTemplateValidator.validateChoiceHelpText(sectionsList).toEither)
+      _          <- fromOptA          (FormTemplateValidator.validateUniqueFields(sectionsList).toEither)
+      _          <- fromOptA          (FormTemplateValidator.validate(exprs, formTemplate).toEither)
       res        <- formTemplateRepo.upsert(formTemplate)
     } yield res
     // format: ON

@@ -19,6 +19,7 @@ package uk.gov.hmrc.gform.models
 import cats.data.NonEmptyList
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 class JsonParseTestGroup extends Spec {
 

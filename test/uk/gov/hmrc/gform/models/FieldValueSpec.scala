@@ -20,6 +20,7 @@ import cats.data.NonEmptyList
 import play.api.libs.json.{ Reads, _ }
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.models.api.ExampleData
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 class FieldValueSpec extends Spec {
 

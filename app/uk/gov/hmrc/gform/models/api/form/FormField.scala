@@ -17,10 +17,25 @@
 package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.models.FieldId
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
+
+import uk.gov.hmrc.gform.models.api.formtemplate.FieldId
 
 case class FormField(id: FieldId, value: String)
 
 object FormField {
-  implicit val format: Format[FormField] = Json.format[FormField]
+
+  implicit val reads: Reads[FormField] = (
+    (FieldId.format: Reads[FieldId]) and
+    (JsPath \ "value").read[String]
+  )(FormField.apply _)
+
+  implicit val writes = OWrites[FormField] { formField =>
+
+    FieldId.format.writes(formField.id) ++
+      Json.obj("value" -> formField.value)
+  }
+
+  implicit val format: OFormat[FormField] = OFormat(reads, writes)
 }

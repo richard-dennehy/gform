@@ -23,6 +23,7 @@ import scala.collection.immutable.List
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import uk.gov.hmrc.gform.models.api.form.FormField
+import uk.gov.hmrc.gform.models.api.formtemplate.{ Address, Choice, Date, FieldValue }
 
 object HtmlGeneratorService extends HtmlGeneratorService {}
 

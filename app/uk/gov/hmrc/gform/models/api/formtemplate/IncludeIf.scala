@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.parsers.BooleanExprParser
+import uk.gov.hmrc.gform.models.BooleanExpr
 
 case class IncludeIf(expr: BooleanExpr)
 

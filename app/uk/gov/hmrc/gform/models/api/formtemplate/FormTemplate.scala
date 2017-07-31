@@ -17,9 +17,7 @@
 package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.core.{ JsonSchema, SchemaValidator }
 import uk.gov.hmrc.gform.models.api.formtemplate
-import uk.gov.hmrc.gform.models.{ DmsSubmission, Section }
 
 case class FormTemplate(
   _id: FormTemplateId,
@@ -37,21 +35,3 @@ object FormTemplate {
   implicit val format: OFormat[FormTemplate] = Json.format[FormTemplate]
 }
 
-case class FormTemplateSchema(value: JsObject)
-
-object FormTemplateSchema {
-
-  val schema: FormTemplateSchema = {
-    val json: JsObject = Json.parse(
-      getClass.getResourceAsStream("/formTemplateSchema.json")
-    ).as[JsObject]
-    FormTemplateSchema(json)
-  }
-
-  val jsonSchema: JsonSchema = SchemaValidator.conform(schema).fold(
-    _ => throw new UnsupportedOperationException("Looks like we have corrupted schema file: formTemplateSchema.json"),
-    identity
-  )
-
-  implicit val format: OFormat[FormTemplateSchema] = Json.format[FormTemplateSchema]
-}

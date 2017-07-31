@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.gform.models
 
+import uk.gov.hmrc.gform.models.api.formtemplate.DmsSubmission
 import uk.gov.hmrc.gform.typeclasses.Attribute
 
 import scala.xml.Elem

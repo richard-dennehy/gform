@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.gform.services
 
-import uk.gov.hmrc.gform.models.{ FieldId, FieldValue }
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FieldId, FieldValue }
 
 object RepeatingComponentService {
 

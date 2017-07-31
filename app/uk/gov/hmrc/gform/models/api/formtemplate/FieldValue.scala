@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models._
 
 case class FieldValue(
   id: FieldId,
@@ -28,7 +29,7 @@ case class FieldValue(
   mandatory: Boolean,
   editable: Boolean,
   submissible: Boolean,
-  presentationHint: Option[PresentationHintExpr] = Option.empty[PresentationHintExpr]
+  presentationHint: Option[PresentationHintExpr] = None
 
 )
 

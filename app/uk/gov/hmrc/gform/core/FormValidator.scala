@@ -24,8 +24,10 @@ import play.api.libs.json._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.FormField
+import uk.gov.hmrc.gform.models.api.formtemplate._
 import uk.gov.hmrc.gform.services.RepeatingComponentService
 
+//TODO move to form package
 object FormValidator {
   def conform(json: JsValue /* , schema: JsonSchema */ ): Opt[List[FormField]] = {
     /* for {

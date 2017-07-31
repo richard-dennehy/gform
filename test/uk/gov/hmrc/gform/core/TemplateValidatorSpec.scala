@@ -19,9 +19,11 @@ package uk.gov.hmrc.gform.core
 import cats.data.NonEmptyList
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.formtemplate.FormTemplateValidator
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateSchema }
+import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.models.formtemplate.FormTemplateSchema
 
 class TemplateValidatorSpec extends Spec {
 
@@ -225,7 +227,7 @@ class TemplateValidatorSpec extends Spec {
 
     formTemplateJsResult match {
       case JsSuccess(formTempl, _) =>
-        val result = Section.validateUniqueFields(formTempl.sections).toEither
+        val result = FormTemplateValidator.validateUniqueFields(formTempl.sections).toEither
 
         result.left.value canEqual s"Some FieldIds are defined more than once: ${
           List(
@@ -307,7 +309,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("businessAddress-country"), "country")
     )
     val sections = List(businessDetailsSection)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -320,7 +322,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("businessAddress-postcode"), "postcode")
     )
     val sections = List(businessDetailsSection)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -334,7 +336,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("businessAddress.postcode"), "postcode")
     )
     val sections = List(businessDetailsSection)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('left)
   }
@@ -350,7 +352,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("attacker.injected.field"), "); drop all tables;")
     )
     val sections = List(businessDetailsSection)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('left)
   }
@@ -364,7 +366,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("startDate-year"), "2000")
     )
     val sections = List(sectionWithDate)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -377,7 +379,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("startDate.year"), "2000")
     )
     val sections = List(sectionWithDate)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('left)
   }
@@ -392,7 +394,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("attacker.injected.field"), "); drop all tables;")
     )
     val sections = List(sectionWithDate)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('left)
   }
@@ -410,7 +412,7 @@ class TemplateValidatorSpec extends Spec {
     val formFields = List() // Nothing submitted
 
     val sections = List(section)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -428,7 +430,7 @@ class TemplateValidatorSpec extends Spec {
     val formFields = List() // Nothing submitted
 
     val sections = List(section)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -446,7 +448,7 @@ class TemplateValidatorSpec extends Spec {
     val formFields = List() // Nothing submitted
 
     val sections = List(section)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('left)
   }
@@ -458,7 +460,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("dutyType"), "0,1")
     )
     val sections = List(sectionWithCheckbox)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -470,7 +472,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("dutyType"), "0")
     )
     val sections = List(sectionWithRadio)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }
@@ -482,7 +484,7 @@ class TemplateValidatorSpec extends Spec {
       FormField(FieldId("taxType"), "0")
     )
     val sections = List(sectionWithYesNo)
-    val res = TemplateValidator.getMatchingSection(formFields, sections)
+    val res = FormTemplateValidator.getMatchingSection(formFields, sections)
 
     res should be('right)
   }

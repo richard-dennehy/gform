@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-/*
+package uk.gov.hmrc.gform.models
 
-Put in this package common case classes which are exposed via REST API.
-Other clients/projects can than just copy this package.
+import uk.gov.hmrc.gform.models.api.form.FormField
+import uk.gov.hmrc.gform.models.api.formtemplate.FieldValue
 
-Please first classes in GFORM project, and then propagate them to dependent projects (gform-frontend, TODO)
+import scala.collection.immutable.List
 
- */
+case class SectionFormField(
+  title: String,
+  fields: List[(List[FormField], FieldValue)]
+)

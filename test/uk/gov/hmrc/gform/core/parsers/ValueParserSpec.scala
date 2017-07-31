@@ -19,6 +19,7 @@ package uk.gov.hmrc.gform.core.parsers
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.formtemplate.FormTemplateValidator
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.ExampleData
 import uk.gov.hmrc.gform.models.api.formtemplate._
@@ -204,22 +205,22 @@ class ValueParserSpec extends Spec {
 
   "Expr.validate" should "return Valid if expression include fieldName id present in the form template" in {
 
-    val res = ComponentType.validate(List(Text(AnyText, FormCtx("firstName"), total = false)), formTemplateWithOneSection)
+    val res = FormTemplateValidator.validate(List(Text(AnyText, FormCtx("firstName"), total = false)), formTemplateWithOneSection)
     res should be(Valid)
   }
 
   it should "return Valid if expression Add fields present in the form template" in {
-    val res = ComponentType.validate(List(Text(AnyText, Add(FormCtx("firstName"), FormCtx("lastName")), total = false)), formTemplateWithOneSection)
+    val res = FormTemplateValidator.validate(List(Text(AnyText, Add(FormCtx("firstName"), FormCtx("lastName")), total = false)), formTemplateWithOneSection)
     res should be(Valid)
   }
 
   it should "return Valid if expression Multiply fields present in the form template" in {
-    val res = ComponentType.validate(List(Text(AnyText, Multiply(FormCtx("firstName"), FormCtx("lastName")), total = false)), formTemplateWithOneSection)
+    val res = FormTemplateValidator.validate(List(Text(AnyText, Multiply(FormCtx("firstName"), FormCtx("lastName")), total = false)), formTemplateWithOneSection)
     res should be(Valid)
   }
 
   it should "return Invalid if expression include fieldName id not present in the form template" in {
-    val res = ComponentType.validate(List(Text(AnyText, FormCtx("firstNameTypo"), total = false)), formTemplateWithOneSection)
+    val res = FormTemplateValidator.validate(List(Text(AnyText, FormCtx("firstNameTypo"), total = false)), formTemplateWithOneSection)
     res should be(Invalid("Form field 'firstNameTypo' is not defined in form template."))
   }
 }
