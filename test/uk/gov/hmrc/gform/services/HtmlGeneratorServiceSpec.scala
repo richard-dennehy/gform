@@ -20,6 +20,7 @@ import cats.data.NonEmptyList
 import uk.gov.hmrc.gform.Spec
 import org.jsoup.Jsoup
 import uk.gov.hmrc.gform.formtemplate.{ AnyDate, AnyText }
+import uk.gov.hmrc.gform.pdfgenerator.HtmlGeneratorService
 import uk.gov.hmrc.gform.sharedmodel._
 import uk.gov.hmrc.gform.sharedmodel.form.FormField
 import uk.gov.hmrc.gform.sharedmodel.formtemplate._

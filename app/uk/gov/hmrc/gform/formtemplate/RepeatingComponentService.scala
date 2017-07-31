@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.services
+package uk.gov.hmrc.gform.formtemplate
 
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ FieldId, FieldValue }
 

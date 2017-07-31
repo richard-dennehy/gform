@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.services
+package uk.gov.hmrc.gform.pdfgenerator
 
-import play.twirl.api.Html
-import uk.gov.hmrc.gform.sharedmodel._
-
-import scala.collection.immutable.List
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import play.twirl.api.Html
 import uk.gov.hmrc.gform.sharedmodel.form.FormField
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.{ Address, Choice, Date, FieldValue }
 import uk.gov.hmrc.gform.submission.SectionFormField
+
+import scala.collection.immutable.List
 
 object HtmlGeneratorService extends HtmlGeneratorService {}
 

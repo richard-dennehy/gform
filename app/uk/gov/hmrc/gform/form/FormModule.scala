@@ -20,13 +20,12 @@ import uk.gov.hmrc.gform.fileUpload.FileUploadModule
 import uk.gov.hmrc.gform.formtemplate.FormTemplateModule
 import uk.gov.hmrc.gform.mongo.MongoModule
 import uk.gov.hmrc.gform.save4later.{ Save4Later, Save4LaterModule }
-import uk.gov.hmrc.gform.submission.SubmissionModule
 
 class FormModule(
-                  mongoModule: MongoModule,
-                  shortLivedCacheModule: Save4LaterModule,
-                  formTemplateModule: FormTemplateModule,
-                  fileUploadModule: FileUploadModule
+    mongoModule: MongoModule,
+    shortLivedCacheModule: Save4LaterModule,
+    formTemplateModule: FormTemplateModule,
+    fileUploadModule: FileUploadModule
 ) {
 
   val save4later = new Save4Later(shortLivedCacheModule.shortLivedCache, scala.concurrent.ExecutionContext.Implicits.global)
