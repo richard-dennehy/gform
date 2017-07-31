@@ -22,6 +22,7 @@ import parseback._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.core.parsers.BasicParsers._
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 object PresentationHintParser {
 

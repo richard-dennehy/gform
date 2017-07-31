@@ -24,7 +24,7 @@ import uk.gov.hmrc.gform.fileUpload.FileUploadService
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.{ FormData, FormId, UserId }
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId, Section }
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId, Section, SectionNumber }
 import uk.gov.hmrc.play.http.BadRequestException
 
 import scala.concurrent.ExecutionContext.Implicits.global

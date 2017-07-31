@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import julienrf.json.derived
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-/**
- * Created by dimitra on 04/04/17.
- */
 final case class Offset(value: Int) extends AnyVal
 
 object Offset {

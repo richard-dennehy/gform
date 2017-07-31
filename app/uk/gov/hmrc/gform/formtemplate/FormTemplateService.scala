@@ -19,9 +19,7 @@ package uk.gov.hmrc.gform.formtemplate
 import cats.implicits._
 import play.api.libs.json.Json
 import uk.gov.hmrc.gform.core._
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate.{ ComponentType, FormTemplate, FormTemplateId, Section }
-import uk.gov.hmrc.gform.models.formtemplate.FormTemplateSchema
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future

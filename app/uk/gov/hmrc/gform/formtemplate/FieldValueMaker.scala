@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.formtemplate
 
 import cats.data.NonEmptyList
 import cats.syntax.all._
@@ -22,7 +22,6 @@ import play.api.libs.json._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.core.parsers.{ FormatParser, PresentationHintParser, ValueParser }
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.formtemplate._
 import uk.gov.hmrc.gform.models.api.formtemplate._
 
 case class MES(mandatory: Boolean, editable: Boolean, submissible: Boolean)

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.submission
 
 import cats.data.State
-import play.api.libs.json.{ Format, JsError, JsString, JsSuccess, Reads, Writes }
-import scala.util.Random
+import play.api.libs.json._
 import uk.gov.hmrc.gform.typeclasses.Rnd
+
+import scala.util.Random
 
 case class SubmissionRef(value: String) extends AnyVal {
   override def toString = value

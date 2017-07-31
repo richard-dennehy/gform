@@ -22,8 +22,7 @@ import play.api.mvc.Action
 import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.models._
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId }
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId, FormTemplateRaw, FormTemplateRawId }
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

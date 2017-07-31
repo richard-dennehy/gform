@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.submission
 
-import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.form.FormField
+import uk.gov.hmrc.gform.models.api.formtemplate.FieldValue
 
-case class SectionNumber(value: Int)
+import scala.collection.immutable.List
 
-object SectionNumber {
-  implicit val format: Format[SectionNumber] = Format[SectionNumber](
-    Reads[SectionNumber] {
-      case JsNumber(n: BigDecimal) => JsSuccess(SectionNumber(n.toInt))
-      case unknown => JsError(s"JsNumber value expected, got: $unknown")
-    },
-    Writes[SectionNumber](a => JsNumber(a.value))
-  )
-
-  val firstSection = SectionNumber(0)
-}
+case class SectionFormField(
+  title: String,
+  fields: List[(List[FormField], FieldValue)]
+)

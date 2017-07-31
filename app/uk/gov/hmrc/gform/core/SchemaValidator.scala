@@ -23,7 +23,7 @@ import cats.syntax.either._
 import cats.syntax.traverse._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.gform.models.formtemplate.FormTemplateSchema
+import uk.gov.hmrc.gform.formtemplate.FormTemplateSchema
 
 sealed trait JsonSchema {
 

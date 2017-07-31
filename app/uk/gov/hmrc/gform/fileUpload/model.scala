@@ -16,6 +16,14 @@
 
 package uk.gov.hmrc.gform.fileUpload
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+import play.api.libs.json.Json
+import uk.gov.hmrc.gform.models.api.form.EnvelopeId
+import uk.gov.hmrc.gform.submission.SubmissionRef
+import uk.gov.hmrc.gform.typeclasses.Now
+
 case class Config(
   fileUploadBaseUrl: String,
   fileUploadFrontendBaseUrl: String,
@@ -34,4 +42,22 @@ object ContentType {
   val `application/xml; charset=UTF-8` = ContentType("application/xml; charset=UTF-8")
   val `image/jpeg` = ContentType("image/jpeg")
   val `text/plain` = ContentType("text/plain")
+}
+
+case class ReconciliationId(value: String) extends AnyVal {
+  override def toString = value
+}
+
+object ReconciliationId {
+
+  def create(submissionRef: SubmissionRef)(implicit now: Now[LocalDateTime]): ReconciliationId = {
+    val dateFormatter = now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+    ReconciliationId(submissionRef + "-" + dateFormatter)
+  }
+}
+
+case class RouteEnvelopeRequest(envelopeId: EnvelopeId, application: String, destination: String)
+
+object RouteEnvelopeRequest {
+  implicit val format = Json.format[RouteEnvelopeRequest]
 }

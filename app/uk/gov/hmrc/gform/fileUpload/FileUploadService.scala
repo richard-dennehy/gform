@@ -23,6 +23,7 @@ import uk.gov.hmrc.gform.fileUpload.FileUploadService.FileIds._
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, FileId }
 import uk.gov.hmrc.gform.models.api.formtemplate.{ DmsSubmission, FormTemplateId }
+import uk.gov.hmrc.gform.submission.{ SubmissionAndPdf, SubmissionRef }
 import uk.gov.hmrc.gform.time.TimeProvider
 import uk.gov.hmrc.play.http.HeaderCarrier
 

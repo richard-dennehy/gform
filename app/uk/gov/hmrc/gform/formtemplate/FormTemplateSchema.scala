@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models.formtemplate
+package uk.gov.hmrc.gform.formtemplate
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.{ JsonSchema, SchemaValidator }

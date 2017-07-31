@@ -17,6 +17,7 @@
 package uk.gov.hmrc.gform.models
 
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.submission.SubmissionRef
 
 class SubmissionRefSpec extends Spec {
 

@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import play.api.libs.json.Json
-import uk.gov.hmrc.gform.models.api.form.EnvelopeId
+import play.api.libs.json._
 
-case class RouteEnvelopeRequest(envelopeId: EnvelopeId, application: String, destination: String)
+case class SectionNumber(value: Int)
 
-object RouteEnvelopeRequest {
-  implicit val format = Json.format[RouteEnvelopeRequest]
+object SectionNumber {
+  implicit val format: Format[SectionNumber] = Format[SectionNumber](
+    Reads[SectionNumber] {
+      case JsNumber(n: BigDecimal) => JsSuccess(SectionNumber(n.toInt))
+      case unknown => JsError(s"JsNumber value expected, got: $unknown")
+    },
+    Writes[SectionNumber](a => JsNumber(a.value))
+  )
+
+  val firstSection = SectionNumber(0)
 }

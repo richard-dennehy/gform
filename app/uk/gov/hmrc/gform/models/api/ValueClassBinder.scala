@@ -21,7 +21,7 @@ import play.api.libs.json.{ JsError, JsString, JsSuccess, Reads }
 import play.api.mvc.PathBindable
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.{ FormId, UserId }
-import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplateId, FormTemplateRawId, SectionNumber }
 
 import scala.util.Try
 

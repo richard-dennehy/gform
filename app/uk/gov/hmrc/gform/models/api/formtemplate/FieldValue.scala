@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import uk.gov.hmrc.gform.formtemplate.FieldValueMaker
 import uk.gov.hmrc.gform.models._
 
 case class FieldValue(

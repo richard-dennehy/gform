@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.models.api.formtemplate.FieldValue
+import uk.gov.hmrc.gform.models.api.formtemplate.{ CollapseGroupUnderLabel, FieldValue, PresentationHints, SummariseGroupAsGrid }
 
 class JsonParseTestPresentationHint extends Spec {
 

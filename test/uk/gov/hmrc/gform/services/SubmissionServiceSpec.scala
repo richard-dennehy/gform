@@ -21,7 +21,7 @@ import uk.gov.hmrc.gform.formtemplate.AnyText
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form._
 import uk.gov.hmrc.gform.models.api.formtemplate._
-import uk.gov.hmrc.gform.submission.SubmissionServiceHelper
+import uk.gov.hmrc.gform.submission.{ SectionFormField, SubmissionServiceHelper }
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.collection.immutable.List

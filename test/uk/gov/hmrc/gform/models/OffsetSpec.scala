@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json.{ JsError, JsSuccess }
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.models.api.formtemplate.Offset
 
 class OffsetSpec extends Spec {
 

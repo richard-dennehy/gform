@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate.FieldValue
+import play.api.libs.json._
 
-import scala.collection.immutable.List
+object FormTemplateRawId {
 
-case class SectionFormField(
-  title: String,
-  fields: List[(List[FormField], FieldValue)]
-)
+  val writes: Writes[FormTemplateRawId] = Writes[FormTemplateRawId](id => JsString(id.value))
+  val reads: Reads[FormTemplateRawId] = Reads[FormTemplateRawId] {
+    case JsString(value) => JsSuccess(FormTemplateRawId(value))
+    case otherwise => JsError(s"Invalid formTemplateId, expected JsString, got: $otherwise")
+  }
+
+  implicit val format: Format[FormTemplateRawId] = Format[FormTemplateRawId](reads, writes)
+
+}
+
+case class FormTemplateRawId(value: String)

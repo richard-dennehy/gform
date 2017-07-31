@@ -23,6 +23,7 @@ import uk.gov.hmrc.gform.formtemplate.{ AnyDate, AnyText }
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.form.FormField
 import uk.gov.hmrc.gform.models.api.formtemplate._
+import uk.gov.hmrc.gform.submission.SectionFormField
 
 import scala.collection.immutable.List
 

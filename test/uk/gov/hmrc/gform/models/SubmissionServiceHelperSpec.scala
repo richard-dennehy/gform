@@ -21,7 +21,7 @@ import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models.api.ExampleData
 import uk.gov.hmrc.gform.models.api.formtemplate.{ IncludeIf, IsFalse, IsTrue }
-import uk.gov.hmrc.gform.submission.SubmissionServiceHelper
+import uk.gov.hmrc.gform.submission.{ SectionFormField, SubmissionServiceHelper }
 
 class SubmissionServiceHelperSpec extends Spec {
 
