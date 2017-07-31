@@ -21,7 +21,7 @@ import uk.gov.hmrc.gform.config.ConfigModule
 import uk.gov.hmrc.gform.wshttp.{ WSHttp, WSHttpModule }
 import uk.gov.hmrc.http.cache.client.{ ShortLivedCache, ShortLivedHttpCaching }
 
-class ShortLivedCacheModule(configModule: ConfigModule, wSHttpModule: WSHttpModule) {
+class Save4LaterModule(configModule: ConfigModule, wSHttpModule: WSHttpModule) {
 
   val shortLivedHttpCaching = new ShortLivedHttpCaching {
     override lazy val http: WSHttp = wSHttpModule.auditableWSHttp

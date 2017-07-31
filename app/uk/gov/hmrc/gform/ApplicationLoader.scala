@@ -34,7 +34,7 @@ import uk.gov.hmrc.gform.metrics.MetricsModule
 import uk.gov.hmrc.gform.mongo.MongoModule
 import uk.gov.hmrc.gform.pdfgenerator.PdfGeneratorModule
 import uk.gov.hmrc.gform.playcomponents.{ PlayComponents, PlayComponentsModule }
-import uk.gov.hmrc.gform.save4later.ShortLivedCacheModule
+import uk.gov.hmrc.gform.save4later.Save4LaterModule
 import uk.gov.hmrc.gform.submission.SubmissionModule
 import uk.gov.hmrc.gform.testonly.TestOnlyModule
 import uk.gov.hmrc.gform.time.TimeModule
@@ -66,7 +66,7 @@ class ApplicationModule(context: Context) extends BuiltInComponentsFromContext(c
   private val fileUploadModule = new FileUploadModule(configModule, wSHttpModule, timeModule)
   private val mongoModule = new MongoModule(playComponents)
   private val formTemplateModule = new FormTemplateModule(mongoModule)
-  private val shortLivedCacheModule = new ShortLivedCacheModule(configModule, wSHttpModule)
+  private val shortLivedCacheModule = new Save4LaterModule(configModule, wSHttpModule)
   private val pdfGeneratorModule = new PdfGeneratorModule(configModule, wSHttpModule)
 
   private val formModule = new FormModule(mongoModule, shortLivedCacheModule, formTemplateModule, fileUploadModule)
