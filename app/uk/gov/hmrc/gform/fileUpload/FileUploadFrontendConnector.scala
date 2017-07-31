@@ -17,12 +17,13 @@
 package uk.gov.hmrc.gform.fileUpload
 
 import akka.util.ByteString
-import uk.gov.hmrc.gform.models.{ EnvelopeId, FileId }
+import uk.gov.hmrc.gform.models.FileId
+import uk.gov.hmrc.gform.models.api.form.EnvelopeId
 import uk.gov.hmrc.gform.wshttp.WSHttp
 import uk.gov.hmrc.play.http.HeaderCarrier
 
-import scala.concurrent.{ ExecutionContext, Future }
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class FileUploadFrontendConnector(config: Config, wSHttp: WSHttp) {
 

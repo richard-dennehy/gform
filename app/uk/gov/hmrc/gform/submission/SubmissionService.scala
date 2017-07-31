@@ -31,7 +31,7 @@ import uk.gov.hmrc.gform.form.FormService
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplate
-import uk.gov.hmrc.gform.models.api.form.{ Form, FormId }
+import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, Form, FormId }
 import uk.gov.hmrc.gform.pdfgenerator.PdfGeneratorService
 import uk.gov.hmrc.gform.services.HtmlGeneratorService
 import uk.gov.hmrc.gform.time.TimeProvider
@@ -96,9 +96,8 @@ class SubmissionService(
     for {
       form              <- fromFutureA        (formService.get(formId))
       formTemplate      <- fromFutureA        (formTemplateService.get(form.formTemplateId))
-      envelopeId        = form.envelopeId
       sectionFormFields <- fromOptA           (SubmissionServiceHelper.getSectionFormFields(form, formTemplate))
-      submissionAndPdf  <- fromFutureA        (getSubmissionAndPdf(envelopeId, form, sectionFormFields, formTemplate.formName))
+      submissionAndPdf  <- fromFutureA        (getSubmissionAndPdf(form.envelopeId, form, sectionFormFields, formTemplate.formName))
       _                 <-                     submissionRepo.upsert(submissionAndPdf.submission)
       res               <- fromFutureA        (fileUploadService.submitEnvelope(submissionAndPdf, formTemplate.dmsSubmission))
     } yield res

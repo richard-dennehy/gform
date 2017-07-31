@@ -17,6 +17,7 @@
 package uk.gov.hmrc.gform.models
 
 import play.api.libs.json.Json
+import uk.gov.hmrc.gform.models.api.form.EnvelopeId
 
 case class RouteEnvelopeRequest(envelopeId: EnvelopeId, application: String, destination: String)
 

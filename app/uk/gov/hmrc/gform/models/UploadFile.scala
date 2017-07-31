@@ -16,4 +16,6 @@
 
 package uk.gov.hmrc.gform.models
 
+import uk.gov.hmrc.gform.models.api.form.EnvelopeId
+
 case class UploadFile(envelopeId: EnvelopeId, fileId: FileId, fileName: String, contentType: String, body: Array[Byte])

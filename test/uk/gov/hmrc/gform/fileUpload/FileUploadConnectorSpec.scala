@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform
 package fileUpload
 
-import uk.gov.hmrc.gform.models.EnvelopeId
+import uk.gov.hmrc.gform.models.api.form.EnvelopeId
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 import uk.gov.hmrc.gform.time.FrozenTimeProvider
 import uk.gov.hmrc.gform.wshttp.StubbedWSHttp

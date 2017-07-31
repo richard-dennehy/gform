@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform.models
 
 import play.api.libs.json.{ Json, OFormat, OWrites, Reads }
-import uk.gov.hmrc.gform.models.api.form.FormId
+import uk.gov.hmrc.gform.models.api.form.{ EnvelopeId, FormId }
 
 case class Index(formId: FormId, envelopeId: EnvelopeId)
 
