@@ -20,6 +20,7 @@ import cats.data.NonEmptyList
 import julienrf.json.derived
 import play.api.data.validation.ValidationError
 import play.api.libs.json._
+import uk.gov.hmrc.gform.formtemplate.{ DateConstraintType, TextConstraint }
 import uk.gov.hmrc.gform.models._
 
 import scala.collection.immutable._

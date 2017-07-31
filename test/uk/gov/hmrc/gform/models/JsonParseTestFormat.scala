@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.formtemplate.Number
 import uk.gov.hmrc.gform.models.api.formtemplate.{ FieldValue, Text }
 
 class JsonParseTestFormat extends Spec {

@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import org.scalatest._
 import uk.gov.hmrc.gform.models.api.form.FormField
-import uk.gov.hmrc.gform.models.api.formtemplate.FieldId
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 class BooleanExprSpec extends FlatSpec with Matchers with EitherValues {
 

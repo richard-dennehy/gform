@@ -18,7 +18,8 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json.{ Reads, _ }
 import uk.gov.hmrc.gform.Spec
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FieldId, FieldValue, Text }
+import uk.gov.hmrc.gform.formtemplate.AnyText
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 class FieldValueFormatValueSpec extends Spec {
 

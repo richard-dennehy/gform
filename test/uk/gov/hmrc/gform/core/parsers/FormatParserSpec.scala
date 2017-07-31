@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.core.parsers
 
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.formtemplate._
 import uk.gov.hmrc.gform.models._
 
 class FormatParserSpec extends Spec {

@@ -20,6 +20,7 @@ import parseback._
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.models._
 import BasicParsers._
+import uk.gov.hmrc.gform.formtemplate._
 
 object FormatParser {
 

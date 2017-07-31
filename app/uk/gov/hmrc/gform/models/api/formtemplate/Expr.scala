@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
 import cats.Monoid
 import julienrf.json.derived
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.{ Invalid, Valid, ValidationResult }
-import uk.gov.hmrc.gform.models.api.formtemplate.{ FieldId, FormTemplate }
 
 sealed trait Expr {
   def validate(formTemplate: FormTemplate): ValidationResult = {

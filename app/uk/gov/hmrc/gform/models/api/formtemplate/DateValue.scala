@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import play.api.libs.json.JsObject
+import julienrf.json.derived
+import play.api.libs.json._
 
-case class CreateEnvelope(value: JsObject) extends AnyVal
+sealed trait DateValue
+
+final case object TodayDateValue extends DateValue
+final case class ExactDateValue(year: Int, month: Int, day: Int) extends DateValue
+final case class NextDateValue(month: Int, day: Int) extends DateValue
+final case class PreviousDateValue(month: Int, day: Int) extends DateValue
+
+object DateValue {
+  implicit val format: OFormat[DateValue] = derived.oformat
+}

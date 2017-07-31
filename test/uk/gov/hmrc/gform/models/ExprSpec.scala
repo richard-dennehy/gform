@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform._
+import uk.gov.hmrc.gform.models.api.formtemplate.{ Add, Constant, Expr, FormCtx }
 
 class ExprSpec extends Spec {
 

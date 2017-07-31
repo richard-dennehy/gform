@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.form
 
-import play.api.libs.json._
-
-case class FormKey(key: String, version: String)
-
-object FormKey {
-
-  implicit val format = Json.format[FormKey]
-}
+case class FileId(value: String)
