@@ -17,20 +17,10 @@
 package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 
 case class EnvelopeId(value: String)
 
 object EnvelopeId {
-
-  val writes = Writes[EnvelopeId](x => JsString(x.value))
-  val reads = Reads[EnvelopeId] {
-    case JsString(value) => JsSuccess(EnvelopeId(value))
-    case JsObject(x) => x.get("envelopeId") match {
-      case Some(JsString(y)) => JsSuccess(EnvelopeId(y))
-      case _ => JsError(s"Invalid envelopeId, expected JsString, got: $x")
-    }
-    case otherwise => JsError(s"Invalid envelopeId, expected JsString, got: $otherwise")
-  }
-
-  implicit val format = Format[EnvelopeId](reads, writes)
+  implicit val format: OFormat[EnvelopeId] = ValueClassFormat.format("envelopeId", EnvelopeId.apply, _.value)
 }

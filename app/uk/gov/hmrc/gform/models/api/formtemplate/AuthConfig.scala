@@ -36,7 +36,7 @@ case class RegimeId(value: String) {
 
 object RegimeId {
 
-  implicit val format: Format[RegimeId] = ValueClassFormat.format("RegimeId", RegimeId.apply, _.value)
+  implicit val format: Format[RegimeId] = ValueClassFormat.format("regimeId", RegimeId.apply, _.value)
 }
 
 case class AuthConfigModule(value: String) {
@@ -46,7 +46,7 @@ case class AuthConfigModule(value: String) {
 object AuthConfigModule {
 
   val legacyEEITTAuth = "legacyEEITTAuth"
-  implicit val format: Format[AuthConfigModule] = ValueClassFormat.format("AuthConfigModule", AuthConfigModule.apply, _.value)
+  implicit val format: Format[AuthConfigModule] = ValueClassFormat.format("authModule", AuthConfigModule.apply, _.value)
 }
 
 case class Predicate(enrolment: String, identifiers: List[KeyValue], delegatedAuthRule: String)

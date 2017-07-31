@@ -23,6 +23,6 @@ case class FormTemplateId(value: String)
 
 object FormTemplateId {
 
-  implicit val format: Format[FormTemplateId] = ValueClassFormat.format("formTemplateId", FormTemplateId.apply, _.value)
+  implicit val format: OFormat[FormTemplateId] = ValueClassFormat.format("formTemplateId", FormTemplateId.apply, _.value)
 
 }

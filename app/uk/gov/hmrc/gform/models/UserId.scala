@@ -17,18 +17,10 @@
 package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 
-case class UserId(value: String) extends AnyVal {
-  override def toString = value
-}
+case class UserId(value: String)
 
 object UserId {
-
-  val writes = Writes[UserId](id => JsString(id.value))
-  val reads = Reads[UserId] {
-    case JsString(value) => JsSuccess(UserId(value))
-    case otherwise => JsError(s"Invalid UserId, expected JsString, got: $otherwise")
-  }
-
-  implicit val format = Format[UserId](reads, writes)
+  implicit val format: OFormat[UserId] = ValueClassFormat.format("userId", UserId.apply, _.value)
 }

@@ -20,13 +20,17 @@ import play.api.libs.json._
 
 object ValueClassFormat {
 
-  def format[A: Format](fieldName: String, read: String => A, write: A => String) = {
-    Format[A](
+  def format[A: Format](fieldName: String, read: String => A, write: A => String): OFormat[A] = {
+    OFormat[A](
       Reads[A] {
         case JsString(str) => JsSuccess(read(str))
-        case other => JsError(s"Invalid $fieldName, expected JsString, got: $other")
+        case JsObject(x) => x.get(fieldName) match {
+          case Some(JsString(str)) => JsSuccess(read(str))
+          case _ => JsError(s"Expected $fieldName field")
+        }
+        case other => JsError(s"Invalid json, not found '$fieldName'")
       },
-      Writes[A](a => JsString(write(a)))
+      OWrites[A](a => Json.obj(fieldName -> write(a)))
     )
   }
 }

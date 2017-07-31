@@ -19,7 +19,7 @@ package uk.gov.hmrc.gform.models.api.form
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
-import uk.gov.hmrc.gform.models.{ EnvelopeId, FormId, UserId }
+import uk.gov.hmrc.gform.models.{ EnvelopeId, UserId }
 
 case class Form(
   _id: FormId,
@@ -41,9 +41,9 @@ object Form {
 
   private val writes: OWrites[Form] = OWrites[Form](form =>
     FormId.format.writes(form._id) ++
-      Json.obj("envelopeId" -> EnvelopeId.format.writes(form.envelopeId)) ++
-      Json.obj("userId" -> UserId.format.writes(form.userId)) ++
-      Json.obj("formTemplateId" -> FormTemplateId.format.writes(form.formTemplateId)) ++
+      EnvelopeId.format.writes(form.envelopeId) ++
+      UserId.format.writes(form.userId) ++
+      FormTemplateId.format.writes(form.formTemplateId) ++
       FormData.format.writes(form.formData))
 
   implicit val format: OFormat[Form] = OFormat[Form](reads, writes)

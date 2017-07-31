@@ -18,7 +18,7 @@ package uk.gov.hmrc.gform.models.api
 
 import uk.gov.hmrc.gform.models._
 import uk.gov.hmrc.gform.models.api.formtemplate._
-import uk.gov.hmrc.gform.models.api.form.{ Form, FormData }
+import uk.gov.hmrc.gform.models.api.form.{ Form, FormData, FormId }
 
 import scala.collection.immutable.List
 

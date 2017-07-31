@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.UserId
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 
 case class FormId(value: String)
@@ -26,17 +28,6 @@ object FormId {
   def apply(userId: UserId, formTypeId: FormTemplateId): FormId =
     new FormId(s"""${userId.value}-${formTypeId.value}""")
 
-  implicit val format: OFormat[FormId] = OFormat[FormId](reads, writes)
-
-  private lazy val writes: OWrites[FormId] = OWrites[FormId](id => Json.obj("_id" -> id.value))
-  private lazy val reads: Reads[FormId] = Reads[FormId] { (jsObj: JsValue) =>
-    jsObj \ "_id" match {
-      case JsDefined(JsString(id)) => JsSuccess(FormId(id))
-      case _ => jsObj match {
-        case JsString(x) => JsSuccess(FormId(x))
-        case _ => JsError(s"Invalid formId, expected fieldName '_id', got: $jsObj")
-      }
-    }
-  }
+  implicit val format: OFormat[FormId] = ValueClassFormat.format("_id", FormId.apply, _.value)
 
 }

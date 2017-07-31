@@ -45,7 +45,7 @@ class FormSpec extends Spec {
     )
 
     formAsJson should be(expectedJson)
-    val formFromJson = Form.format.reads(formAsJson)
-    formFromJson should be(JsSuccess(form))
+
+    Form.format.reads(formAsJson) should be(JsSuccess(form))
   }
 }
