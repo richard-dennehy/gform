@@ -18,12 +18,16 @@ package uk.gov.hmrc.gform.services
 
 import uk.gov.hmrc.gform._
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.form.{ Form, FormData }
+import uk.gov.hmrc.gform.models.api.formtemplate._
 import uk.gov.hmrc.gform.submission.SubmissionServiceHelper
 import uk.gov.hmrc.play.http.HeaderCarrier
 
 import scala.collection.immutable.List
 
 class SubmissionServiceSpec extends Spec {
+
+  //TODO: benefit from ExampleData
 
   "SubmissionServiceHelper.getSectionFormFields" should "find repeating group fields" in {
 
@@ -39,8 +43,9 @@ class SubmissionServiceSpec extends Spec {
       FormField(FieldId("3_DOS"), "3_DOS"),
       FormField(FieldId("4_DOS"), "4_DOS")
     )
-    val formData = FormData(UserId("TESTID"), FormTemplateId("JustAFormTypeId"), "UTF-16", formFields)
-    val form = Form(FormId("MIO"), formData, EnvelopeId(""))
+    val formData = FormData(formFields)
+
+    val form = Form(FormId("MIO"), EnvelopeId(""), UserId("TESTID"), FormTemplateId("JustAFormTypeId"), formData)
 
     val textFieldUno = FieldValue(
       id = FieldId("UNO"),
@@ -87,9 +92,8 @@ class SubmissionServiceSpec extends Spec {
       _id = FormTemplateId("JustAFormTypeId"),
       formName = "formName",
       description = "formTemplateDescription",
-      characterSet = "UTF-16",
       dmsSubmission = DmsSubmission("customerId", "classificationType", "businessArea"),
-      AuthConfig(AuthModule("TEST"), None, RegimeId("TEST")),
+      AuthConfig(AuthConfigModule("TEST"), None, RegimeId("TEST")),
       submitSuccessUrl = "http://somwehere-nice.net",
       submitErrorUrl = "http://somwehere-nasty.net",
       sections = List(section)

@@ -20,6 +20,8 @@ import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
+import uk.gov.hmrc.gform.models.api.form.{ Form, FormData }
 import uk.gov.hmrc.gform.save4later.Save4Later
 import uk.gov.hmrc.play.http.HeaderCarrier
 
@@ -36,9 +38,9 @@ class FormService(save4Later: Save4Later) {
     save4Later.delete(formId)
   }
 
-  def insertEmpty(userId: UserId, formTypeId: FormTemplateId, envelopeId: EnvelopeId, formId: FormId)(implicit hc: HeaderCarrier): Future[Unit] = {
-    val emptyFormData = FormData(userId, formTypeId, characterSet = "UTF-8", fields = Nil)
-    val form = Form(formId, emptyFormData, envelopeId)
+  def insertEmpty(userId: UserId, formTemplateId: FormTemplateId, envelopeId: EnvelopeId, formId: FormId)(implicit hc: HeaderCarrier): Future[Unit] = {
+    val emptyFormData = FormData(fields = Nil)
+    val form = Form(formId, envelopeId, userId, formTemplateId, emptyFormData)
     save4Later.upsert(formId, form)
   }
 

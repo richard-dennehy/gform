@@ -19,6 +19,7 @@ package uk.gov.hmrc.gform.models
 import java.time.LocalDateTime
 
 import play.api.libs.json.Json
+import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 
 case class DmsMetaData(
   formTypeId: FormTemplateId

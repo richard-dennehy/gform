@@ -19,6 +19,7 @@ package uk.gov.hmrc.gform.models
 import java.time.LocalDateTime
 
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 
 import scala.xml.Elem
 

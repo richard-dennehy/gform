@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform.submission
 
 import reactivemongo.api.DefaultDB
-import uk.gov.hmrc.gform.models.{ Form, Submission }
+import uk.gov.hmrc.gform.models.Submission
 import uk.gov.hmrc.gform.repo.Repo
 
 //TODO this should be replaced with Save4Later since there are user specific data

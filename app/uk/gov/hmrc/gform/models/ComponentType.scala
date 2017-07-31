@@ -26,6 +26,7 @@ import play.api.data.validation.ValidationError
 import scala.collection.immutable._
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplate
 
 sealed trait ComponentType {
   def validate(formTemplate: FormTemplate): ValidationResult = this match {
@@ -113,6 +114,7 @@ object ComponentType {
 
   implicit val format: OFormat[ComponentType] = derived.oformat
 
+  //TODO: move it to validation whatever package and have it not in companion
   def validate(exprs: List[ComponentType], formTemplate: FormTemplate): ValidationResult = {
     val results = exprs.map(_.validate(formTemplate))
     Monoid[ValidationResult].combineAll(results)

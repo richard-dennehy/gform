@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 
 case class AuthConfig(
-  authModule: AuthModule,
+  authModule: AuthConfigModule,
   predicates: Option[List[Predicate]],
   regimeId: RegimeId
 )
@@ -29,29 +30,23 @@ object AuthConfig {
   implicit val format: OFormat[AuthConfig] = Json.format[AuthConfig]
 }
 
-case class RegimeId(value: String)
+case class RegimeId(value: String) {
+  override def toString: String = value
+}
 
 object RegimeId {
 
-  val writes = Writes[RegimeId](id => JsString(id.value))
-  val reads = Reads[RegimeId] {
-    case JsString(value) => JsSuccess(RegimeId(value))
-    case otherwise => JsError(s"Invalid RegimeId, expected JsString, got: $otherwise")
-  }
-
-  implicit val format: Format[RegimeId] = Format[RegimeId](reads, writes)
+  implicit val format: Format[RegimeId] = ValueClassFormat.format("RegimeId", RegimeId.apply, _.value)
 }
 
-case class AuthModule(value: String)
+case class AuthConfigModule(value: String) {
+  override def toString: String = value
+}
 
-object AuthModule {
-  val writes = Writes[AuthModule](id => JsString(id.value))
-  val reads = Reads[AuthModule] {
-    case JsString(value) => JsSuccess(AuthModule(value))
-    case otherwise => JsError(s"Invalid AuthModule, expected JsString, got: $otherwise")
-  }
+object AuthConfigModule {
 
-  implicit val format: Format[AuthModule] = Format[AuthModule](reads, writes)
+  val legacyEEITTAuth = "legacyEEITTAuth"
+  implicit val format: Format[AuthConfigModule] = ValueClassFormat.format("AuthConfigModule", AuthConfigModule.apply, _.value)
 }
 
 case class Predicate(enrolment: String, identifiers: List[KeyValue], delegatedAuthRule: String)

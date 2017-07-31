@@ -16,22 +16,16 @@
 
 package uk.gov.hmrc.gform.formtemplate
 
-import play.api.mvc.{ Action, BodyParser }
-import uk.gov.hmrc.gform.models._
+import cats.implicits._
+import play.api.libs.json.Json
+import play.api.mvc.Action
+import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.core._
+import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId }
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import cats.data._
-import cats.implicits._
-import play.api.libs.json.{ JsResult, JsValue, Json }
-import uk.gov.hmrc.gform.controllers.{ BaseController, ErrResponse }
-import uk.gov.hmrc.gform.exceptions.UnexpectedState
-import uk.gov.hmrc.play.http.NotImplementedException
-
-import scala.concurrent.Future
-import cats.data._
-import cats.implicits._
-import play.api.mvc.Result
 
 class FormTemplatesController(
     formTemplateService: FormTemplateService

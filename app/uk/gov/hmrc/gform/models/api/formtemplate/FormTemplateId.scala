@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.formtemplate
+package uk.gov.hmrc.gform.models.api.formtemplate
 
-import reactivemongo.api.DefaultDB
-import uk.gov.hmrc.gform.models.FormTemplateRaw
-import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplate
-import uk.gov.hmrc.gform.repo.Repo
+import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.ValueClassFormat
 
-class FormTemplateRepo(mongo: () => DefaultDB) extends Repo[FormTemplate]("formTemplate", mongo, _._id.value)
+case class FormTemplateId(value: String)
 
+object FormTemplateId {
+
+  implicit val format: Format[FormTemplateId] = ValueClassFormat.format("formTemplateId", FormTemplateId.apply, _.value)
+
+}

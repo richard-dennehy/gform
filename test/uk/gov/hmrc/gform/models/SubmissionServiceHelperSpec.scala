@@ -16,87 +16,42 @@
 
 package uk.gov.hmrc.gform.models
 
-import org.scalatest._
+import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.core.Opt
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
+import uk.gov.hmrc.gform.models.api.ExampleData
 import uk.gov.hmrc.gform.submission.SubmissionServiceHelper
 
-class SubmissionServiceSpec extends FlatSpec with Matchers with EitherValues {
+class SubmissionServiceHelperSpec extends Spec {
 
-  val section0 = Section("Section for Start Date", None, None, None, List(
-    FieldValue(FieldId("startDate"), Date(AnyDate, Offset(0), None), "Your Start Date", None, None, true, true, true)
-  ))
-
-  val section1 = Section("About you", None, None, None, List(FieldValue(FieldId("firstName"), Text(AnyText, Constant(""), total = false), "First Name", None, None, true, true, true)))
-
-  val section2 = Section("Business details", None, None, None, List(FieldValue(FieldId("nameOfBusiness"), Text(AnyText, Constant(""), total = false), "Name of business", None, None, true, true, true)))
-
-  val formTemplate = FormTemplate(
-    _id = FormTemplateId(""),
-    formName = "IPT100",
-    description = "abc",
-    characterSet = "UTF-8",
-    dmsSubmission = DmsSubmission("nino", "some-classification-type", "some-business-area"),
-    AuthConfig(AuthModule("TEST"), None, RegimeId("TEST")),
-    submitSuccessUrl = "success-url",
-    submitErrorUrl = "error-url",
-    sections = List(section0, section1, section2)
-  )
-
-  val data = Map(
-    FieldId("startDate-year") -> FormField(FieldId("startDate-year"), "2010"),
-    FieldId("startDate-day") -> FormField(FieldId("startDate-day"), "10"),
-    FieldId("startDate-month") -> FormField(FieldId("startDate-month"), "10"),
-    FieldId("firstName") -> FormField(FieldId("firstName"), "Pete"),
-    FieldId("nameOfBusiness") -> FormField(FieldId("nameOfBusiness"), "Business Name")
-  )
-
-  val formData = Form(FormId("anId"), FormData(UserId("TESTID"), FormTemplateId("ftid"), "charset", data.values.toSeq), EnvelopeId(""))
-
-  "getSectionFormFields" should "return a Right if formData is present for all fields" in {
-
-    SubmissionServiceHelper.getSectionFormFields(formData, formTemplate) should be('right)
-
+  "getSectionFormFields" should "return a Right if formData is present for all fields" in new ExampleData {
+    SubmissionServiceHelper.getSectionFormFields(form, formTemplate).right.value
   }
 
-  it should "return a Left if formData is missing" in {
-
-    val formDataWithoutRequiredField = Form(FormId("anId"), FormData(UserId("TESTID"), FormTemplateId("ftid"), "charset", (data - FieldId("startDate-month")).values.toSeq), EnvelopeId(""))
-
-    val sectionFormFieldsOpt: Opt[List[SectionFormField]] = SubmissionServiceHelper.getSectionFormFields(formDataWithoutRequiredField, formTemplate)
-
-    sectionFormFieldsOpt should be('left)
-    sectionFormFieldsOpt.left.get shouldBe UnexpectedState("No formField for field.id: startDate found")
-
+  it should "return a Left if formData is missing" in new ExampleData {
+    override lazy val formData = super.formData.copy(formFields.init)
+    val sectionFormFieldsOpt: Opt[List[SectionFormField]] = SubmissionServiceHelper.getSectionFormFields(form, formTemplate)
+    sectionFormFieldsOpt.left.value shouldBe UnexpectedState("No formField for field.id: startDate found")
   }
 
-  it should "not complain if formData is present for fields on included Sections" in {
-
-    val excludedSection = section0.copy(includeIf = Some(IncludeIf(IsFalse)))
-
-    val formDataWithoutFieldsOnExludedSection = Form(FormId("anId"), FormData(UserId("TESTID"), FormTemplateId("ftid"), "charset", (data - FieldId("startDate-month")).values.toSeq), EnvelopeId(""))
-    val ftWithExcludedSection0 = formTemplate.copy(sections = List(excludedSection, section1, section2))
-
-    SubmissionServiceHelper.getSectionFormFields(formDataWithoutFieldsOnExludedSection, ftWithExcludedSection0) should be('right)
+  it should "not complain if formData is present for fields on included Sections" in new ExampleData {
+    override val `section - about you` = super.`section - about you`.copy(includeIf = Some(IncludeIf(IsFalse)))
+    val sections = SubmissionServiceHelper.getSectionFormFields(form, formTemplate).right.value
+    val expectedSize = formTemplate.sections.size - 1
+    sections.size shouldBe expectedSize withClue "one section is excluded"
+    sections.map(_.title) should not contain `fieldValue - firstName`.label
+    sections.map(_.title) should not contain `fieldValue - surname`.label
+    sections.map(_.title) should not contain `fieldValue - facePhoto`.label
   }
 
-  it should "return only the formData on included Sections" in {
-
-    val dataForAllFormFields = Form(FormId("anId"), FormData(UserId("TESTID"), FormTemplateId("ftid"), "charset", data.values.toSeq), EnvelopeId(""))
-
-    val includedSection = section0.copy(includeIf = Some(IncludeIf(IsTrue)))
-    val ftWithIncludedSection0 = formTemplate.copy(sections = List(includedSection, section1, section2))
-
-    val sectionFormFields1 = SubmissionServiceHelper.getSectionFormFields(dataForAllFormFields, ftWithIncludedSection0).right.get
+  it should "return only the formData on included Sections" in new ExampleData {
+    override val `section - about you` = super.`section - about you`.copy(includeIf = Some(IncludeIf(IsTrue)))
+    val sectionFormFields1 = SubmissionServiceHelper.getSectionFormFields(form, formTemplate).right.get
     sectionFormFields1.size shouldBe formTemplate.sections.size
-    sectionFormFields1.map(_.title) should contain("Section for Start Date")
 
-    val excludedSection = section0.copy(includeIf = Some(IncludeIf(IsFalse)))
-    val ftWithExcludedSection0 = formTemplate.copy(sections = List(excludedSection, section1, section2))
-
-    val sectionFormFields: List[SectionFormField] = SubmissionServiceHelper.getSectionFormFields(dataForAllFormFields, ftWithExcludedSection0).right.get
-    sectionFormFields.size shouldBe formTemplate.sections.size - 1
-    sectionFormFields.map(_.title) should not contain ("Section for Start Date")
-
+    sectionFormFields1.map(_.title) should contain allOf (
+      `section - about you`.title,
+      `section - businessDetails`.title
+    )
   }
 }

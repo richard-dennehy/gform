@@ -14,41 +14,38 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.form
 
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
+import uk.gov.hmrc.gform.models.api.ExampleData
 
 class FormSpec extends Spec {
-  val formId = FormId("my-form-id")
 
-  val formData = FormData(UserId("TESTID"), FormTemplateId("my-form-type-id"), "UTF-8", List(FormField(FieldId("firstName"), "Josef")))
+  "case class Form" should "be serialized into json" in new ExampleData {
+    override val formFields = super.formFields.take(2)
 
-  val form = Form(formId, formData, EnvelopeId("enve-id-asd"))
+    val formAsJson = Form.format.writes(form)
 
-  val formFormat = implicitly[Format[Form]]
-
-  "case class Form" should "be serialized into flat structure" in {
-
-    val formAsJson = formFormat.writes(form)
     val expectedJson = Json.obj(
-      "_id" -> "my-form-id",
-      "userId" -> "TESTID",
-      "formTemplateId" -> "my-form-type-id",
-      "characterSet" -> "UTF-8",
+      "_id" -> "James007-AAA999",
+      "envelopeId" -> "b66c5979-e885-49cd-9281-c7f42ce6b307",
+      "userId" -> "James007",
+      "formTemplateId" -> "AAA999",
       "fields" -> Json.arr(
         Json.obj(
-          "id" -> "firstName",
-          "value" -> "Josef"
+          "id" -> "facePhoto",
+          "value" -> "face-photo.jpg"
+        ),
+        Json.obj(
+          "id" -> "startDate-year",
+          "value" -> "2008"
         )
-      ),
-      "envelopeId" -> "enve-id-asd"
+      )
     )
 
     formAsJson should be(expectedJson)
-
-    val formFromJson = formFormat.reads(formAsJson)
-
+    val formFromJson = Form.format.reads(formAsJson)
     formFromJson should be(JsSuccess(form))
   }
 }

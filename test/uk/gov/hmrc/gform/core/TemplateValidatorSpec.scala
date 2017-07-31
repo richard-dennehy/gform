@@ -17,10 +17,10 @@
 package uk.gov.hmrc.gform.core
 
 import cats.data.NonEmptyList
-import cats.syntax.either._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateSchema }
 
 class TemplateValidatorSpec extends Spec {
 
@@ -488,10 +488,6 @@ class TemplateValidatorSpec extends Spec {
 
   private lazy val schema = FormTemplateSchema.schema
   private lazy val jsonSchema = FormTemplateSchema.jsonSchema
-
-}
-
-object ExampleFormTemplates {
 
 }
 

@@ -17,6 +17,7 @@
 package uk.gov.hmrc.gform.models
 
 import play.api.libs.json._
+import uk.gov.hmrc.gform.models.api.formtemplate.FormTemplateId
 
 case class FormId(value: String)
 

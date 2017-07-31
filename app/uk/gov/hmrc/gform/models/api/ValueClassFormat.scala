@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api
 
 import play.api.libs.json._
 
-case class FormData(userId: UserId, formTemplateId: FormTemplateId, characterSet: String, fields: Seq[FormField])
+object ValueClassFormat {
 
-object FormData {
-
-  implicit val format: OFormat[FormData] = Json.format[FormData]
+  def format[A: Format](fieldName: String, read: String => A, write: A => String) = {
+    Format[A](
+      Reads[A] {
+        case JsString(str) => JsSuccess(read(str))
+        case other => JsError(s"Invalid $fieldName, expected JsString, got: $other")
+      },
+      Writes[A](a => JsString(write(a)))
+    )
+  }
 }

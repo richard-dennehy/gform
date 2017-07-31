@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.models
+package uk.gov.hmrc.gform.models.api.formtemplate
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.core.{ JsonSchema, Opt, SchemaValidator }
-import cats.data._
-import cats.implicits._
-import play.api.http.Writeable
-
-import scala.util.Try
+import uk.gov.hmrc.gform.core.{ JsonSchema, SchemaValidator }
+import uk.gov.hmrc.gform.models.api.formtemplate
+import uk.gov.hmrc.gform.models.{ DmsSubmission, Section }
 
 case class FormTemplate(
   _id: FormTemplateId,
   formName: String,
   description: String,
-  characterSet: String,
   dmsSubmission: DmsSubmission,
-  authConfig: AuthConfig,
+  authConfig: formtemplate.AuthConfig,
   submitSuccessUrl: String,
   submitErrorUrl: String,
   sections: List[Section]

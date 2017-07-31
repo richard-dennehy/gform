@@ -1,0 +1,1 @@
+Put here case classes which are exposed via REST API. Other clients/projects can than just copy this package.

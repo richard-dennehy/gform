@@ -20,8 +20,12 @@ import uk.gov.hmrc.gform.Spec
 import uk.gov.hmrc.gform.core._
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.ExampleData
+import uk.gov.hmrc.gform.models.api.formtemplate._
 
 class ValueParserSpec extends Spec {
+
+  //TODO: use ExampleData
 
   "ValueParser" should "parse ${firstName}" in {
     val res = ValueParser.validate("${firstName}")
@@ -176,7 +180,16 @@ class ValueParserSpec extends Spec {
     )
   }
 
-  val plainFormTemplate = FormTemplate(FormTemplateId("IPT100"), "Insurance Premium Tax Return", "description", "characterSet", DmsSubmission("nino", "BT-NRU-Environmental", "FinanceOpsCorpT"), AuthConfig(AuthModule("TEST"), None, RegimeId("TEST")), "submitSuccessUrl", "submitErrorUrl", List.empty[Section])
+  val plainFormTemplate = FormTemplate(
+    FormTemplateId("IPT100"),
+    "Insurance Premium Tax Return",
+    "description",
+    DmsSubmission("nino", "BT-NRU-Environmental", "FinanceOpsCorpT"),
+    AuthConfig(AuthConfigModule("TEST"), None, RegimeId("TEST")),
+    "submitSuccessUrl",
+    "submitErrorUrl",
+    List.empty[Section]
+  )
 
   val yourDetailsSection = Section(
     "Your details",
@@ -190,6 +203,7 @@ class ValueParserSpec extends Spec {
   val formTemplateWithOneSection = plainFormTemplate.copy(sections = List(yourDetailsSection))
 
   "Expr.validate" should "return Valid if expression include fieldName id present in the form template" in {
+
     val res = ComponentType.validate(List(Text(AnyText, FormCtx("firstName"), total = false)), formTemplateWithOneSection)
     res should be(Valid)
   }

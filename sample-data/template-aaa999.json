@@ -2,7 +2,6 @@
   "_id": "AAA999",
   "formName": "AAA999 dev test template",
   "description": "Fill in your insurance premium tax return form online | Llenwch eich ffurflen dreth premiwm yswiriant ar-lein",
-  "characterSet": "UTF-8",
   "dmsSubmission": {
     "customerId": "nino",
     "classificationType": "BT-NRU-Environmental",

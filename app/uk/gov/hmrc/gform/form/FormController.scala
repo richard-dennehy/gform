@@ -23,9 +23,11 @@ import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.fileUpload.FileUploadService
 import uk.gov.hmrc.gform.formtemplate.FormTemplateService
 import uk.gov.hmrc.gform.models._
+import uk.gov.hmrc.gform.models.api.form.FormData
+import uk.gov.hmrc.gform.models.api.formtemplate.{ FormTemplate, FormTemplateId }
 import uk.gov.hmrc.play.http.BadRequestException
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.Try
 
@@ -82,7 +84,8 @@ class FormController(
     val formData: FormData = request.body
 
     val result: Future[Either[UnexpectedState, Unit]] = for {
-      formTemplate <- formTemplateService.get(formData.formTemplateId)
+      form <- formService.get(formId)
+      formTemplate <- formTemplateService.get(form.formTemplateId)
       section = getSection(formTemplate, sectionNumber)
     } yield FormValidator.validate(formData.fields.toList, section)
 
