@@ -17,6 +17,7 @@
 package uk.gov.hmrc.gform.form
 
 import uk.gov.hmrc.gform.save4later.Save4Later
+import uk.gov.hmrc.gform.sharedmodel.UserId
 import uk.gov.hmrc.gform.sharedmodel.form._
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormTemplateId
 import uk.gov.hmrc.play.http.HeaderCarrier

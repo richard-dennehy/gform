@@ -17,7 +17,7 @@
 package uk.gov.hmrc.gform.sharedmodel.form
 
 import play.api.libs.json._
-import uk.gov.hmrc.gform.sharedmodel.ValueClassFormat
+import uk.gov.hmrc.gform.sharedmodel.{ UserId, ValueClassFormat }
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormTemplateId
 
 case class FormId(value: String)

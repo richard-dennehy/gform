@@ -18,6 +18,7 @@ package uk.gov.hmrc.gform.sharedmodel.form
 
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import uk.gov.hmrc.gform.sharedmodel.UserId
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormTemplateId
 
 case class Form(

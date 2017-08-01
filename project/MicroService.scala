@@ -39,6 +39,7 @@ trait MicroService {
       evictionWarningOptions in update := EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
       routesImport ++= Seq(
         "uk.gov.hmrc.gform.sharedmodel.ValueClassBinder._",
+        "uk.gov.hmrc.gform.sharedmodel._",
         "uk.gov.hmrc.gform.sharedmodel.form._",
         "uk.gov.hmrc.gform.sharedmodel.formtemplate._"
       ),

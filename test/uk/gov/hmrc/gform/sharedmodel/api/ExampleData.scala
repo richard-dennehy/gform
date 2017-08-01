@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.gform.sharedmodel.api
 
+import uk.gov.hmrc.gform.sharedmodel.UserId
 import uk.gov.hmrc.gform.sharedmodel.formtemplate.AnyText
 import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 import uk.gov.hmrc.gform.sharedmodel.form._
