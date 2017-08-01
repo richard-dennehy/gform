@@ -4,10 +4,10 @@ POST          /new-form/:formTemplateId/:userId                    uk.gov.hmrc.g
 
 PUT           /forms/:formId                                       uk.gov.hmrc.gform.form.FormController.updateFormData(formId: FormId)
 GET           /forms/:formId                                       uk.gov.hmrc.gform.form.FormController.get(formId: FormId)
-POST          /forms/:formId/validate-section/:sectionNumber       uk.gov.hmrc.gform.form.FormController.validateSection(formId: FormId, sectionNumber: SectionNumber)
+GET          /forms/:formId/validate-section/:sectionNumber       uk.gov.hmrc.gform.form.FormController.validateSection(formId: FormId, sectionNumber: SectionNumber)
 POST          /forms/:formId/delete                                uk.gov.hmrc.gform.form.FormController.delete(formId: FormId)
 
-POST          /forms/:formId/submission                            uk.gov.hmrc.gform.submission.SubmissionController.submission(formId: FormId)
+POST          /forms/:formId/submission                            uk.gov.hmrc.gform.submission.SubmissionController.submit(formId: FormId)
 GET           /forms/:formId/submission                            uk.gov.hmrc.gform.submission.SubmissionController.submissionStatus(formId: FormId)
 
 GET           /formtemplates                                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.all

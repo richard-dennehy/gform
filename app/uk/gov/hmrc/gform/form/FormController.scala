@@ -74,19 +74,17 @@ class FormController(
     } yield NoContent
   }
 
-  def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action.async(parse.json[FormData]) { implicit request =>
+  def validateSection(formId: FormId, sectionNumber: SectionNumber) = Action.async { implicit request =>
     //TODO check form status. If after submission don't call this function
     //TODO authentication
     //TODO authorisation
     //TODO wrap result into ValidationResult case class containign status of validation and list of errors
 
-    val formData: FormData = request.body
-
     val result: Future[Either[UnexpectedState, Unit]] = for {
       form <- formService.get(formId)
       formTemplate <- formTemplateService.get(form.formTemplateId)
       section = getSection(formTemplate, sectionNumber)
-    } yield FormValidator.validate(formData.fields.toList, section)
+    } yield FormValidator.validate(form.formData.fields.toList, section)
 
     result.map(_.fold(
       e => e.error,

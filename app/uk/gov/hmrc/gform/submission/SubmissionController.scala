@@ -30,7 +30,7 @@ class SubmissionController(
     submissionService: SubmissionService
 ) extends BaseController {
 
-  def submission(formId: FormId) = Action.async { implicit request =>
+  def submit(formId: FormId) = Action.async { implicit request =>
     //TODO check form status. If after submission don't call this function
     //TODO authentication
     //TODO authorisation
