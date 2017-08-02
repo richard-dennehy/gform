@@ -16,8 +16,11 @@
 
 package uk.gov.hmrc.gform.save4later
 
+import play.api.Logger
+import play.api.libs.json.{ JsValue, Json }
+import uk.gov.hmrc.gform.core.{ FOpt, Opt }
 import uk.gov.hmrc.gform.sharedmodel.form.{ Form, FormId }
-import uk.gov.hmrc.http.cache.client.ShortLivedCache
+import uk.gov.hmrc.http.cache.client.{ CacheMap, ShortLivedCache }
 import uk.gov.hmrc.play.http.{ HeaderCarrier, NotFoundException }
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -35,29 +38,6 @@ class Save4Later(cache: ShortLivedCache, ex: ExecutionContext) {
       case Some(form) => form
     }
 
-  //  def get(formId: FormId)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[List[Form]] = {
-  //    cache.fetch(formId.value).map {
-  //      case Some(x) =>
-  //        x.data.values.flatMap { json =>
-  //          Json.fromJson[Form](json) match {
-  //            case JsSuccess(y, _) => List(y)
-  //            case JsError(err) => List.empty[Form]
-  //          }
-  //        }.toList
-  //      case None => List.empty[Form]
-  //    }
-  //  }
-
-  //  def put(formId: FormId, form: Form)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[Opt[Unit]] = {
-  //    findOne(formId).flatMap {
-  //      case None => save(formId, form)
-  //      case Some(x) =>
-  //        val fields = x.formData.fields ++ form.formData.fields
-  //        val concatenatedFormData: FormData = form.formData.copy(fields = fields)
-  //        save(formId, form.copy(formData = concatenatedFormData))
-  //    }
-  //  }
-
   def upsert(formId: FormId, form: Form)(implicit hc: HeaderCarrier): Future[Unit] = {
     cache.cache[Form](formId.value, formCacheKey, form).map(_ => ())
   }
@@ -65,6 +45,13 @@ class Save4Later(cache: ShortLivedCache, ex: ExecutionContext) {
   def delete(formId: FormId)(implicit hc: HeaderCarrier): Future[Unit] = {
     cache.remove(formId.value).map(_ => ())
   }
+
+  def saveKeyStore(formId: FormId, data: Map[String, JsValue])(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[Unit] = {
+    cache.cache[Map[String, JsValue]](formId.value, "keystore", data).map(_ => ())
+  }
+
+  def getKeyStore(formId: FormId)(implicit hc: HeaderCarrier, ex: ExecutionContext): Future[Option[Map[String, JsValue]]] =
+    cache.fetchAndGetEntry[Map[String, JsValue]](formId.value, "keystore")
 
   private lazy val formCacheKey = "form"
 }

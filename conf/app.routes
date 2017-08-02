@@ -16,8 +16,8 @@ GET           /formtemplates/:formTemplateId                       uk.gov.hmrc.g
 GET           /formtemplates/:formTemplateId/raw                   uk.gov.hmrc.gform.formtemplate.FormTemplatesController.getRaw(formTemplateId: FormTemplateRawId)
 DELETE        /formtemplates/:formTemplateId                       uk.gov.hmrc.gform.formtemplate.FormTemplatesController.remove(formTemplateId: FormTemplateId)
 
-PUT        /forms/:formId/keystore                  uk.gov.hmrc.gform.controllers.FormController.saveKeyStore(formId: FormId)
-GET        /forms/:formId/keystore                  uk.gov.hmrc.gform.controllers.FormController.getKeyStore(formId: FormId)
+PUT           /forms/:formId/keystore                              uk.gov.hmrc.gform.form.FormController.saveKeyStore(formId: FormId)
+GET           /forms/:formId/keystore                              uk.gov.hmrc.gform.form.FormController.getKeyStore(formId: FormId)
 
 
 #TODO move it to testOnlyDoNotUseInAppConf.routes

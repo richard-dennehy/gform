@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.gform.form
 
+import play.api.Logger
+import play.api.libs.json.{ JsValue, Json }
 import play.api.mvc.{ Action, AnyContent }
 import uk.gov.hmrc.gform.controllers.BaseController
 import uk.gov.hmrc.gform.core.FormValidator
@@ -95,6 +97,18 @@ class FormController(
 
   def delete(formId: FormId): Action[AnyContent] = Action.async { implicit request =>
     formService.delete(formId).asNoContent
+  }
+
+  //TODO discuss with Daniel about naming, purpose of it and if we can make it part of a form
+  def saveKeyStore(formId: FormId) = Action.async(parse.json[Map[String, JsValue]]) { implicit request =>
+    formService
+      .saveKeyStore(formId, request.body)
+      .asNoContent
+  }
+
+  //TODO discuss with Daniel about naming, purpose of it and if we can make it part of a form
+  def getKeyStore(formId: FormId) = Action.async { implicit request =>
+    formService.getKeyStore(formId).asOkJson
   }
 
   private def getSection(formTemplate: FormTemplate, sectionNumber: SectionNumber): Section = {

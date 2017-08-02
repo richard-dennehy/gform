@@ -16,6 +16,8 @@
 
 package uk.gov.hmrc.gform.form
 
+import play.api.libs.json.JsValue
+import uk.gov.hmrc.gform.core.{ fromFutureOptA, fromFutureOptionA }
 import uk.gov.hmrc.gform.save4later.Save4Later
 import uk.gov.hmrc.gform.sharedmodel.UserId
 import uk.gov.hmrc.gform.sharedmodel.form._
@@ -48,5 +50,9 @@ class FormService(save4Later: Save4Later) {
       _ <- save4Later.upsert(formId, newForm)
     } yield ()
   }
+
+  def saveKeyStore(formId: FormId, data: Map[String, JsValue])(implicit hc: HeaderCarrier): Future[Unit] = save4Later.saveKeyStore(formId, data)
+
+  def getKeyStore(formId: FormId)(implicit hc: HeaderCarrier): Future[Option[Map[String, JsValue]]] = save4Later.getKeyStore(formId)
 
 }
