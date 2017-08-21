@@ -1,0 +1,86 @@
+{
+  "_id": "CE930",
+  "formName": "Gas for use as road fuel",
+  "description": "Fill in your gas for use as road fuel return form online",
+  "dmsSubmission": {
+    "customerId": "nino",
+    "classificationType": "BT-NRU-Environmental",
+    "businessArea": "FinanceOpsCorpT"
+  },
+  "authConfig":{
+    "authModule": "legacyEEITTAuth",
+    "regimeId": "GF"
+  },
+  "submitSuccessUrl": "http://www.google.co.uk",
+  "submitErrorUrl": "http://www.yahoo.co.uk",
+  "sections": [
+    {
+      "title": "Enter the time period for this return",
+      "shortName": "Your accounting period",
+      "fields": [
+        {
+          "id": "tax-period-start",
+          "type": "date",
+          "label": "Start date",
+          "helpText": "Example 31 8 2017",
+          "errorMessage": "Please enter your time period start date",
+          "mandatory": "true"
+        },
+        {
+          "id": "tax-period-end",
+          "type": "date",
+          "label": "End date",
+          "helpText": "Example 31 10 2017",
+          "errorMessage": "Please enter your time period end date",
+          "mandatory": "true"
+        }
+      ]
+    },
+    {
+      "title": "Choose the type of return",
+      "fields": [
+        {
+          "type": "choice",
+          "label": "Do you have duty to pay in this return period",
+          "id": "duty-due",
+          "format": "yesno",
+          "choices": [
+            "Yes",
+            "No - I want to submit a nil return"
+          ]
+        }
+      ]
+    },
+    {
+      "includeIf": "${duty-due=0}",
+      "title": "Enter how much duty you owe",
+      "fields": [
+        {
+          "type": "group",
+          "id": "fuel-type-591",
+          "label": "Select the gas you need to pay duty on from the list below",
+          "fields": [
+            { "type": "text", "id": "fuel-type-591-quantity", "label": "Quantity of gas in kilograms (kg) sent out, set aside or used as road fuel", "mandatory": "false" },
+            { "type": "text", "id": "fuel-type-591-amount", "label": "Amount of excise duty due", "mandatory": "false", "format": "sterling" }
+          ]
+        },
+        {
+          "type": "group",
+          "id": "fuel-type-592",
+          "label": "Select the gas you need to pay duty on from the list below",
+          "fields": [
+            { "type": "text", "id": "fuel-type-592-quantity", "label": "Quantity of gas in kilograms (kg) sent out, set aside or used as road fuel", "mandatory": "false" },
+            { "type": "text", "id": "fuel-type-592-amount", "label": "Amount of excise duty due", "mandatory": "false", "format": "sterling" },
+            { "type": "text", "id": "fuel-type-592-description", "label": "Description(optional)", "mandatory": "false", "format": "sterling" }
+          ]
+        }
+      ]
+    }
+  ],
+  "acknowledgementSection": [
+    {
+      "title": "Some content",
+      "content": "this is content"
+    }
+  ]
+}
