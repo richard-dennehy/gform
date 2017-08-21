@@ -82,6 +82,7 @@
         {
           "id": "upload-contents-info",
           "type": "info",
+          "infoType": "long",
           "infoText": "Content goes here...",
           "infoTextLabel": "What the document must contain",
           "label": ""

@@ -41,8 +41,8 @@
       "fields": [
         {
           "type": "choice",
-          "label": "Do you have duty to pay in this return period",
-          "id": "duty-due",
+          "label": "",
+          "id": "dutydue",
           "format": "yesno",
           "choices": [
             "Yes",
@@ -52,7 +52,7 @@
       ]
     },
     {
-      "includeIf": "${duty-due=0}",
+      "includeIf": "${dutydue=0}",
       "title": "Enter how much duty you owe",
       "fields": [
         {
@@ -78,6 +78,14 @@
     }
   ],
   "acknowledgementSection": [
+    {
+      "title": "Some content",
+      "content": "this is content"
+    },
+    {
+      "title": "Some content",
+      "content": "this is content"
+    },
     {
       "title": "Some content",
       "content": "this is content"
