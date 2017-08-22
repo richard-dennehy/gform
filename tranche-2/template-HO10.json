@@ -70,13 +70,7 @@
         {
           "id": "upload-info",
           "type": "info",
-          "infoText": "
-          The document you upload must be:
-          \n
-          \n
-          * less that 10 megabytes (10MB)\n
-          * in PDF, JPEG or Excel format
-          ",
+          "infoText": "The document you upload must be:\n\n* less that 10 megabytes (10MB)\n* in PDF, JPEG or Excel format",
           "label": ""
         },
         {
