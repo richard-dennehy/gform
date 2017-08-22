@@ -178,6 +178,31 @@
       ]
     },
     {
+      "includeIf": "${enterOnScreenChoice=1}",
+      "title": "Upload Hydrocarbon oil spreadsheet",
+      "fields": [
+        {
+          "type": "file",
+          "id": "spreadsheet",
+          "label": "choose your return document"
+        },
+        {
+          "id": "upload-info",
+          "type": "info",
+          "infoText": "The document you upload must be:\n\n* less that 10 megabytes (10MB)\n* in PDF, JPEG or Excel format",
+          "label": ""
+        },
+        {
+          "id": "upload-contents-info",
+          "type": "info",
+          "infoType": "long",
+          "infoText": "Content goes here...",
+          "infoTextLabel": "What the document must contain",
+          "label": ""
+        }
+      ]
+    },
+    {
       "title": "Enter details of the beverages and articles made or prepared using the alcoholic ingredients",
       "description": "Enter the description and quantity of beverages and articles below.",
       "includeIf": "${enterOnScreenChoice = 0}",
@@ -334,10 +359,11 @@
       ]
     },
     {
-      "title": "Enter the start and end dates for this underclaim",
+      "includeIf": "${overUnderClaimsChoice=0}",
+      "title": "Enter the start and end dates for this overclaim",
       "fields": [
         {
-          "id": "!!!TODO_includeIfwithOR_underclaimStartDate",
+          "id": "underclaimStartDate",
           "type": "date",
           "label": "Start date",
           "helpText": "Example: 31 09 2017",
@@ -354,7 +380,8 @@
       ]
     },
     {
-      "title": "Enter the details for underclaims from a previous period",
+      "includeIf": "${overUnderClaimsChoice=1}",
+      "title": "Enter the details for underclaim from a previous period",
       "description": "Select the alcoholic ingredients used in your product below.",
       "fields": [
         {

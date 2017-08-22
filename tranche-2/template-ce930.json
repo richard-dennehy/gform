@@ -43,7 +43,6 @@
           "type": "choice",
           "label": "",
           "id": "dutydue",
-          "format": "yesno",
           "choices": [
             "Yes",
             "No - I want to submit a nil return"
