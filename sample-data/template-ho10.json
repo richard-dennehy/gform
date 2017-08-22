@@ -70,6 +70,7 @@ The document you upload must be:
         {
           "id": "upload-contents-info",
           "type": "info",
+          "infoType": "long",
           "infoText": "Content goes here...",
           "infoTextLabel": "What the document must contain"
         }
