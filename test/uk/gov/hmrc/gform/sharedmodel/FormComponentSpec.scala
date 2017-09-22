@@ -261,7 +261,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
@@ -291,7 +291,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
@@ -322,7 +322,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
@@ -353,7 +353,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Horizontal, List.empty[Int], None),
+        Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Horizontal),
         "Select the tax type",
         None,
         None,
@@ -383,7 +383,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Checkbox, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Checkbox, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
@@ -414,7 +414,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Checkbox, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Checkbox, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
@@ -445,7 +445,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Checkbox, NonEmptyList("Natural gas", List("Other gas")), Horizontal, List.empty[Int], None),
+        Choice(Checkbox, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Horizontal),
         "Select the tax type",
         None,
         None,
@@ -471,7 +471,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("taxType"),
-        Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None),
+        Choice(YesNo, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, false))), Horizontal),
         "Gas tax type?",
         None,
         None,
@@ -485,7 +485,7 @@ class FormComponentSpec extends Spec {
   }
 
   it should "parse 'choice' type as YesNo if 'format=yesno' and 'value=1' are provided" in {
-    val fieldValue = toFieldValue(
+    val fieldValue: JsResult[FormComponent] = toFieldValue(
       """|{
          |  "type": "choice",
          |  "id":"taxType",
@@ -498,7 +498,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("taxType"),
-        Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List(1), None),
+        Choice(YesNo, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, true))), Horizontal),
         "Gas tax type?",
         None,
         None,
@@ -525,7 +525,7 @@ class FormComponentSpec extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("taxType"),
-        Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None),
+        Choice(YesNo, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, false))), Horizontal),
         "Gas tax type?",
         None,
         None,
@@ -552,7 +552,7 @@ class FormComponentSpec extends Spec {
          |}"""
     )
 
-    fieldValue should beJsSuccess(FormComponent(FormComponentId("taxType"), Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
+    fieldValue should beJsSuccess(FormComponent(FormComponentId("taxType"), Choice(YesNo, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, false))), Horizontal), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
   }
 
   it should "parse 'choice' type as YesNo even though 'multivalue=yes' is provided" in {
@@ -566,7 +566,7 @@ class FormComponentSpec extends Spec {
          |}"""
     )
 
-    fieldValue should beJsSuccess(FormComponent(FormComponentId("taxType"), Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
+    fieldValue should beJsSuccess(FormComponent(FormComponentId("taxType"), Choice(YesNo, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, false))), Horizontal), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
   }
 
   it should "parse 'choice' type as inline" in {
@@ -580,7 +580,7 @@ class FormComponentSpec extends Spec {
          }"""
     )
 
-    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None), "Original invoice from the supplier", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
+    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, false))), Horizontal), "Original invoice from the supplier", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
   }
 
   it should "parse 'choice' type as inline with value" in {
@@ -595,7 +595,7 @@ class FormComponentSpec extends Spec {
          }"""
     )
 
-    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList.of("Yes", "No", "Not sure"), Horizontal, List(1), None), "Original invoice from the supplier", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
+    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, true), ChoiceValues("Not sure", None, false))), Horizontal), "Original invoice from the supplier", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
   }
 
   it should "faile parse 'choice' type when not enough choices" in {
@@ -930,7 +930,7 @@ class FormComponentSpec extends Spec {
          }"""
     )
 
-    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList.of("Yes", "No", "Not sure"), Horizontal, List(1), None), "Original invoice from the supplier", None, Some(shortName), mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
+    fieldValue should beJsSuccess(FormComponent(FormComponentId("haveIncludedInvoice"), Choice(Inline, NonEmptyList(ChoiceValues("Yes", None, false), List(ChoiceValues("No", None, true), ChoiceValues("Not sure", None, false))), Horizontal), "Original invoice from the supplier", None, Some(shortName), mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None))
   }
 
   it should "parse as Date constraint to April 17" in {

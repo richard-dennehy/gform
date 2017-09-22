@@ -267,7 +267,7 @@ class TemplateValidatorSpec extends Spec {
         FormComponentId("nameOfBusiness"), Text(AnyText, Constant("")), "Name of business", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       ),
       FormComponent(
-        FormComponentId("dutyType"), Choice(Checkbox, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None), "Select the tax type", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
+        FormComponentId("dutyType"), Choice(Checkbox, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical), "Select the tax type", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       )
     )
   )
@@ -281,7 +281,7 @@ class TemplateValidatorSpec extends Spec {
         FormComponentId("nameOfBusiness"), Text(AnyText, Constant("")), "Name of business", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       ),
       FormComponent(
-        FormComponentId("dutyType"), Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None), "Select the tax type", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
+        FormComponentId("dutyType"), Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical), "Select the tax type", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       )
     )
   )
@@ -295,7 +295,7 @@ class TemplateValidatorSpec extends Spec {
         FormComponentId("nameOfBusiness"), Text(AnyText, Constant("")), "Name of business", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       ),
       FormComponent(
-        FormComponentId("taxType"), Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, List.empty[Int], None), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
+        FormComponentId("taxType"), Choice(YesNo, NonEmptyList.of(ChoiceValues("Yes", None, false), ChoiceValues("No", None, false)), Horizontal), "Gas tax type?", None, None, mandatory = true, editable = true, submissible = true, derived = false, errorMessage = None
       )
     )
   )

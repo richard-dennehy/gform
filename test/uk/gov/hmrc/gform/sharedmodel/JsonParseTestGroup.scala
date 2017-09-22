@@ -60,7 +60,7 @@ class JsonParseTestGroup extends Spec {
         List(
           FormComponent(
             FormComponentId("cid"),
-            Choice(Radio, NonEmptyList.of("A", "B"), Vertical, List(), None), "clabel", None, None, true, true, true, derived = false, None
+            Choice(Radio, NonEmptyList.of(ChoiceValues("A", None, false), ChoiceValues("B", None, false)), Vertical), "clabel", None, None, true, true, true, derived = false, None
           )
         ),
         Horizontal,

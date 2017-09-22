@@ -20,9 +20,11 @@ import cats.data.NonEmptyList
 import cats.syntax.all._
 import play.api.libs.json._
 import uk.gov.hmrc.gform.core.Opt
-import uk.gov.hmrc.gform.core.parsers.{ FormatParser, PresentationHintParser, ValueParser }
+import uk.gov.hmrc.gform.core.parsers.{FormatParser, PresentationHintParser, ValueParser}
 import uk.gov.hmrc.gform.exceptions.UnexpectedState
 import uk.gov.hmrc.gform.sharedmodel.formtemplate._
+
+import scala.collection.immutable.::
 
 case class MES(mandatory: Boolean, editable: Boolean, submissible: Boolean, derived: Boolean)
 
@@ -250,20 +252,20 @@ class FormCompomentMaker(json: JsValue) {
       maybeFormatExpr <- optMaybeFormatExpr
       maybeValueExpr <- optMaybeValueExpr
       oChoice: Opt[Choice] = (maybeFormatExpr, choices, multivalue, maybeValueExpr, optionHelpText) match {
-        case (IsOrientation(VerticalOrientation), Some(list), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
-          Choice(Checkbox, choiceValues(list, selections, oHelpText), Vertical).asRight
-        case (IsOrientation(VerticalOrientation), Some(list), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
-          Choice(Radio, choiceValues(list, selections, oHelpText), Vertical).asRight
-        case (IsOrientation(HorizontalOrientation), Some(list), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
-          Choice(Checkbox, choiceValues(list, selections, oHelpText), Horizontal).asRight
-        case (IsOrientation(HorizontalOrientation), Some(list), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
-          Choice(Radio, choiceValues(list, selections, oHelpText), Horizontal).asRight
+        case (IsOrientation(VerticalOrientation), Some(x :: xs), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) if (x :: xs).nonEmpty =>
+          Choice(Checkbox, choiceValues(x :: xs, selections, oHelpText), Vertical).asRight
+        case (IsOrientation(VerticalOrientation), Some(x :: xs), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) if (x :: xs).nonEmpty  =>
+          Choice(Radio, choiceValues(x :: xs, selections, oHelpText), Vertical).asRight
+        case (IsOrientation(HorizontalOrientation), Some(x :: xs), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) if (x :: xs).nonEmpty  =>
+          Choice(Checkbox, choiceValues(x :: xs, selections, oHelpText), Horizontal).asRight
+        case (IsOrientation(HorizontalOrientation), Some(x :: xs), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) if (x :: xs).nonEmpty  =>
+          Choice(Radio, choiceValues(x :: xs, selections, oHelpText), Horizontal).asRight
         case (IsOrientation(YesNoOrientation), None, IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
           Choice(YesNo, choiceValues(List("Yes", "No"), selections, oHelpText), Horizontal).asRight
         case (IsOrientation(YesNoOrientation), _, _, Selections(selections), oHelpText) =>
           Choice(YesNo, choiceValues(List("Yes", "No"), selections, oHelpText), Horizontal).asRight
-        case (IsOrientation(InlineOrientation), Some(list), None, Selections(selections), oHelpText) =>
-          Choice(Inline, choiceValues(list, selections, oHelpText), Horizontal).asRight
+        case (IsOrientation(InlineOrientation), Some(x :: xs), None, Selections(selections), oHelpText) if (x :: xs).nonEmpty  =>
+          Choice(Inline, choiceValues(x :: xs, selections, oHelpText), Horizontal).asRight
         case (invalidFormat, invalidChoices, invalidMultivalue, invalidValue, invalidHelpText) =>
           UnexpectedState(s"""|Unsupported combination of 'format, choices, multivalue and value':
                            |Format     : $invalidFormat

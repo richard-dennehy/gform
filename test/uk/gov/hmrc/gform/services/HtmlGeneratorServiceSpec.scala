@@ -110,7 +110,7 @@ class HtmlGeneratorServiceSpec extends Spec with ExampleData {
   it should "return HTML containing choice selection" in {
     val fieldValue = FormComponent(
       id = FormComponentId("id"),
-      `type` = Choice(Checkbox, NonEmptyList.of("One", "Two", "Three"), Vertical, Nil, None),
+      `type` = Choice(Checkbox, NonEmptyList.of(ChoiceValues("One", None, false), ChoiceValues("Two", None, false), ChoiceValues("Three", None, false)), Vertical),
       label = "label",
       shortName = None,
       helpText = None,

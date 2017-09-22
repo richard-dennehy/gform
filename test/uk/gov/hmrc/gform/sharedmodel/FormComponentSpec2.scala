@@ -43,7 +43,7 @@ class FormComponentSpec2 extends Spec {
     fieldValue should beJsSuccess(
       FormComponent(
         FormComponentId("dutyType"),
-        Choice(Radio, NonEmptyList("Natural gas", List("Other gas")), Vertical, List.empty[Int], None),
+        Choice(Radio, NonEmptyList(ChoiceValues("Natural gas", None, false), List(ChoiceValues("Other gas", None, false))), Vertical),
         "Select the tax type",
         None,
         None,
