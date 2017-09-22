@@ -38,21 +38,21 @@ object FormTemplateValidator {
     }
   }
 
-  def validateChoiceHelpText(sectionsList: List[Section]): ValidationResult = {
-    val choiceFieldIdMap: Map[FormComponentId, Boolean] = sectionsList.flatMap(_.fields).map(fv => (fv.id, fv.`type`))
-      .collect {
-        case (fId, Choice(_, options, _, _, helpTextList @ Some(x :: xs))) =>
-          (fId, options.toList.size.equals(helpTextList.getOrElse(List.empty).size))
-      }
-      .toMap
-
-    val choiceFieldIdResult = choiceFieldIdMap.filter(value => value._2.equals(false))
-
-    choiceFieldIdResult.isEmpty match {
-      case true => Valid
-      case false => Invalid(s"Choice components doesn't have equal number of choices and help texts ${choiceFieldIdResult.keys.toList}")
-    }
-  }
+//  def validateChoiceHelpText(sectionsList: List[Section]): ValidationResult = {
+//    val choiceFieldIdMap: Map[FormComponentId, Boolean] = sectionsList.flatMap(_.fields).map(fv => (fv.id, fv.`type`))
+//      .collect {
+//        case (fId, Choice(_, options, _, _, helpTextList @ Some(x :: xs))) =>
+//          (fId, options.toList.size.equals(helpTextList.getOrElse(List.empty).size))
+//      }
+//      .toMap
+//
+//    val choiceFieldIdResult = choiceFieldIdMap.filter(value => value._2.equals(false))
+//
+//    choiceFieldIdResult.isEmpty match {
+//      case true => Valid
+//      case false => Invalid(s"Choice components doesn't have equal number of choices and help texts ${choiceFieldIdResult.keys.toList}")
+//    }
+//  }
 
   def validateRepeatingSectionFields(sectionList: List[Section]): ValidationResult = {
     val results = sectionList.map { section =>
@@ -131,7 +131,7 @@ object FormTemplateValidator {
     case Text(_, expr) => validate(expr, formTemplate)
     case Date(_, _, _) => Valid
     case Address(_) => Valid
-    case Choice(_, _, _, _, _) => Valid
+    case Choice(_, _, _) => Valid
     case Group(fvs, _, _, _, _, _) => FormTemplateValidator.validate(fvs.map(_.`type`), formTemplate)
     case FileUpload() => Valid
     case InformationMessage(_, _) => Valid

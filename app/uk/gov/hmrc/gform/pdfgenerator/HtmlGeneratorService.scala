@@ -42,7 +42,7 @@ trait HtmlGeneratorService {
   private def generateElementHtml(arg: (List[FormField], FormComponent)) = arg match {
     case (formFields, fieldValue) =>
       val (name, value) = fieldValue.`type` match {
-        case choice @ Choice(_, _, _, _, _) => generateChoiceFieldHTML(choice, fieldValue, formFields.head)
+        case choice @ Choice(_, _, _) => generateChoiceFieldHTML(choice, fieldValue, formFields.head)
         case UkSortCode(_) => generateSortCodeFieldHTML(fieldValue, formFields)
         case Date(_, _, _) => generateDateFieldHTML(fieldValue, formFields)
         case Address(_) => generateAddressFieldHTML(fieldValue, formFields)
@@ -65,7 +65,7 @@ trait HtmlGeneratorService {
   private def generateChoiceFieldHTML(choiceElement: Choice, fieldValue: FormComponent, formField: FormField) = {
     val selections = formField.value.split(",").toList
     val optionsAsMap = choiceElement.options.zipWithIndex.map {
-      case (option, index) => index.toString -> getEnglishText(option)
+      case (option, index) => index.toString -> getEnglishText(option.option)
     }.toList.toMap
     val values = Html(selections.flatMap(selection => optionsAsMap.get(selection)).mkString("<BR>"))
     (getEnglishText(fieldValue.shortName.getOrElse(fieldValue.label)), values)

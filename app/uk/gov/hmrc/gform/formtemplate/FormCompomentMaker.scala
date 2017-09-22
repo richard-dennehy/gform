@@ -250,20 +250,20 @@ class FormCompomentMaker(json: JsValue) {
       maybeFormatExpr <- optMaybeFormatExpr
       maybeValueExpr <- optMaybeValueExpr
       oChoice: Opt[Choice] = (maybeFormatExpr, choices, multivalue, maybeValueExpr, optionHelpText) match {
-        case (IsOrientation(VerticalOrientation), Some(x :: xs), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
-          Choice(Checkbox, NonEmptyList(x, xs), Vertical, selections, oHelpText).asRight
-        case (IsOrientation(VerticalOrientation), Some(x :: xs), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
-          Choice(Radio, NonEmptyList(x, xs), Vertical, selections, oHelpText).asRight
-        case (IsOrientation(HorizontalOrientation), Some(x :: xs), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
-          Choice(Checkbox, NonEmptyList(x, xs), Horizontal, selections, oHelpText).asRight
-        case (IsOrientation(HorizontalOrientation), Some(x :: xs), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
-          Choice(Radio, NonEmptyList(x, xs), Horizontal, selections, oHelpText).asRight
+        case (IsOrientation(VerticalOrientation), Some(list), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
+          Choice(Checkbox, choiceValues(list, selections, oHelpText), Vertical).asRight
+        case (IsOrientation(VerticalOrientation), Some(list), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
+          Choice(Radio, choiceValues(list, selections, oHelpText), Vertical).asRight
+        case (IsOrientation(HorizontalOrientation), Some(list), IsMultivalue(MultivalueYes), Selections(selections), oHelpText) =>
+          Choice(Checkbox, choiceValues(list, selections, oHelpText), Horizontal).asRight
+        case (IsOrientation(HorizontalOrientation), Some(list), IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
+          Choice(Radio, choiceValues(list, selections, oHelpText), Horizontal).asRight
         case (IsOrientation(YesNoOrientation), None, IsMultivalue(MultivalueNo), Selections(selections), oHelpText) =>
-          Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, selections, oHelpText).asRight
+          Choice(YesNo, choiceValues(List("Yes", "No"), selections, oHelpText), Horizontal).asRight
         case (IsOrientation(YesNoOrientation), _, _, Selections(selections), oHelpText) =>
-          Choice(YesNo, NonEmptyList.of("Yes", "No"), Horizontal, selections, oHelpText).asRight
-        case (IsOrientation(InlineOrientation), Some(x :: xs), None, Selections(selections), oHelpText) =>
-          Choice(Inline, NonEmptyList(x, xs), Horizontal, selections, oHelpText).asRight
+          Choice(YesNo, choiceValues(List("Yes", "No"), selections, oHelpText), Horizontal).asRight
+        case (IsOrientation(InlineOrientation), Some(list), None, Selections(selections), oHelpText) =>
+          Choice(Inline, choiceValues(list, selections, oHelpText), Horizontal).asRight
         case (invalidFormat, invalidChoices, invalidMultivalue, invalidValue, invalidHelpText) =>
           UnexpectedState(s"""|Unsupported combination of 'format, choices, multivalue and value':
                            |Format     : $invalidFormat
@@ -275,6 +275,14 @@ class FormCompomentMaker(json: JsValue) {
       }
       result <- oChoice.right
     } yield result
+  }
+
+  private def choiceValues(list: List[String], selections: List[Int], oHelpText: Option[List[String]]): NonEmptyList[ChoiceValues] = {
+    val x: List[ChoiceValues] = list.zipWithIndex.map {
+      case (str, idx) =>
+        ChoiceValues(str, oHelpText.fold[Option[String]](None)(y => y.lift(idx)), selections.contains(idx))
+    }
+    NonEmptyList(x.head, x.tail)
   }
 
   private lazy val fileUploadOpt: Opt[FileUpload] = FileUpload().asRight

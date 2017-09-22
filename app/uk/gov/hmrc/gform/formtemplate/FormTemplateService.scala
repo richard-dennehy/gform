@@ -56,7 +56,7 @@ class FormTemplateService(
     for {
       _          <- fromOptA(FormTemplateSchema.jsonSchema.conform(formTemplate).toEither)
       _          <- fromOptA(FormTemplateValidator.validateRepeatingSectionFields(sectionsList).toEither)
-      _          <- fromOptA(FormTemplateValidator.validateChoiceHelpText(sectionsList).toEither)
+//      _          <- fromOptA(FormTemplateValidator.validateChoiceHelpText(sectionsList).toEither)
       _          <- fromOptA(FormTemplateValidator.validateUniqueFields(sectionsList).toEither)
       _          <- fromOptA(FormTemplateValidator.validate(exprs, formTemplate).toEither)
       res        <- formTemplateRepo.upsert(formTemplate)

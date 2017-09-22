@@ -56,11 +56,15 @@ case object Address {
 
 case class Choice(
   `type`: ChoiceType,
-  options: NonEmptyList[String],
-  orientation: Orientation,
-  selections: List[Int],
-  optionHelpText: Option[List[String]]
+  options: NonEmptyList[ChoiceValues],
+  orientation: Orientation
 ) extends ComponentType
+
+case class ChoiceValues(option: String, optionHelpText: Option[String], value: Boolean)
+
+object ChoiceValues {
+  implicit val format = Json.format[ChoiceValues]
+}
 
 sealed trait ChoiceType
 final case object Radio extends ChoiceType
