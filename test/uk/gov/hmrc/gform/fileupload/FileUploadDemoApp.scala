@@ -55,11 +55,11 @@ object FileUploadDemoApp extends App {
   )
 
   val configDevProxiedByGform = configLocal.copy(
-    fileUploadBaseUrl = "https://www-dev.tax.service.gov.uk/submissions/test-only/proxy-to-file-upload",
+    fileUploadBaseUrl = "https://www-dev.tax.service.gov.uk/submissions/test-only/proxy-to-gform/gform/test-only/file-upload-interceptor/intercept",
     fileUploadFrontendBaseUrl = "https://www-dev.tax.service.gov.uk"
   )
 
-  val config = configLocal
+  val config = configDevProxiedByGform
 
   val http = TestWSHttp
 
@@ -75,6 +75,7 @@ object FileUploadDemoApp extends App {
   val result = for {
   // format: OFF
     envelopeId <- fileUploadService.createEnvelope(FormTemplateId("testFormTypeId"))
+    _          = println(s"Envelope created: $envelopeId")
     _          <- fuf.upload(envelopeId, FileId("README.md"), "README.md", fileBody, ContentType.`text/xml`)
     envelope   <- fu.getEnvelope(envelopeId)
     _          <- fileUploadService.deleteFile(envelopeId, FileId("README.md"))
