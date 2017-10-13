@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.gform.sharedmodel.formtemplate
+package uk.gov.hmrc.gform.sharedmodel
 
-import play.api.libs.json._
-import uk.gov.hmrc.gform.sharedmodel.ValueClassFormat
+import play.api.libs.json.Json
+import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormComponentId
 
-case class FormComponentId(value: String) extends AnyVal {
-  override def toString = value
+case class Shape(groups: Map[String, Int], sections: Map[String, Int]) //TODO make key FormComponentId
 
-  def withSuffix(suffix: String): FormComponentId = FormComponentId(value + "-" + suffix)
+object Shape {
+  implicit val format = Json.format[Shape]
 }
 
-object FormComponentId {
-
-  implicit val vformat: Format[FormComponentId] = ValueClassFormat.vformat("id", FormComponentId.apply, x => JsString(x.value))
-
-  val oformat: OFormat[FormComponentId] = ValueClassFormat.oformat("id", FormComponentId.apply, _.value)
-}
+//case class SectionShape
+//case class GroupShape(value: )
+//
+//object GroupShape {
+//  implicit val format = Json.format[GroupShape]
+//}

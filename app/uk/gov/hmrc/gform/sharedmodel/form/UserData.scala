@@ -17,10 +17,12 @@
 package uk.gov.hmrc.gform.sharedmodel.form
 
 import play.api.libs.json.{ Json, OFormat }
+import uk.gov.hmrc.gform.sharedmodel.Shape
 
 case class UserData(
   formData: FormData,
   repeatingGroupStructure: Option[RepeatingGroupStructure],
+  shape: Shape,
   formStatus: FormStatus
 )
 

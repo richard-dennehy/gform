@@ -32,6 +32,8 @@ class FormSpec extends Spec {
       "envelopeId" -> "b66c5979-e885-49cd-9281-c7f42ce6b307",
       "userId" -> "James007",
       "formTemplateId" -> "AAA999",
+      "groups" -> Json.obj("Hello" -> 1),
+      "sections" -> Json.obj("Hello" -> 1),
       "fields" -> Json.arr(
         Json.obj(
           "id" -> "facePhoto",

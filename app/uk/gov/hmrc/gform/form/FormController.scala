@@ -51,7 +51,8 @@ class FormController(
     val formId = FormId(userId, formTemplateId)
     val formIdF: Future[FormId] = for {
       envelopeId <- envelopeIdF
-      _ <- formService.insertEmpty(userId, formTemplateId, envelopeId, formId)
+      formTemplate <- formTemplateService.get(formTemplateId)
+      _ <- formService.insertEmpty(userId, formTemplate, envelopeId, formId)
 
     } yield formId
 
