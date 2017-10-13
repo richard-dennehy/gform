@@ -275,10 +275,13 @@ trait ExampleForm { dependsOn: ExampleFormField with ExampleFormTemplate =>
     userId,
     formTemplateId,
     None,
+    shape,
     formData,
     InProgress
   )
 
+  def shape =
+    Shape(Map("Hello" -> 1), Map("Hello" -> 1))
 }
 
 trait ExampleSubmission { dependsOn: ExampleForm with ExampleFormTemplate =>

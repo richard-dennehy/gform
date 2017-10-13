@@ -99,7 +99,7 @@ class SubmissionService(
       sectionFormFields <- fromOptA           (SubmissionServiceHelper.getSectionFormFields(form, formTemplate))
       submissionAndPdf  <- fromFutureA        (getSubmissionAndPdf(form.envelopeId, form, sectionFormFields, formTemplate.formName, customerId))
       _                 <-                     submissionRepo.upsert(submissionAndPdf.submission)
-      _                 <- fromFutureA        (formService.updateUserData(form._id, UserData(form.formData, form.repeatingGroupStructure, Submitted)))
+      _                 <- fromFutureA        (formService.updateUserData(form._id, UserData(form.formData, form.repeatingGroupStructure, form.shape, Submitted)))
       res               <- fromFutureA        (fileUploadService.submitEnvelope(submissionAndPdf, formTemplate.dmsSubmission))
       emailAddress      =                    (email.getEmailAddress(form))
       _                 =                     email.sendEmail(emailAddress)(hc, fromLoggingDetails)

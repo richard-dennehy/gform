@@ -18,11 +18,12 @@ package uk.gov.hmrc.gform.form
 
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.gform.save4later.Save4Later
-import uk.gov.hmrc.gform.sharedmodel.UserId
+import uk.gov.hmrc.gform.sharedmodel.{ Shape, UserId }
 import uk.gov.hmrc.gform.sharedmodel.form._
-import uk.gov.hmrc.gform.sharedmodel.formtemplate.FormTemplateId
+import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 import uk.gov.hmrc.play.http.HeaderCarrier
 import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
+
 import scala.concurrent.Future
 
 class FormService(save4Later: Save4Later) {
@@ -35,10 +36,27 @@ class FormService(save4Later: Save4Later) {
     save4Later.delete(formId)
   }
 
-  def insertEmpty(userId: UserId, formTemplateId: FormTemplateId, envelopeId: EnvelopeId, formId: FormId)(implicit hc: HeaderCarrier): Future[Unit] = {
+  def insertEmpty(userId: UserId, formTemplate: FormTemplate, envelopeId: EnvelopeId, formId: FormId)(implicit hc: HeaderCarrier): Future[Unit] = {
     val emptyFormData = FormData(fields = Nil)
-    val form = Form(formId, envelopeId, userId, formTemplateId, None, emptyFormData, InProgress)
+    val form = Form(formId, envelopeId, userId, formTemplate._id, None, initaliseShape(formTemplate), emptyFormData, InProgress)
     save4Later.upsert(formId, form)
+  }
+
+  private def initaliseShape(formTemplate: FormTemplate): Shape = {
+    val map: Map[String, Int] = formTemplate.sections.flatMap(_.fields).flatMap(maybeRepeatingGroup).toMap
+    Shape(map, Map.empty[String, Int]) //TODO add in sections parsing.
+  }
+
+  def maybeRepeatingGroup(formComponent: FormComponent): Map[String, Int] = {
+    formComponent match {
+      case f @ FormComponent(_, group: Group, _, _, _, _, _, _, _, _, _) =>
+        group
+          .repeatsMin
+          .fold(Map.empty[String, Int])(
+            min => Map(f.id.value -> min)
+          )
+      case _ => Map.empty[String, Int]
+    }
   }
 
   def updateUserData(formId: FormId, userData: UserData)(implicit hc: HeaderCarrier): Future[Unit] = {
@@ -48,6 +66,7 @@ class FormService(save4Later: Save4Later) {
         .copy(
           formData = userData.formData,
           repeatingGroupStructure = userData.repeatingGroupStructure,
+          shape = userData.shape,
           status = newStatus(form, userData.formStatus)
         )
       _ <- save4Later.upsert(formId, newForm)

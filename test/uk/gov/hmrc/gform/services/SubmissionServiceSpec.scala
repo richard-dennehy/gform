@@ -45,7 +45,7 @@ class SubmissionServiceSpec extends Spec {
     )
     val formData = FormData(formFields)
 
-    val form = Form(FormId("MIO"), EnvelopeId(""), UserId("TESTID"), FormTemplateId("JustAFormTypeId"), None, formData, InProgress)
+    val form = Form(FormId("MIO"), EnvelopeId(""), UserId("TESTID"), FormTemplateId("JustAFormTypeId"), None, Shape(Map.empty[String, Int], Map.empty[String, Int]), formData, InProgress)
 
     val textFieldUno = FormComponent(
       id = FormComponentId("UNO"),
