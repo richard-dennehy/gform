@@ -50,8 +50,7 @@ class FormService(save4Later: Save4Later) {
   def maybeRepeatingGroup(formComponent: FormComponent): Map[String, Int] = {
     formComponent match {
       case f @ FormComponent(_, group: Group, _, _, _, _, _, _, _, _, _) =>
-        group
-          .repeatsMin
+        Some(group.repeatsMin.getOrElse(1))
           .fold(Map.empty[String, Int])(
             min => Map(f.id.value -> min)
           )
