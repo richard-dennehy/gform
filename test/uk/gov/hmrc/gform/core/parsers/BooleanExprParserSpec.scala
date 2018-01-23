@@ -23,6 +23,41 @@ import uk.gov.hmrc.gform.sharedmodel.formtemplate._
 
 class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues with OptionValues {
 
+  "BooleanExprParser" should "parse equality" in {
+    val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress=0}")
+
+    res shouldBe Right(Equals(FormCtx("isPremisesSameAsBusinessAddress"), Constant("0")))
+
+  }
+
+  "BooleanExprParser" should "parse greater than" in {
+    val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress>0}")
+
+    res shouldBe Right(GreaterThan(FormCtx("isPremisesSameAsBusinessAddress"), Constant("0")))
+
+  }
+
+  "BooleanExprParser" should "parse greater than or equal" in {
+    val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress>=0}")
+
+    res shouldBe Right(GreaterThanOrEquals(FormCtx("isPremisesSameAsBusinessAddress"), Constant("0")))
+
+  }
+
+  "BooleanExprParser" should "parse less than" in {
+    val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress<0}")
+
+    res shouldBe Right(LessThan(FormCtx("isPremisesSameAsBusinessAddress"), Constant("0")))
+
+  }
+
+  "BooleanExprParser" should "parse less than or equal" in {
+    val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress<=0}")
+
+    res shouldBe Right(LessThanOrEquals(FormCtx("isPremisesSameAsBusinessAddress"), Constant("0")))
+
+  }
+
   "BooleanExprParser" should "parse or-expressions" in {
     val res = BooleanExprParser.validate("${isPremisesSameAsBusinessAddress=0} || ${amountA=22}")
 
@@ -40,16 +75,16 @@ class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues wit
   }
 
   it should "fail to parse anything but an equals operator" in {
-    val res = BooleanExprParser.validate("${abc>form.amountA}")
+    val res = BooleanExprParser.validate("${abc|=form.amountA}")
 
     res should be('left)
 
     res.left.value should be(
       UnexpectedState(
-        """|Unable to parse expression ${abc>form.amountA}.
+        """|Unable to parse expression ${abc|=form.amountA}.
            |Errors:
-           |${abc>form.amountA}:1: unexpected characters; expected '=' or '\s+' or '.sum'
-           |${abc>form.amountA}     ^""".stripMargin))
+           |${abc|=form.amountA}:1: unexpected characters; expected '=' or '\s+' or '<=' or '>=' or '.sum' or '>' or '<'
+           |${abc|=form.amountA}     ^""".stripMargin))
   }
 
   it should "fail to parse anything but a constant on the right size" in {
@@ -77,7 +112,7 @@ class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues wit
       UnexpectedState(
         """|Unable to parse expression ${eeitt.businessUserx = XYZ}.
            |Errors:
-           |${eeitt.businessUserx = XYZ}:1: unexpected characters; expected '=' or '\s+'
+           |${eeitt.businessUserx = XYZ}:1: unexpected characters; expected '=' or '\s+' or '<=' or '>=' or '>' or '<'
            |${eeitt.businessUserx = XYZ}                    ^""".stripMargin))
   }
 
