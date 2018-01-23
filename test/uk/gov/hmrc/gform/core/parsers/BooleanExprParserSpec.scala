@@ -66,7 +66,7 @@ class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues wit
     }
   }
 
-  it should "parse ${form.isPremisesSameAsBusinessAddress=amountA}" in {
+  it should "fail to parse ${eeitt.businessUserx = XYZ}" in {
     val res = BooleanExprParser.validate("${eeitt.businessUserx = XYZ}")
 
     res should be('left)
