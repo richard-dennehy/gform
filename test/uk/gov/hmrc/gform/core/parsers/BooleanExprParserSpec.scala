@@ -44,10 +44,12 @@ class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues wit
 
     res should be('left)
 
-    res.left.value match {
-      case UnexpectedState(msg) => msg.contains("expected '=' or '\\s+'") shouldBe true
-      case _ => fail("expected an UnexpectedState")
-    }
+    res.left.value should be(
+      UnexpectedState(
+        """|Unable to parse expression ${abc>form.amountA}.
+           |Errors:
+           |${abc>form.amountA}:1: unexpected characters; expected '=' or '\s+' or '.sum'
+           |${abc>form.amountA}     ^""".stripMargin))
   }
 
   it should "fail to parse anything but a constant on the right size" in {
@@ -73,12 +75,10 @@ class BooleanExprParserSpec extends FlatSpec with Matchers with EitherValues wit
 
     res.left.value should be(
       UnexpectedState(
-        """
-Unable to parse expression ${eeitt.businessUserx = XYZ}.
-Errors:
-${eeitt.businessUserx = XYZ}:1: unexpected characters; expected '=' or '\s+'
-${eeitt.businessUserx = XYZ}                    ^
-    """.trim))
+        """|Unable to parse expression ${eeitt.businessUserx = XYZ}.
+           |Errors:
+           |${eeitt.businessUserx = XYZ}:1: unexpected characters; expected '=' or '\s+'
+           |${eeitt.businessUserx = XYZ}                    ^""".stripMargin))
   }
 
   it should "parse ${isPremisesSameAsBusinessAddress=0_0}" in {
