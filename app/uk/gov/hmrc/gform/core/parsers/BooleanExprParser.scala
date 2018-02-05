@@ -36,11 +36,10 @@ object BooleanExprParser {
 
   lazy val basicExpressionParser: Parser[BooleanExpr] = (
     contextField ~ "=" ~ constant ^^ { (loc, expr1, op, expr2) => Equals(expr1, expr2) }
-      | contextField ~ ">" ~ constant ^^ { (loc, expr1, op, expr2) => GreaterThan(expr1, expr2) }
-      | contextField ~ ">=" ~ constant ^^ { (loc, expr1, op, expr2) => GreaterThanOrEquals(expr1, expr2) }
-      | contextField ~ "<" ~ constant ^^ { (loc, expr1, op, expr2) => LessThan(expr1, expr2) }
-      | contextField ~ "<=" ~ constant ^^ { (loc, expr1, op, expr2) => LessThanOrEquals(expr1, expr2) }
-    )
+    | contextField ~ ">" ~ constant ^^ { (loc, expr1, op, expr2) => GreaterThan(expr1, expr2) }
+    | contextField ~ ">=" ~ constant ^^ { (loc, expr1, op, expr2) => GreaterThanOrEquals(expr1, expr2) }
+    | contextField ~ "<" ~ constant ^^ { (loc, expr1, op, expr2) => LessThan(expr1, expr2) }
+    | contextField ~ "<=" ~ constant ^^ { (loc, expr1, op, expr2) => LessThanOrEquals(expr1, expr2) })
 
   lazy val constant = (
     "'" ~ stringConstant ~ "'" ^^ { (loc, _, str, _) => str }
