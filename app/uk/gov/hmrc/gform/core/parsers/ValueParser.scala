@@ -45,6 +45,16 @@ object ValueParser {
 
   lazy val lastDate: Parser[PreviousDateValue] = nextOrPrevious("last", PreviousDateValue.apply)
 
+  private lazy val exprFormCtxLessWhitespace: Parser[Expr] = (
+    "'" ~ anyConstant ~ "'" ^^ { (loc, _, str, _) => str }
+    | parserExpression)
+
+  //  lazy val exprFormCtx: Parser[Expr] = (
+  //    """\s*""" ~> exprFormCtxLessWhitespace <~ """\s*""")
+  //
+  lazy val exprFormCtx: Parser[Expr] = (
+    exprFormCtxLessWhitespace)
+
   lazy val expr: Parser[Expr] = (
     "'" ~ anyConstant ~ "'" ^^ { (loc, _, str, _) => str }
     | "${" ~> parserExpression <~ "}")
